@@ -1,0 +1,2 @@
+class AccessPolicyException(Exception):
+    pass

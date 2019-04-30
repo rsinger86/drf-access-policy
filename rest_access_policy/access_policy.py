@@ -2,6 +2,7 @@ from typing import List
 
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
+from rest_access_policy import AccessPolicyException
 
 
 class AccessPolicy(permissions.BasePermission):
@@ -9,9 +10,8 @@ class AccessPolicy(permissions.BasePermission):
     id = None
     role_prefix = "role:"
     id_prefix = "id:"
-    debug = False
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, view) -> bool:
         action = self._get_invoked_action(view)
         statements = self.get_policy_statements(request, view)
 
@@ -24,13 +24,13 @@ class AccessPolicy(permissions.BasePermission):
         return self.statements
 
     def get_user_roles(self, user) -> List[str]:
-        return user.groups.values_list("name", flat=True)
+        return list(user.groups.values_list("name", flat=True))
 
     @classmethod
     def scope_queryset(cls, request, qs):
         return qs.none()
 
-    def _get_invoked_action(self, view):
+    def _get_invoked_action(self, view) -> str:
         """
             If a CBV, the name of the method. If a regular function view,
             the name of the function.
@@ -39,9 +39,11 @@ class AccessPolicy(permissions.BasePermission):
             return view.action
         elif hasattr(view, "__class__"):
             return view.__class__.__name__
-        return None
+        raise AccessPolicyException("Could not determine action of request")
 
-    def _evaluate_statements(self, statements: List, request, view, action: str):
+    def _evaluate_statements(
+        self, statements: List[dict], request, view, action: str
+    ) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
         matched = self._get_statements_matching_action(action, matched)
@@ -50,9 +52,9 @@ class AccessPolicy(permissions.BasePermission):
             request, view, action, matched
         )
 
-        allowed = [s for s in matched if s["effect"] == "allow"]
+        denied = [_ for _ in matched if _["effect"] != "allow"]
 
-        if len(matched) == 0 or len(allowed) != len(matched):
+        if len(matched) == 0 or len(denied) > 0:
             return False
 
         return True
@@ -74,8 +76,10 @@ class AccessPolicy(permissions.BasePermission):
 
         return statements
 
-    def _get_statements_matching_principal(self, request, statements: List[dict]):
-        user_roles = self.get_user_roles()
+    def _get_statements_matching_principal(
+        self, request, statements: List[dict]
+    ) -> List[dict]:
+        user_roles = self.get_user_roles(request.user)
         principals = statement["principal"]
         matched = []
 
@@ -147,7 +151,17 @@ class AccessPolicy(permissions.BasePermission):
             the access policy class, then return False.
         """
         if not hasattr(self, condition):
-            return False
+            raise AccessPolicyException(
+                "custom_context_condition '%s' must be a method on the access policy"
+                % condition
+            )
 
         method = getattr(self, condition)
-        return method(request, view, action)
+        result = method(request, view, action)
+
+        if type(x) is not bool:
+            raise AccessPolicyException(
+                "custom_context_condition must return true/false, not %s" % type(x)
+            )
+
+        return result
