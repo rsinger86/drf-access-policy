@@ -6,7 +6,7 @@
 
 # About
 
-This project brings a declaritive, organized approach to managing access control in Django REST projects. Each ViewSet or function-based view can be assigned an explicit policy for the exposed resource(s). No more digging through views or seralizers to understand authorization logic -- it's all in one place, in a format that less technical stakeholders can understand. If you're familiar with other declaritive authorization models, such as AWS' IAM, the syntax will be immediately familiar. 
+This project brings a declaritive, organized approach to managing access control in Django REST Framework projects. Each ViewSet or function-based view can be assigned an explicit policy for the exposed resource(s). No more digging through views or seralizers to understand access logic -- it's all in one place in a format that less technical stakeholders can understand. If you're familiar with other declaritive access models, such as AWS' IAM, the syntax will be familiar. 
 
 In short, you can start expressing your access rules like this:
 
@@ -186,9 +186,88 @@ def download_logs(request):
 
 ## Statement Elements
 
-## Specifying the Principal
+| Name           |  Description                         |   Examples    |
+| -------------- |-------------------------------------:|--------------:|
+| principal     | Identifies the user of the current request by the name of a group they belong to or their user id. Can be formatted as a string or list of strings. Use an asterisk ("*") if you want the statement to apply to all principals. | `["group:admins"]` <br> `["id:5352"]`    |
+| action     | The action or actions that the statement applies to. Can be formatted as a string or list of strings. The value should match the name of a view set method or the name of the view function. Use an asterisk ("*") if you want the statement to apply to all actions. | `["list", "delete", "create]` <br> `["*"]`    |
+| effect     | Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use `deny` when you'd like to override an `allow` statement that will also be in effect. Should be a string equal to either `deny` or `allow`. | `"allow"` <br> `"deny"`    |
+| condition     | The name of a method on the policy that returns a boolean. The method signature is `condition(request, view, action: str)`. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of strings, all conditions must evaluate to `True`. | `"is_manager_for_account"` <br> `"is_author_of_post"` <br> `["balance_is_positive", "account_is_not_frozen"]`   |
 
-## Loading Statements from External Source
+## Policy Evaluation Logic
+
+To determine whether access to a request is granted, all applicable statements are first filtered. A statement is applicable to the current request if all of the following are true (1) the request user matches one of the statement's principals, (2) the name of the method/function matches one of its actions, and (3) any custom conditions evaluate to true.
+
+The request is allowed if any of the statements have an effect of "allow", and none have an effect of "deny". By default, all requests are denied.
+
+## Multitenancy Data / Restricting QuerySets
+
+You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.
+
+```python
+    class PhotoAlbumAccessPolicy(AccessPolicy):
+        # ... statements, etc ...
+
+        # Users can only access albums they have created
+        @classmethod
+        def scope_queryset(cls, request, qs):
+            return qs.filter(creator=request.user)
+
+
+    class TodoListAccessPolicy(AccessPolicy):
+        # ... statements, etc ...
+
+        # Users can only access todo lists owned by their organization
+        @classmethod
+        def scope_queryset(cls, request, qs):
+            user_orgs = request.user.organizations.all()
+            return qs.filter(org__id__in=user_orgs)
+```
+
+## Advanced Usage
+
+### Loading Statements from External Source
+
+If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step to take because you can then change access rules without redeploying code. 
+
+Just define a method on your policy class called `get_policy_statements`, which has the following signature:
+`get_policy_statements(self, request, view) -> List[dict]`
+
+Example:
+
+```python
+
+    class UserAccessPolicy(AccessPolicy):
+        id = 'user-policy'
+
+        def get_policy_statements(self, request, view) -> List[dict]:
+            statements = data_api.load_json(self.id)
+            return json.loads(statements)
+```
+
+You probably want to only define this method once on your own custom subclass of `AccessPolicy`, from which all your other access policies inherit.
+
+### Customizing User Group/Role Values
+
+If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called `get_user_groups` on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".
+
+```python
+    class UserAccessPolicy(AccessPolicy):
+        # ... other properties and methods ...
+
+        def get_user_groups(self, user) -> List[str]:
+            return list(user.roles.values_list("title", flat=True))
+```
+### Customizing Principal Prefixes
+
+By default, the prefixes to identify the type of principle (user or group) are "id:" and "group:", respectively. You can customize this by setting these properties on your policy class:
+
+```python
+class FriendRequestPolicy(permissions.BasePermission):
+    group_prefix = "role:"
+    id_prefix = "staff_id:"
+
+    # .. the rest of you policy definition ..
+```
 
 # Changelog <a id="changelog"></a>
 

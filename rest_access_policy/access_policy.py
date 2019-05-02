@@ -8,7 +8,7 @@ from rest_access_policy import AccessPolicyException
 class AccessPolicy(permissions.BasePermission):
     statements = []
     id = None
-    role_prefix = "role:"
+    group_prefix = "group:"
     id_prefix = "id:"
 
     def has_permission(self, request, view) -> bool:
@@ -23,7 +23,7 @@ class AccessPolicy(permissions.BasePermission):
     def get_policy_statements(self, request, view) -> List[dict]:
         return self.statements
 
-    def get_user_roles(self, user) -> List[str]:
+    def get_user_groups(self, user) -> List[str]:
         return list(user.groups.values_list("name", flat=True))
 
     @classmethod
@@ -67,19 +67,17 @@ class AccessPolicy(permissions.BasePermission):
             if isinstance(statement["action"], str):
                 statement["action"] = [statement["action"]]
 
-            if "custom_context_condition" not in statement:
-                statement["custom_context_condition"] = []
-            elif isinstance(statement["custom_context_condition"], str):
-                statement["custom_context_condition"] = [
-                    statement["custom_context_condition"]
-                ]
+            if "condition" not in statement:
+                statement["condition"] = []
+            elif isinstance(statement["condition"], str):
+                statement["condition"] = [statement["condition"]]
 
         return statements
 
     def _get_statements_matching_principal(
         self, request, statements: List[dict]
     ) -> List[dict]:
-        user_roles = self.get_user_roles(request.user)
+        user_roles = self.get_user_groups(request.user)
         principals = statement["principal"]
         matched = []
 
@@ -88,11 +86,11 @@ class AccessPolicy(permissions.BasePermission):
 
             if "*" in principals:
                 found = True
-            elif self.id_prefix + user.id in principals:
+            elif self.id_prefix + str(user.id) in principals:
                 found = True
             else:
                 for user_role in user_roles:
-                    if self.role_prefix + user_role in principals:
+                    if self.group_prefix + user_role in principals:
                         found = True
                         break
 
@@ -123,16 +121,14 @@ class AccessPolicy(permissions.BasePermission):
         matched = []
 
         for statement in statements:
-            if len(statement["custom_context_condition"]) == 0:
+            if len(statement["condition"]) == 0:
                 matched.append(statement)
                 continue
 
             fails = 0
 
-            for condition in statement["custom_context_condition"]:
-                passed = self._check_custom_context_condition(
-                    condition, request, view, action
-                )
+            for condition in statement["condition"]:
+                passed = self._check_condition(condition, request, view, action)
 
                 if not passed:
                     fails += 1
@@ -143,17 +139,14 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _check_custom_context_condition(
-        self, condition: str, request, view, action: str
-    ):
+    def _check_condition(self, condition: str, request, view, action: str):
         """
             Evaluate a custom context condition; if method does not exist on
             the access policy class, then return False.
         """
         if not hasattr(self, condition):
             raise AccessPolicyException(
-                "custom_context_condition '%s' must be a method on the access policy"
-                % condition
+                "condition '%s' must be a method on the access policy" % condition
             )
 
         method = getattr(self, condition)
@@ -161,7 +154,7 @@ class AccessPolicy(permissions.BasePermission):
 
         if type(x) is not bool:
             raise AccessPolicyException(
-                "custom_context_condition must return true/false, not %s" % type(x)
+                "condition must return true/false, not %s" % type(x)
             )
 
         return result
