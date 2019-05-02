@@ -35,6 +35,7 @@ class ArticleAccessPolicy(AccessPolicy):
   * [Statement Elements](#statement-elements)
   * [Policy Evaluation Logic](#policy-evaluation-logic)
   * [Multitenancy Data / Restricting QuerySets](#multitenancy-data--restricting-querysets)
+  * [Attaching to ViewSets and Function-Based Views](#multitenancy-data--restricting-querysets)
   * [Loading Statements from External Source](#loading-statements-from-external-source)
   * [Customizing User Group/Role Values](#customizing-user-grouprole-values)
   * [Customizing Principal Prefixes](#customizing-principal-prefixes)
@@ -223,9 +224,26 @@ You can define a class method on your policy class that takes a QuerySet and the
             return qs.filter(org__id__in=user_orgs)
 ```
 
-## Advanced Usage
+## Attaching to ViewSets and Function-Based Views
 
-### Loading Statements from External Source
+You attach access policies the same way you do with regular DRF permissions.
+
+For ViewSets, add it to `permissions` property:
+```python
+class ArticleViewSet(ModelViewSet):
+    permissions = (ArticleAccessPolicy, )
+```
+
+For function-based views, add it to `permissions_classes` decorator:
+```python
+@api_view(["GET"])
+@permission_classes((ArticleAccessPolicy,))
+def create_article(request):
+    ## you logic here...
+    pass
+```
+
+## Loading Statements from External Source
 
 If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step to take because you can then change access rules without redeploying code. 
 
@@ -246,7 +264,7 @@ Example:
 
 You probably want to only define this method once on your own custom subclass of `AccessPolicy`, from which all your other access policies inherit.
 
-### Customizing User Group/Role Values
+## Customizing User Group/Role Values
 
 If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called `get_user_groups` on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".
 
@@ -257,7 +275,7 @@ If you aren't using Django's built-in auth app, you may need to define a custom 
         def get_user_groups(self, user) -> List[str]:
             return list(user.roles.values_list("title", flat=True))
 ```
-### Customizing Principal Prefixes
+## Customizing Principal Prefixes
 
 By default, the prefixes to identify the type of principle (user or group) are "id:" and "group:", respectively. You can customize this by setting these properties on your policy class:
 
