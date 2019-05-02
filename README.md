@@ -44,10 +44,20 @@ class ArticleAccessPolicy(AccessPolicy):
 - [Testing](#testing)
 - [License](#license)
 
-# Installation
+# Setup
 
 ```
 pip install drf-access-policy
+```
+
+To define a policym import `AccessPolicy` and subclass it:
+
+```python
+from rest_access_policy import AccessPolicy
+
+
+class ShoppingCardAccessPolicy(AccessPolicy):
+    statements = [] # Now read on...
 ```
 
 # Example #1: An "Article" ViewSet
@@ -61,9 +71,6 @@ Here are two more key points to remember going forward:
 Now let's look at the policy below an articles endpoint, provided through a view set.
 
 ```python
-from rest_access_policy import AccessPolicy
-
-
 class ArticleAccessPolicy(AccessPolicy):
     statements = [
         {
@@ -150,9 +157,6 @@ Additionally, we have some logic in the `scope_queryset` method for filtering wh
 You can also you policies with function-based views. The action to reference in your policy statements is the name of the function. You can also bundle multiple functions into the same policy as the example below shows.
 
 ```python
-from rest_access_policy import AccessPolicy
-
-
 class AuditLogsAccessPolicy(AccessPolicy):
     statements = [
         {
@@ -280,13 +284,12 @@ Just define a method on your policy class called `get_policy_statements`, which 
 Example:
 
 ```python
+class UserAccessPolicy(AccessPolicy):
+    id = 'user-policy'
 
-    class UserAccessPolicy(AccessPolicy):
-        id = 'user-policy'
-
-        def get_policy_statements(self, request, view) -> List[dict]:
-            statements = data_api.load_json(self.id)
-            return json.loads(statements)
+    def get_policy_statements(self, request, view) -> List[dict]:
+        statements = data_api.load_json(self.id)
+        return json.loads(statements)
 ```
 
 You probably want to only define this method once on your own custom subclass of `AccessPolicy`, from which all your other access policies inherit.
@@ -296,11 +299,11 @@ You probably want to only define this method once on your own custom subclass of
 If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called `get_user_groups` on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".
 
 ```python
-    class UserAccessPolicy(AccessPolicy):
-        # ... other properties and methods ...
+class UserAccessPolicy(AccessPolicy):
+    # ... other properties and methods ...
 
-        def get_user_groups(self, user) -> List[str]:
-            return list(user.roles.values_list("title", flat=True))
+    def get_user_groups(self, user) -> List[str]:
+        return list(user.roles.values_list("title", flat=True))
 ```
 ## Customizing Principal Prefixes
 
