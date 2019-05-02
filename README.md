@@ -26,6 +26,8 @@ class ArticleAccessPolicy(AccessPolicy):
     ]
 ```
 
+This project has complete test coverage and the base `AccessPolicy` class is only ~150 lines of code. There's no magic here. You can probably understand how it works by reading the source code for 15 minutes.
+
 # Table of Contents:
 
 - [Installation](#installation)
@@ -50,7 +52,7 @@ class ArticleAccessPolicy(AccessPolicy):
 pip install drf-access-policy
 ```
 
-To define a policym import `AccessPolicy` and subclass it:
+To define a policy, import `AccessPolicy` and subclass it:
 
 ```python
 from rest_access_policy import AccessPolicy
