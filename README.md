@@ -3,9 +3,6 @@
 [![Package version](https://badge.fury.io/py/drf-access-policy.svg)](https://pypi.python.org/pypi/drf-access-policy)
 [![Python versions](https://img.shields.io/pypi/status/drf-access-policy.svg)](https://img.shields.io/pypi/status/drf-access-policy.svg/)
 
-
-# About
-
 This project brings a declaritive, organized approach to managing access control in Django REST Framework projects. Each ViewSet or function-based view can be assigned an explicit policy for the exposed resource(s). No more digging through views or seralizers to understand access logic -- it's all in one place in a format that less technical stakeholders can understand. If you're familiar with other declaritive access models, such as AWS' IAM, the syntax will be familiar. 
 
 In short, you can start expressing your access rules like this:
@@ -58,7 +55,7 @@ To define a policy, import `AccessPolicy` and subclass it:
 from rest_access_policy import AccessPolicy
 
 
-class ShoppingCardAccessPolicy(AccessPolicy):
+class ShoppingCartAccessPolicy(AccessPolicy):
     statements = [] # Now read on...
 ```
 
@@ -186,8 +183,6 @@ def search_logs(request):
 def download_logs(request):
     ## you logic here...
     pass
-
-
 ```
 
 # Documentation 
@@ -231,7 +226,6 @@ class AccountAccessPolicy(AccessPolicy):
     def is_account_owner(self, request, view, action) -> bool:
         account = view.get_object()
         return account.owner == request.user
-
 ```
 ## Multitenancy Data / Restricting QuerySets
 
