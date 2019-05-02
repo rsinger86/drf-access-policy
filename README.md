@@ -34,7 +34,8 @@ class ArticleAccessPolicy(AccessPolicy):
 - [Documentation](#documentation)
   * [Statement Elements](#statement-elements)
   * [Policy Evaluation Logic](#policy-evaluation-logic)
-  * [Multitenancy Data / Restricting QuerySets](#multitenancy-data--restricting-querysets)
+  * [Object-Level Permissions/Conditions](#object-level-perm)
+  * [Multitenancy Data/Restricting QuerySets](#multitenancy-data--restricting-querysets)
   * [Attaching to ViewSets and Function-Based Views](#attaching-to-viewsets-and-function-based-views)
   * [Loading Statements from External Source](#loading-statements-from-external-source)
   * [Customizing User Group/Role Values](#customizing-user-grouprole-values)
@@ -200,6 +201,32 @@ To determine whether access to a request is granted, all applicable statements a
 
 The request is allowed if any of the statements have an effect of "allow", and none have an effect of "deny". By default, all requests are denied.
 
+## Object-Level Permissions/Conditions <a id="object-level-perm"> </a>
+
+You may be wondering, but what object-level permissions? Not to worry - you can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can easily get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and easy to test.
+
+```python
+class AccountAccessPolicy(AccessPolicy):
+    statements = [
+        ## ... other statements ...
+        {
+            "action": ["withdraw"],
+            "principal": ["*"],
+            "effect": "allow",
+            "condition": ["balance_is_positive", "is_account_owner"]     
+        }
+        ## ... other statements ...
+    ]
+
+    def balance_is_positive(self, request, view, action) -> bool:
+        account = view.get_object()
+        return account.balance > 0
+
+    def is_account_owner(self, request, view, action) -> bool:
+        account = view.get_object()
+        return account.owner == request.user
+
+```
 ## Multitenancy Data / Restricting QuerySets
 
 You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.
