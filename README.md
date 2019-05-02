@@ -35,7 +35,7 @@ class ArticleAccessPolicy(AccessPolicy):
   * [Statement Elements](#statement-elements)
   * [Policy Evaluation Logic](#policy-evaluation-logic)
   * [Multitenancy Data / Restricting QuerySets](#multitenancy-data--restricting-querysets)
-  * [Attaching to ViewSets and Function-Based Views](#multitenancy-data--restricting-querysets)
+  * [Attaching to ViewSets and Function-Based Views](#attaching-to-viewsets-and-function-based-views)
   * [Loading Statements from External Source](#loading-statements-from-external-source)
   * [Customizing User Group/Role Values](#customizing-user-grouprole-values)
   * [Customizing Principal Prefixes](#customizing-principal-prefixes)
