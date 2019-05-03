@@ -77,11 +77,12 @@ class AccessPolicy(permissions.BasePermission):
     def _get_statements_matching_principal(
         self, request, statements: List[dict]
     ) -> List[dict]:
-        user_roles = self.get_user_groups(request.user)
-        principals = statement["principal"]
+        user = request.user
+        user_roles = self.get_user_groups(user)
         matched = []
 
         for statement in statements:
+            principals = statement["principal"]
             found = False
 
             if "*" in principals:
