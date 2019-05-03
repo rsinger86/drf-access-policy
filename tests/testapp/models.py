@@ -6,10 +6,6 @@ from django.db import models
 from django.utils.functional import cached_property
 
 
-class CannotDeleteActiveTrial(Exception):
-    pass
-
-
 class UserAccount(models.Model):
     username = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
