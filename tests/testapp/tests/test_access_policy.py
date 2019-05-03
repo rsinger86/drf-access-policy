@@ -98,4 +98,22 @@ class AccessPolicyTests(TestCase):
         self.assertEqual(result[2]["action"], ["*"])
 
     def test_get_statements_matching_action(self):
-        pass
+        cooks = Group.objects.create(name="cooks")
+        user = User.objects.create(id=5)
+        user.groups.add(cooks)
+
+        statements = [
+            {"principal": ["id:5"], "action": ["create"]},
+            {"principal": ["group:dev"], "action": ["delete"]},
+            {"principal": ["group:cooks"], "action": ["do_something"]},
+            {"principal": ["*"], "action": ["*"]},
+            {"principal": ["id:79"], "action": ["vote"]},
+        ]
+
+        policy = AccessPolicy()
+
+        result = policy._get_statements_matching_action("delete", statements)
+
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0]["action"], ["delete"])
+        self.assertEqual(result[1]["action"], ["*"])

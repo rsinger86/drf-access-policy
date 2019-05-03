@@ -1,7 +1,6 @@
 from typing import List
 
 from rest_framework import permissions
-from rest_framework.exceptions import PermissionDenied
 from rest_access_policy import AccessPolicyException
 
 
@@ -100,7 +99,7 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _get_statements_matching_action(self, action: str, statements: List):
+    def _get_statements_matching_action(self, action: str, statements: List[dict]):
         """
             Filter statements and return only those that match the specified
             action.
