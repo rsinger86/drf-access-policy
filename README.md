@@ -23,13 +23,13 @@ class ArticleAccessPolicy(AccessPolicy):
     ]
 ```
 
-This project has complete test coverage and the base `AccessPolicy` class is only ~150 lines of code. There's no magic here. You can probably understand how it works by reading the source code for 15 minutes.
+This project has complete test coverage and the base `AccessPolicy` class is only ~150 lines of code: there's no magic here.
 
 # Table of Contents:
 
 - [Installation](#installation)
-- [Example #1: Policy for ViewSet](#example-1-an-article-viewset)
-- [Example #2: Policy for Function-Based View](#example-2-function-based-views)
+- [Example #1: Policy for ViewSet](#example-1-policy-for-viewset)
+- [Example #2: Policy for Function-Based View](#example-2-policy-for-function-based-view)
 - [Documentation](#documentation)
   * [Statement Elements](#statement-elements)
   * [Policy Evaluation Logic](#policy-evaluation-logic)
@@ -315,7 +315,8 @@ class FriendRequestPolicy(permissions.BasePermission):
 
 # Changelog <a id="changelog"></a>
 
-TODO
+## 0.1.0 (May 2019)
+* Initial release
 
 # Testing
 
