@@ -1,6 +1,6 @@
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
-from django.contrib.auth.models import User, Group
-from rest_access_policy import AccessPolicy
+from rest_access_policy import AccessPolicy, AccessPolicyException
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
 
@@ -37,7 +37,7 @@ class AccessPolicyTests(TestCase):
         result = policy._get_invoked_action(view_instance)
         self.assertEqual(result, "create")
 
-    def test_get_user_groups(self):
+    def test_get_user_group_values(self):
         group1 = Group.objects.create(name="admin")
         group2 = Group.objects.create(name="ceo")
         user = User.objects.create(username="mr user")
@@ -45,7 +45,7 @@ class AccessPolicyTests(TestCase):
         user.groups.add(group1, group2)
 
         policy = AccessPolicy()
-        result = sorted(policy.get_user_groups(user))
+        result = sorted(policy.get_user_group_values(user))
 
         self.assertEqual(result, ["admin", "ceo"])
 
@@ -117,3 +117,72 @@ class AccessPolicyTests(TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["action"], ["delete"])
         self.assertEqual(result[1]["action"], ["*"])
+
+    def test_get_statements_matching_context_conditions(self):
+        class TestPolicy(AccessPolicy):
+            def is_sunny(self, request, view, action):
+                return True
+
+            def is_cloudy(self, request, view, action):
+                return False
+
+        statements = [
+            {"principal": ["id:1"], "action": ["create"], "condition": []},
+            {"principal": ["id:2"], "action": ["create"], "condition": ["is_sunny"]},
+            {"principal": ["id:3"], "action": ["create"], "condition": ["is_cloudy"]},
+        ]
+
+        policy = TestPolicy()
+
+        result = policy._get_statements_matching_context_conditions(
+            None, None, None, statements
+        )
+
+        self.assertEqual(
+            result,
+            [
+                {"principal": ["id:1"], "action": ["create"], "condition": []},
+                {
+                    "principal": ["id:2"],
+                    "action": ["create"],
+                    "condition": ["is_sunny"],
+                },
+            ],
+        )
+
+    def test_check_condition_throws_error_if_no_method(self):
+        class TestPolicy(AccessPolicy):
+            pass
+
+        policy = TestPolicy()
+
+        with self.assertRaises(AccessPolicyException) as context:
+            policy._check_condition("is_sunny", None, None, "action")
+
+        self.assertTrue(
+            "condition 'is_sunny' must be a method on the access policy"
+            in str(context.exception)
+        )
+
+    def test_check_condition_throws_error_if_returns_non_boolean(self):
+        class TestPolicy(AccessPolicy):
+            def is_sunny(self, request, view, action):
+                return "yup"
+
+        policy = TestPolicy()
+
+        with self.assertRaises(AccessPolicyException) as context:
+            policy._check_condition("is_sunny", None, None, "action")
+
+        self.assertTrue(
+            "condition 'is_sunny' must return true/false, not" in str(context.exception)
+        )
+
+    def test_check_condition_is_called(self):
+        class TestPolicy(AccessPolicy):
+            def is_sunny(self, request, view, action):
+                return True
+
+        policy = TestPolicy()
+
+        self.assertTrue(policy._check_condition("is_sunny", None, None, "action"))

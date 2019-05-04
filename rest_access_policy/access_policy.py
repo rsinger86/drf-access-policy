@@ -22,7 +22,7 @@ class AccessPolicy(permissions.BasePermission):
     def get_policy_statements(self, request, view) -> List[dict]:
         return self.statements
 
-    def get_user_groups(self, user) -> List[str]:
+    def get_user_group_values(self, user) -> List[str]:
         return list(user.groups.values_list("name", flat=True))
 
     @classmethod
@@ -77,7 +77,7 @@ class AccessPolicy(permissions.BasePermission):
         self, request, statements: List[dict]
     ) -> List[dict]:
         user = request.user
-        user_roles = self.get_user_groups(user)
+        user_roles = self.get_user_group_values(user)
         matched = []
 
         for statement in statements:
@@ -111,7 +111,7 @@ class AccessPolicy(permissions.BasePermission):
         ]
 
     def _get_statements_matching_context_conditions(
-        self, request, view, action: str, statements: List
+        self, request, view, action: str, statements: List[dict]
     ):
         """
             Filter statements and only return those that match all of their
@@ -152,9 +152,10 @@ class AccessPolicy(permissions.BasePermission):
         method = getattr(self, condition)
         result = method(request, view, action)
 
-        if type(x) is not bool:
+        if type(result) is not bool:
             raise AccessPolicyException(
-                "condition must return true/false, not %s" % type(x)
+                "condition '%s' must return true/false, not %s"
+                % (condition, type(result))
             )
 
         return result

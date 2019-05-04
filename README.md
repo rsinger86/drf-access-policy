@@ -28,8 +28,8 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 # Table of Contents:
 
 - [Installation](#installation)
-- [Example #1: An "Article" ViewSet](#example-1-an-article-viewset)
-- [Example #2: Function-Based Views](#example-2-function-based-views)
+- [Example #1: Policy for ViewSet](#example-1-an-article-viewset)
+- [Example #2: Policy for Function-Based View](#example-2-function-based-views)
 - [Documentation](#documentation)
   * [Statement Elements](#statement-elements)
   * [Policy Evaluation Logic](#policy-evaluation-logic)
@@ -59,7 +59,7 @@ class ShoppingCartAccessPolicy(AccessPolicy):
     statements = [] # Now read on...
 ```
 
-# Example #1: An "Article" ViewSet
+# Example #1: Policy for ViewSet
 
 In a nutshell, a policy is comprised of "statements" that declare what "actions" a "principal" can or cannot perform on the resource, with optional custom checks that can examine any detail of the current request.
 
@@ -151,7 +151,7 @@ In the example above, the following rules are put in place:
 
 Additionally, we have some logic in the `scope_queryset` method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.
 
-# Example #2: Function-Based Views
+# Example #2: Policy for Function-Based View
 
 You can also you policies with function-based views. The action to reference in your policy statements is the name of the function. You can also bundle multiple functions into the same policy as the example below shows.
 
@@ -292,13 +292,13 @@ You probably want to only define this method once on your own custom subclass of
 
 ## Customizing User Group/Role Values
 
-If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called `get_user_groups` on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".
+If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called `get_user_group_values` on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".
 
 ```python
 class UserAccessPolicy(AccessPolicy):
     # ... other properties and methods ...
 
-    def get_user_groups(self, user) -> List[str]:
+    def get_user_group_values(self, user) -> List[str]:
         return list(user.roles.values_list("title", flat=True))
 ```
 ## Customizing Principal Prefixes
