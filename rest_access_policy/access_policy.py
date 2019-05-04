@@ -13,7 +13,6 @@ class AccessPolicy(permissions.BasePermission):
     def has_permission(self, request, view) -> bool:
         action = self._get_invoked_action(view)
         statements = self.get_policy_statements(request, view)
-
         if len(statements) == 0:
             return False
 

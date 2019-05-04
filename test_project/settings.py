@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    "tests.testapp",
+    "test_project.testapp",
 ]
 
 # Django 1.8 requires that abstract model app is in INSTALLED_APPS
@@ -57,7 +57,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "tests.urls"
+ROOT_URLCONF = "test_project.urls"
 
 TEMPLATES = [
     {

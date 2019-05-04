@@ -259,4 +259,3 @@ class AccessPolicyTests(TestCase):
                 view,
                 "create",
             )
-

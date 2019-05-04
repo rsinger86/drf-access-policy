@@ -115,7 +115,7 @@ class ArticleAccessPolicy(AccessPolicy):
 class ArticleViewSet(ModelViewSet):
     # Just stick the policy here, as you would do with
     # regular DRF "permissions"
-    permissions = (ArticleAccessPolicy, )
+    permission_classes = (ArticleAccessPolicy, )
 
     # Helper property here to make get_queryset logic
     # more explicit
@@ -258,7 +258,7 @@ You attach access policies the same way you do with regular DRF permissions.
 For ViewSets, add it to `permissions` property:
 ```python
 class ArticleViewSet(ModelViewSet):
-    permissions = (ArticleAccessPolicy, )
+    permission_classes = (ArticleAccessPolicy, )
 ```
 
 For function-based views, add it to `permissions_classes` decorator:
