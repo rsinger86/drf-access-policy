@@ -1,3 +1,5 @@
+import unittest.mock as mock
+
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from rest_access_policy import AccessPolicy, AccessPolicyException
@@ -8,6 +10,11 @@ from rest_framework.viewsets import ModelViewSet
 class FakeRequest(object):
     def __init__(self, user: User):
         self.user = user
+
+
+class FakeViewSet(object):
+    def __init__(self, action: str = "create"):
+        self.action = action
 
 
 class AccessPolicyTests(TestCase):
@@ -186,3 +193,70 @@ class AccessPolicyTests(TestCase):
         policy = TestPolicy()
 
         self.assertTrue(policy._check_condition("is_sunny", None, None, "action"))
+
+    def test_evaluate_statements_false_if_no_statements(self,):
+        class TestPolicy(AccessPolicy):
+            def is_sunny(self, request, view, action):
+                return True
+
+        policy = TestPolicy()
+        user = User.objects.create(username="mr user")
+
+        result = policy._evaluate_statements([], FakeRequest(user), None, "create")
+        self.assertFalse(result)
+
+    def test_evaluate_statements_false_any_deny(self,):
+        policy = AccessPolicy()
+        user = User.objects.create(username="mr user")
+
+        statements = [
+            {"principal": "*", "action": "*", "effect": "deny"},
+            {"principal": "*", "action": "*", "effect": "allow"},
+        ]
+
+        result = policy._evaluate_statements([], FakeRequest(user), None, "create")
+        self.assertFalse(result)
+
+    def test_evaluate_statements_true_if_any_allow_and_none_deny(self,):
+        policy = AccessPolicy()
+        user = User.objects.create(username="mr user")
+
+        statements = [
+            {"principal": "*", "action": "create", "effect": "allow"},
+            {"principal": "*", "action": "take_out_the_trash", "effect": "allow"},
+        ]
+
+        result = policy._evaluate_statements(
+            statements, FakeRequest(user), None, "create"
+        )
+        self.assertTrue(result)
+
+    def test_has_permission(self):
+        class TestPolicy(AccessPolicy):
+            statements = [{"principal": "*", "action": "create", "effect": "allow"}]
+
+            def is_sunny(self, request, view, action):
+                return True
+
+        policy = TestPolicy()
+        view = FakeViewSet(action="create")
+        request = FakeRequest(user=User.objects.create(username="fred"))
+
+        with mock.patch.object(
+            policy, "_evaluate_statements", wraps=policy._evaluate_statements
+        ) as monkey:
+            policy.has_permission(request, view)
+            monkey.assert_called_with(
+                [
+                    {
+                        "principal": ["*"],
+                        "action": ["create"],
+                        "effect": "allow",
+                        "condition": [],
+                    }
+                ],
+                request,
+                view,
+                "create",
+            )
+
