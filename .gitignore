@@ -1,2 +1,4 @@
 *.pyc 
-
+dist/
+MANIFEST
+README.txt

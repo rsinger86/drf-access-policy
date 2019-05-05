@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from rest_framework import permissions
 from rest_access_policy import AccessPolicyException
@@ -67,7 +67,7 @@ class AccessPolicy(permissions.BasePermission):
 
             if "condition" not in statement:
                 statement["condition"] = []
-            elif isinstance(statement["condition"], str):
+            elif not isinstance(statement["condition"], list):
                 statement["condition"] = [statement["condition"]]
 
         return statements
@@ -138,11 +138,14 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _check_condition(self, condition: str, request, view, action: str):
+    def _check_condition(self, condition: Union[str, dict], request, view, action: str):
         """
             Evaluate a custom context condition; if method does not exist on
             the access policy class, then return False.
         """
+        if isinstance(condition, dict):
+            return self._check_builtin_condition(condition, request, view, action)
+
         if not hasattr(self, condition):
             raise AccessPolicyException(
                 "condition '%s' must be a method on the access policy" % condition
@@ -158,3 +161,17 @@ class AccessPolicy(permissions.BasePermission):
             )
 
         return result
+
+    def _check_builtin_condition(condition: dict, request, view, action: str) -> bool:
+        if condition.get("user_is"):
+            return self._check_is_user_condition(
+                condition["user_is"], request.user, view.get_object()
+            )
+
+        return False
+
+    def _check_is_user_condition(self, field: str, user, obj) -> bool:
+        if not hasattr(user, field) or not hasattr(obj, field):
+            return False
+
+        return getattr(user, field) == getattr(obj, field)
