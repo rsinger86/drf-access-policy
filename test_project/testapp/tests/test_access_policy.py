@@ -2,6 +2,8 @@ import unittest.mock as mock
 
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
+from rest_framework.permissions import BasePermission
+
 from rest_access_policy import AccessPolicy, AccessPolicyException
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
@@ -193,6 +195,20 @@ class AccessPolicyTests(TestCase):
         policy = TestPolicy()
 
         self.assertTrue(policy._check_condition("is_sunny", None, None, "action"))
+
+    def test_check_base_permission_condition(self):
+        check_var = [False]
+
+        class TestPermission(BasePermission):
+            def has_permission(self, request, view):
+                check_var[0] = True
+                return True
+
+        policy = AccessPolicy()
+        self.assertTrue(policy._check_condition(TestPermission, None, None, "action"))
+        self.assertTrue(check_var[0])
+        self.assertTrue(policy._check_condition(TestPermission(), None, None, "action"))
+
 
     def test_evaluate_statements_false_if_no_statements(self,):
         class TestPolicy(AccessPolicy):

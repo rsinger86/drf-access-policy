@@ -1,4 +1,5 @@
-from typing import List
+from inspect import isclass
+from typing import List, Type, Union
 
 from rest_framework import permissions
 from rest_access_policy import AccessPolicyException
@@ -57,7 +58,9 @@ class AccessPolicy(permissions.BasePermission):
 
         return True
 
-    def _normalize_statements(self, statements=[]) -> List[dict]:
+    def _normalize_statements(self, statements=None) -> List[dict]:
+        if statements is None:
+            statements = []
         for statement in statements:
             if isinstance(statement["principal"], str):
                 statement["principal"] = [statement["principal"]]
@@ -67,7 +70,7 @@ class AccessPolicy(permissions.BasePermission):
 
             if "condition" not in statement:
                 statement["condition"] = []
-            elif isinstance(statement["condition"], str):
+            elif not isinstance(statement["condition"], list) and not isinstance(statement["condition"], tuple):
                 statement["condition"] = [statement["condition"]]
 
         return statements
@@ -138,23 +141,27 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _check_condition(self, condition: str, request, view, action: str):
+    def _check_condition(self, condition: Union[str, Type[permissions.BasePermission], permissions.BasePermission],
+                         request, view, action: str):
         """
             Evaluate a custom context condition; if method does not exist on
             the access policy class, then return False.
         """
-        if not hasattr(self, condition):
+        if isclass(condition) and issubclass(condition, permissions.BasePermission):
+            method = condition().has_permission
+            result = method(request, view)
+        elif isinstance(condition, permissions.BasePermission):
+            method = condition.has_permission
+            result = method(request, view)
+        elif hasattr(self, condition):
+            method = getattr(self, condition)
+            result = method(request, view, action)
+        else:
             raise AccessPolicyException(
                 "condition '%s' must be a method on the access policy" % condition
             )
 
-        method = getattr(self, condition)
-        result = method(request, view, action)
-
         if type(result) is not bool:
-            raise AccessPolicyException(
-                "condition '%s' must return true/false, not %s"
-                % (condition, type(result))
-            )
+            raise AccessPolicyException(f"condition '{condition}' must return true/false, not {type(result)}")
 
         return result
