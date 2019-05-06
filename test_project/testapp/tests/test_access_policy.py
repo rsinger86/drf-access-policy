@@ -86,7 +86,7 @@ class AccessPolicyTests(TestCase):
             ],
         )
 
-    def test_get_statements_matching_principal(self):
+    def test_get_statements_matching_principalif_user_is_authenticated(self):
         cooks = Group.objects.create(name="cooks")
         user = User.objects.create(id=5)
         user.groups.add(cooks)
@@ -97,6 +97,8 @@ class AccessPolicyTests(TestCase):
             {"principal": ["group:cooks"], "action": ["do_something"]},
             {"principal": ["*"], "action": ["*"]},
             {"principal": ["id:79"], "action": ["vote"]},
+            {"principal": ["anonymous"], "action": ["anonymous_action"]},
+            {"principal": ["authenticated"], "action": ["authenticated_action"]},
         ]
 
         policy = AccessPolicy()
@@ -105,10 +107,11 @@ class AccessPolicyTests(TestCase):
             FakeRequest(user), statements
         )
 
-        self.assertEqual(len(result), 3)
+        self.assertEqual(len(result), 4)
         self.assertEqual(result[0]["action"], ["create"])
         self.assertEqual(result[1]["action"], ["do_something"])
         self.assertEqual(result[2]["action"], ["*"])
+        self.assertEqual(result[3]["action"], ["authenticated_action"])
 
     def test_get_statements_matching_principal_if_user_is_anonymous(self):
         user = AnonymousUser()
@@ -116,6 +119,8 @@ class AccessPolicyTests(TestCase):
         statements = [
             {"principal": ["id:5"], "action": ["create"]},
             {"principal": ["*"], "action": ["list"]},
+            {"principal": ["authenticated"], "action": ["authenticated_action"]},
+            {"principal": ["anonymous"], "action": ["anonymous_action"]},
         ]
 
         policy = AccessPolicy()
@@ -124,8 +129,9 @@ class AccessPolicyTests(TestCase):
             FakeRequest(user), statements
         )
 
-        self.assertEqual(len(result), 1)
+        self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["action"], ["list"])
+        self.assertEqual(result[1]["action"], ["anonymous_action"])
 
     def test_get_statements_matching_action(self):
         cooks = Group.objects.create(name="cooks")
