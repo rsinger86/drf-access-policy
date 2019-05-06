@@ -2,11 +2,16 @@ import unittest.mock as mock
 
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
+from rest_framework.decorators import api_view
 from rest_framework.permissions import BasePermission
+from rest_framework.viewsets import ModelViewSet
 
 from rest_access_policy import AccessPolicy, AccessPolicyException
-from rest_framework.decorators import api_view
-from rest_framework.viewsets import ModelViewSet
+
+
+class TestPermission(BasePermission):
+    def has_permission(self, request, view):
+        return True
 
 
 class FakeRequest(object):
@@ -197,20 +202,12 @@ class AccessPolicyTests(TestCase):
         self.assertTrue(policy._check_condition("is_sunny", None, None, "action"))
 
     def test_check_base_permission_condition(self):
-        check_var = [False]
-
-        class TestPermission(BasePermission):
-            def has_permission(self, request, view):
-                check_var[0] = True
-                return True
-
         policy = AccessPolicy()
-        self.assertTrue(policy._check_condition(TestPermission, None, None, "action"))
-        self.assertTrue(check_var[0])
-        self.assertTrue(policy._check_condition(TestPermission(), None, None, "action"))
+        self.assertTrue(policy._check_condition("import:testapp.tests.test_access_policy.TestPermission",
+                                                None, None, "action"))
+        self.assertTrue(policy._imports_cache)
 
-
-    def test_evaluate_statements_false_if_no_statements(self,):
+    def test_evaluate_statements_false_if_no_statements(self, ):
         class TestPolicy(AccessPolicy):
             def is_sunny(self, request, view, action):
                 return True
@@ -221,7 +218,7 @@ class AccessPolicyTests(TestCase):
         result = policy._evaluate_statements([], FakeRequest(user), None, "create")
         self.assertFalse(result)
 
-    def test_evaluate_statements_false_any_deny(self,):
+    def test_evaluate_statements_false_any_deny(self, ):
         policy = AccessPolicy()
         user = User.objects.create(username="mr user")
 
@@ -233,7 +230,7 @@ class AccessPolicyTests(TestCase):
         result = policy._evaluate_statements([], FakeRequest(user), None, "create")
         self.assertFalse(result)
 
-    def test_evaluate_statements_true_if_any_allow_and_none_deny(self,):
+    def test_evaluate_statements_true_if_any_allow_and_none_deny(self, ):
         policy = AccessPolicy()
         user = User.objects.create(username="mr user")
 
@@ -259,7 +256,7 @@ class AccessPolicyTests(TestCase):
         request = FakeRequest(user=User.objects.create(username="fred"))
 
         with mock.patch.object(
-            policy, "_evaluate_statements", wraps=policy._evaluate_statements
+                policy, "_evaluate_statements", wraps=policy._evaluate_statements
         ) as monkey:
             policy.has_permission(request, view)
             monkey.assert_called_with(

@@ -1,5 +1,5 @@
-from inspect import isclass
-from typing import List, Type, Union
+import importlib
+from typing import List
 
 from rest_framework import permissions
 from rest_access_policy import AccessPolicyException
@@ -10,6 +10,8 @@ class AccessPolicy(permissions.BasePermission):
     id = None
     group_prefix = "group:"
     id_prefix = "id:"
+    import_condition_prefix = "import:"
+    _imports_cache = {}
 
     def has_permission(self, request, view) -> bool:
         action = self._get_invoked_action(view)
@@ -141,21 +143,24 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _check_condition(self, condition: Union[str, Type[permissions.BasePermission], permissions.BasePermission],
+    def _check_condition(self, condition: str,
                          request, view, action: str):
         """
             Evaluate a custom context condition; if method does not exist on
             the access policy class, then return False.
         """
-        if isclass(condition) and issubclass(condition, permissions.BasePermission):
-            method = condition().has_permission
-            result = method(request, view)
-        elif isinstance(condition, permissions.BasePermission):
-            method = condition.has_permission
-            result = method(request, view)
-        elif hasattr(self, condition):
+        if hasattr(self, condition):
             method = getattr(self, condition)
             result = method(request, view, action)
+        elif condition in self._imports_cache or condition.startswith(self.import_condition_prefix):
+            cls = self._imports_cache.get(condition, None)
+            if cls is None:
+                package_name, cls_name = condition[len(self.import_condition_prefix):].rsplit('.', maxsplit=1)
+                package = importlib.import_module(package_name)
+                cls = getattr(package, cls_name)
+                self._imports_cache[condition] = cls
+            method = cls().has_permission
+            result = method(request, view)
         else:
             raise AccessPolicyException(
                 "condition '%s' must be a method on the access policy" % condition
