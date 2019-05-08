@@ -85,6 +85,10 @@ class AccessPolicy(permissions.BasePermission):
 
             if "*" in principals:
                 found = True
+            elif "authenticated" in principals:
+                found = not user.is_anonymous
+            elif "anonymous" in principals:
+                found = user.is_anonymous
             elif self.id_prefix + str(user.id) in principals:
                 found = True
             else:
