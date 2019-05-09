@@ -8,8 +8,9 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class FakeRequest(object):
-    def __init__(self, user: User):
+    def __init__(self, user: User, method: str = "GET"):
         self.user = user
+        self.method = method
 
 
 class FakeViewSet(object):
@@ -133,7 +134,7 @@ class AccessPolicyTests(TestCase):
         self.assertEqual(result[0]["action"], ["list"])
         self.assertEqual(result[1]["action"], ["anonymous_action"])
 
-    def test_get_statements_matching_action(self):
+    def test_get_statements_matching_action_when_method_unsafe(self):
         cooks = Group.objects.create(name="cooks")
         user = User.objects.create(id=5)
         user.groups.add(cooks)
@@ -144,15 +145,41 @@ class AccessPolicyTests(TestCase):
             {"principal": ["group:cooks"], "action": ["do_something"]},
             {"principal": ["*"], "action": ["*"]},
             {"principal": ["id:79"], "action": ["vote"]},
+            {"principal": ["id:900"], "action": ["<safe_methods>"]},
         ]
 
         policy = AccessPolicy()
 
-        result = policy._get_statements_matching_action("delete", statements)
+        result = policy._get_statements_matching_action(
+            FakeRequest(user, method="POST"), "delete", statements
+        )
 
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["action"], ["delete"])
         self.assertEqual(result[1]["action"], ["*"])
+
+    def test_get_statements_matching_action_when_method_safe(self):
+        cooks = Group.objects.create(name="cooks")
+        user = User.objects.create(id=5)
+        user.groups.add(cooks)
+
+        statements = [
+            {"principal": ["*"], "action": ["list"]},
+            {"principal": ["id:5"], "action": ["*"]},
+            {"principal": ["group:cooks"], "action": ["<safe_methods>"]},
+            {"principal": ["group:devs"], "action": ["delete"]},
+        ]
+
+        policy = AccessPolicy()
+
+        result = policy._get_statements_matching_action(
+            FakeRequest(user, method="GET"), "list", statements
+        )
+
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0]["principal"], ["*"])
+        self.assertEqual(result[1]["principal"], ["id:5"])
+        self.assertEqual(result[2]["principal"], ["group:cooks"])
 
     def test_get_statements_matching_context_conditions(self):
         class TestPolicy(AccessPolicy):

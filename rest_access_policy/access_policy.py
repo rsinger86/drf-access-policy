@@ -44,7 +44,7 @@ class AccessPolicy(permissions.BasePermission):
     ) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
-        matched = self._get_statements_matching_action(action, matched)
+        matched = self._get_statements_matching_action(request, action, matched)
 
         matched = self._get_statements_matching_context_conditions(
             request, view, action, matched
@@ -102,16 +102,26 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _get_statements_matching_action(self, action: str, statements: List[dict]):
+    def _get_statements_matching_action(
+        self, request, action: str, statements: List[dict]
+    ):
         """
             Filter statements and return only those that match the specified
-            action.
+            action. <safe_methods>
         """
-        return [
-            statement
-            for statement in statements
-            if action in statement["action"] or "*" in statement["action"]
-        ]
+        matched = []
+        SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
+
+        for statement in statements:
+            if action in statement["action"] or "*" in statement["action"]:
+                matched.append(statement)
+            elif (
+                "<safe_methods>" in statement["action"]
+                and request.method in SAFE_METHODS
+            ):
+                matched.append(statement)
+
+        return matched
 
     def _get_statements_matching_context_conditions(
         self, request, view, action: str, statements: List[dict]
