@@ -107,7 +107,7 @@ class AccessPolicy(permissions.BasePermission):
     ):
         """
             Filter statements and return only those that match the specified
-            action. <safe_methods>
+            action.
         """
         matched = []
         SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
