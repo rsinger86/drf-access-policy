@@ -32,6 +32,10 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 - [Example #2: Policy for Function-Based View](#example-2-policy-for-function-based-view)
 - [Documentation](#documentation)
   * [Statement Elements](#statement-elements)
+    * [principal](#principal)
+    * [action](#action)
+    * [effect](#effect)
+    * [condition](#condition)
   * [Policy Evaluation Logic](#policy-evaluation-logic)
   * [Object-Level Permissions/Conditions](#object-level-perm)
   * [Multitenancy Data/Restricting QuerySets](#multitenancy-data--restricting-querysets)
@@ -189,12 +193,39 @@ def download_logs(request):
 
 ## Statement Elements
 
-| Name           |  Description                         | Special Values  |    Examples    |
-| -------------- |-------------------------------------:|---:|-----------:|
-| principal     | Identifies the user of the current request by the name of a group they belong to or their user id. Can be formatted as a string or list of strings. | `"*"` (any user) <br> `"authenticated"` (any authenticated user) <br> `"anonymous"` (any non-authenticated user) | `["group:admins", "id:9322"]` <br> `["id:5352"]` <br> `["anonymous"]`   |
-| action     | The action or actions that the statement applies to. Can be formatted as a string or list of strings. The value should match the name of a view set method or the name of the view function. | `"*"` (any action) | `["list", "delete", "create]` <br> `["*"]`    |
-| effect     | Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use `deny` when you'd like to override an `allow` statement that will also be in effect. Should be a string equal to either `deny` or `allow`. | n/a | `"allow"` <br> `"deny"`    |
-| condition     | The name of a method on the policy that returns a boolean. The method signature is `condition(request, view, action: str)`. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of strings, all conditions must evaluate to `True`. | n/a | `"is_manager_for_account"` <br> `"is_author_of_post"` <br> `["balance_is_positive", "account_is_not_frozen"]`   |
+### principal
+|            |                      |
+| --- | ----------- |
+| **Description**          |    Should match the user of the current request by identifying a group they belong to or their user ID.                    |
+| **Special Values**           |    `"*"` (any user) <br> `"authenticated"` (any authenticated user) <br> `"anonymous"` (any non-authenticated user)       |
+| **Type** |    `Union[str, List[str]]`       |
+| **Format** |    Match by group with `"group:<name>"`<br> Match by ID with `"id:<id>"` |
+| **Examples**           |   `["group:admins", "id:9322"]` <br> `["id:5352"]` <br> `["anonymous"]` <br> `"*"`     |
+
+
+### action
+|            |                      |
+| --- | ----------- |
+| **Description**         |   The action or actions that the statement applies to. The value should match the name of a view set method or the name of the view function.                    |
+| **Type** |    `Union[str, List[str]]`       |
+| **Special Values**           |  `"*"` (any action) <br> `"<safe_methods>"` (a read-only HTTP request: HEAD, GET, OPTIONS)      |
+| **Examples**           |  `["list", "delete", "create]` <br> `["*"]` <br> `["<safe_methods>"]`   |
+
+### effect
+|            |                      |
+| --- | ----------- |
+| **Description**         |  Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use `deny` when you'd like to override an `allow` statement that will also be in effect. |
+| **Type** | `str` ("allow" or "deny") | 
+| **Values**           | Either `"allow"` or `"deny"`      |
+
+
+### condition
+|            |                      |
+| --- | ----------- |
+| **Description**       |  The name of a method on the policy that returns a boolean. The method signature is `condition(request, view, action: str)`. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to `True`. |
+| **Type** |    `Union[str, List[str]]`       |
+| **Examples** | `"is_manager_for_account"` <br> `"is_author_of_post"` <br> `["balance_is_positive", "account_is_not_frozen"]`  |
+
 
 ## Policy Evaluation Logic
 
@@ -314,6 +345,9 @@ class FriendRequestPolicy(permissions.BasePermission):
 ```
 
 # Changelog <a id="changelog"></a>
+
+## 0.3.0 (May 2019)
+* Adds special `<safe_methods>` action key that matches when the current request is an HTTP read-only method: HEAD, GET, OPTIONS.
 
 ## 0.2.0 (May 2019)
 * Adds special `authenticated` and `anonymous` principal keys to match any authenticated user and any non-authenticated user, respectively. Thanks @bogdandm for discussion/advice!
