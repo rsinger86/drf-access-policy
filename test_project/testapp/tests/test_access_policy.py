@@ -151,7 +151,7 @@ class AccessPolicyTests(TestCase):
         policy = AccessPolicy()
 
         result = policy._get_statements_matching_action(
-            FakeRequest(user, method="POST"), "delete", statements
+            FakeRequest(user, method="DELETE"), "delete", statements
         )
 
         self.assertEqual(len(result), 2)
