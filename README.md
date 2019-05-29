@@ -222,7 +222,7 @@ def download_logs(request):
 ### condition
 |            |                      |
 | --- | ----------- |
-| **Description**       |  The name of a method on the policy that returns a boolean. The method signature is `condition(request, view, action: str)`. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to `True`. |
+| **Description**       |  The name of a method on the policy that returns a boolean. The method signature is `condition(request, view, action: str, custom_arg: str=None)`. If you want to pass a custom argument to the condition's method, format the value as `<method_name>:<value>`, e.g. `user_is:owner` will call a method named `user_must_be`, passing it the string `"owner"` as the final argument. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to `True`. |
 | **Type** |    `Union[str, List[str]]`       |
 | **Examples** | `"is_manager_for_account"` <br> `"is_author_of_post"` <br> `["balance_is_positive", "account_is_not_frozen"]`  |
 
@@ -235,7 +235,7 @@ The request is allowed if any of the statements have an effect of "allow", and n
 
 ## Object-Level Permissions/Conditions <a id="object-level-perm"> </a>
 
-You may be wondering, but what object-level permissions? Not to worry - you can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can easily get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and easy to test.
+You may be wondering, but what object-level permissions? Not to worry - you can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can conveniently get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable.
 
 ```python
 class AccountAccessPolicy(AccessPolicy):
@@ -245,7 +245,13 @@ class AccountAccessPolicy(AccessPolicy):
             "action": ["withdraw"],
             "principal": ["*"],
             "effect": "allow",
-            "condition": ["balance_is_positive", "is_account_owner"]     
+            "condition": ["balance_is_positive", "user_must_be:owner"]     
+        },
+        {
+            "action": ["upgrade_to_gold_status"],
+            "principal": ["*"],
+            "effect": "allow",
+            "condition": ["user_must_be:advisor"]
         }
         ## ... other statements ...
     ]
@@ -254,10 +260,13 @@ class AccountAccessPolicy(AccessPolicy):
         account = view.get_object()
         return account.balance > 0
 
-    def is_account_owner(self, request, view, action) -> bool:
+    def user_must_be(self, request, view, action, field: str) -> bool:
         account = view.get_object()
-        return account.owner == request.user
+        return getattr(account, field) == request.user
 ```
+
+Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal fo the user of the request.
+
 ## Multitenancy Data / Restricting QuerySets
 
 You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.

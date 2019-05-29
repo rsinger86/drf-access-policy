@@ -156,14 +156,24 @@ class AccessPolicy(permissions.BasePermission):
         """
             Evaluate a custom context condition; if method does not exist on
             the access policy class, then return False.
+            Condition value can contain a value that is passed to method, if
+            formatted as `<method_name>:<arg_value>`.
         """
-        if not hasattr(self, condition):
+        parts = condition.split(":", 1)
+        method_name = parts[0]
+        arg = parts[1] if len(parts) == 2 else None
+
+        if not hasattr(self, method_name):
             raise AccessPolicyException(
-                "condition '%s' must be a method on the access policy" % condition
+                "condition '%s' must be a method on the access policy" % method_name
             )
 
-        method = getattr(self, condition)
-        result = method(request, view, action)
+        method = getattr(self, method_name)
+
+        if arg is not None:
+            result = method(request, view, action, arg)
+        else:
+            result = method(request, view, action)
 
         if type(result) is not bool:
             raise AccessPolicyException(
