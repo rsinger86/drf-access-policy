@@ -215,17 +215,35 @@ def download_logs(request):
 |            |                      |
 | --- | ----------- |
 | **Description**         |  Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use `deny` when you'd like to override an `allow` statement that will also be in effect. |
-| **Type** | `str` ("allow" or "deny") | 
+| **Type** | `str` | 
 | **Values**           | Either `"allow"` or `"deny"`      |
 
 
 ### condition
-|            |                      |
-| --- | ----------- |
-| **Description**       |  The name of a method on the policy that returns a boolean. The method signature is `condition(request, view, action: str, custom_arg: str=None)`. If you want to pass a custom argument to the condition's method, format the value as `<method_name>:<value>`, e.g. `user_is:owner` will call a method named `user_must_be`, passing it the string `"owner"` as the final argument. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to `True`. |
-| **Type** |    `Union[str, List[str]]`       |
-| **Examples** | `"is_manager_for_account"` <br> `"is_author_of_post"` <br> `["balance_is_positive", "account_is_not_frozen"]`  |
 
+<table>
+    <tr>
+    <tr>
+        <td>Description</td>
+        <td>
+        The name of a method on the policy that returns a boolean. The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If you want to pass a custom argument to the condition's method, format the value as <code>{method_name}:{value}</code>, e.g. <code>user_must_be:owner</code> will call a method named <code>user_must_be</code>, passing it the string <code>"owner"</code> as the final argument. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to <code>True</code>.
+        </td>
+    </tr>
+    <tr>
+        <td>Type</td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td>Examples</td>
+        <td>
+            <code>"is_manager_of_account"</code> <br>
+            <code>"is_author_of_post"</code> <br>
+            <code>["balance_is_positive", "account_is_not_frozen"]`</code>
+            <br> 
+            <code>"user_must_be:account_manager"</code>
+        </td>
+    </tr>
+</table>
 
 ## Policy Evaluation Logic
 
@@ -235,7 +253,7 @@ The request is allowed if any of the statements have an effect of "allow", and n
 
 ## Object-Level Permissions/Conditions <a id="object-level-perm"> </a>
 
-You may be wondering, but what object-level permissions? Not to worry - you can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can conveniently get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable.
+What object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can  get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.
 
 ```python
 class AccountAccessPolicy(AccessPolicy):
@@ -251,7 +269,7 @@ class AccountAccessPolicy(AccessPolicy):
             "action": ["upgrade_to_gold_status"],
             "principal": ["*"],
             "effect": "allow",
-            "condition": ["user_must_be:advisor"]
+            "condition": ["user_must_be:account_advisor"]
         }
         ## ... other statements ...
     ]
@@ -265,7 +283,7 @@ class AccountAccessPolicy(AccessPolicy):
         return getattr(account, field) == request.user
 ```
 
-Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal fo the user of the request.
+Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal fo the user of the request: the statement will only be effective if this condition passes.
 
 ## Multitenancy Data / Restricting QuerySets
 
