@@ -437,6 +437,12 @@ class FriendRequestPolicy(permissions.BasePermission):
 
 # Changelog <a id="changelog"></a>
 
+## 0.4.2 (June 2019)
+* Fixes readme format for Pypy display.
+
+## 0.4.0 (June 2019)
+* Allow passing arguments to condition methods, via condition values formatted as `{method_name}:{arg_value}`.
+
 ## 0.3.0 (May 2019)
 * Adds special `<safe_methods>` action key that matches when the current request is an HTTP read-only method: HEAD, GET, OPTIONS.
 

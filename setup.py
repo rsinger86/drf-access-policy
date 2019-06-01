@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-from distutils.core import setup
+from setuptools import setup
 from codecs import open
 from os import path
 
 
 def readme():
-    with open("README.txt", "r") as infile:
+    with open("README.md", "r") as infile:
         return infile.read()
 
 
@@ -20,7 +20,7 @@ classifiers = [
 ]
 setup(
     name="drf-access-policy",
-    version="0.4.0",
+    version="0.4.2",
     description="Declarative access policies/permissions modeled after AWS' IAM policies.",
     author="Robert Singer",
     author_email="robertgsinger@gmail.com",
@@ -30,4 +30,5 @@ setup(
     keywords="django restframework drf access policy authorization declaritive",
     long_description=readme(),
     classifiers=classifiers,
+    long_description_content_type="text/markdown",
 )
