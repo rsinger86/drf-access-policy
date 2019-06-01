@@ -194,38 +194,120 @@ def download_logs(request):
 ## Statement Elements
 
 ### principal
-|            |                      |
-| --- | ----------- |
-| **Description**          |    Should match the user of the current request by identifying a group they belong to or their user ID.                    |
-| **Special Values**           |    `"*"` (any user) <br> `"authenticated"` (any authenticated user) <br> `"anonymous"` (any non-authenticated user)       |
-| **Type** |    `Union[str, List[str]]`       |
-| **Format** |    Match by group with `"group:<name>"`<br> Match by ID with `"id:<id>"` |
-| **Examples**           |   `["group:admins", "id:9322"]` <br> `["id:5352"]` <br> `["anonymous"]` <br> `"*"`     |
+
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+            Should match the user of the current request by identifying a group they belong to or their user ID.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Special Values</b></td>
+        <td>
+         <code>"*"</code> (any user) <br> 
+         <code>"authenticated"</code> (any authenticated user) <br> 
+         <code>"anonymous"</code> (any non-authenticated user)
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td> <code>Union[str, List[str]]</code> </td>
+    </tr>
+    <tr>
+        <td><b>Format</b></td>
+        <td>
+             Match by group with <code>"group:{name}"</code> <br> 
+             Match by ID with <code>"id:{id}" </code>
+        </td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+         <code>["group:admins", "id:9322"]</code> <br> 
+         <code>["id:5352"]</code> <br> 
+         <code>["anonymous"]</code> <br> 
+         <code>"*"</code>
+        </td>
+    </tr>
+</table>
 
 
 ### action
-|            |                      |
-| --- | ----------- |
-| **Description**         |   The action or actions that the statement applies to. The value should match the name of a view set method or the name of the view function.                    |
-| **Type** |    `Union[str, List[str]]`       |
-| **Special Values**           |  `"*"` (any action) <br> `"<safe_methods>"` (a read-only HTTP request: HEAD, GET, OPTIONS)      |
-| **Examples**           |  `["list", "delete", "create]` <br> `["*"]` <br> `["<safe_methods>"]`   |
+
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+         The action or actions that the statement applies to. The value should match the name of a view set method or the name of the view function.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Special Values</b></td>
+        <td>
+            <code>"*"</code> (any action) <br> 
+            <code>"&lt;safe_methods&gt;"</code> (a read-only HTTP request: HEAD, GET, OPTIONS)
+        </td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <code>["list", "delete", "create]</code> <br> 
+            <code>["*"]</code> <br> 
+            <code>["&lt;safe_methods&gt;"]</code>
+        </td>
+    </tr>
+</table>
+
 
 ### effect
-|            |                      |
-| --- | ----------- |
-| **Description**         |  Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use `deny` when you'd like to override an `allow` statement that will also be in effect. |
-| **Type** | `str` ("allow" or "deny") | 
-| **Values**           | Either `"allow"` or `"deny"`      |
+
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use <code>deny</code> when you'd like to override an <code>allow</code> statement that will also be in effect.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>str</code></td>
+    </tr>
+    <tr>
+        <td><b>Values</b></td>
+        <td>Either <code>"allow"</code> or <code>"deny"</code></td>
+    </tr>
+</table>
 
 
 ### condition
-|            |                      |
-| --- | ----------- |
-| **Description**       |  The name of a method on the policy that returns a boolean. The method signature is `condition(request, view, action: str)`. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to `True`. |
-| **Type** |    `Union[str, List[str]]`       |
-| **Examples** | `"is_manager_for_account"` <br> `"is_author_of_post"` <br> `["balance_is_positive", "account_is_not_frozen"]`  |
 
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        The name of a method on the policy that returns a boolean. The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If you want to pass a custom argument to the condition's method, format the value as <code>{method_name}:{value}</code>, e.g. <code>user_must_be:owner</code> will call a method named <code>user_must_be</code>, passing it the string <code>"owner"</code> as the final argument. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to <code>True</code>.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <code>"is_manager_of_account"</code> <br>
+            <code>"is_author_of_post"</code> <br>
+            <code>["balance_is_positive", "account_is_not_frozen"]`</code>
+            <br> 
+            <code>"user_must_be:account_manager"</code>
+        </td>
+    </tr>
+</table>
 
 ## Policy Evaluation Logic
 
@@ -235,7 +317,7 @@ The request is allowed if any of the statements have an effect of "allow", and n
 
 ## Object-Level Permissions/Conditions <a id="object-level-perm"> </a>
 
-You may be wondering, but what object-level permissions? Not to worry - you can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can easily get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and easy to test.
+What object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can  get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.
 
 ```python
 class AccountAccessPolicy(AccessPolicy):
@@ -245,7 +327,13 @@ class AccountAccessPolicy(AccessPolicy):
             "action": ["withdraw"],
             "principal": ["*"],
             "effect": "allow",
-            "condition": ["balance_is_positive", "is_account_owner"]     
+            "condition": ["balance_is_positive", "user_must_be:owner"]     
+        },
+        {
+            "action": ["upgrade_to_gold_status"],
+            "principal": ["*"],
+            "effect": "allow",
+            "condition": ["user_must_be:account_advisor"]
         }
         ## ... other statements ...
     ]
@@ -254,10 +342,13 @@ class AccountAccessPolicy(AccessPolicy):
         account = view.get_object()
         return account.balance > 0
 
-    def is_account_owner(self, request, view, action) -> bool:
+    def user_must_be(self, request, view, action, field: str) -> bool:
         account = view.get_object()
-        return account.owner == request.user
+        return getattr(account, field) == request.user
 ```
+
+Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal fo the user of the request: the statement will only be effective if this condition passes.
+
 ## Multitenancy Data / Restricting QuerySets
 
 You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.
