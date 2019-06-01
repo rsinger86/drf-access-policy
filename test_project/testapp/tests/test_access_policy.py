@@ -250,6 +250,16 @@ class AccessPolicyTests(TestCase):
 
         self.assertTrue(policy._check_condition("is_sunny", None, None, "action"))
 
+    def test_check_condition_is_called_with_custom_arg(self):
+        class TestPolicy(AccessPolicy):
+            def user_is(self, request, view, action, field_name: str):
+                return True if field_name == "owner" else False
+
+        policy = TestPolicy()
+
+        self.assertTrue(policy._check_condition("user_is:owner", None, None, "action"))
+        self.assertFalse(policy._check_condition("user_is:staff", None, None, "action"))
+
     def test_evaluate_statements_false_if_no_statements(self,):
         class TestPolicy(AccessPolicy):
             def is_sunny(self, request, view, action):
