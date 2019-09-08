@@ -3,3 +3,4 @@ MANIFEST
 README.txt
 dist/
 drf_access_policy.egg-info
+.vscode

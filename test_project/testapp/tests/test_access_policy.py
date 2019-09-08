@@ -260,6 +260,53 @@ class AccessPolicyTests(TestCase):
         self.assertTrue(policy._check_condition("user_is:owner", None, None, "action"))
         self.assertFalse(policy._check_condition("user_is:staff", None, None, "action"))
 
+    def test_check_condition_in_reusable_module_is_called(self):
+        class TestPolicy(AccessPolicy):
+            pass
+
+        policy = TestPolicy()
+
+        self.assertTrue(
+            policy._check_condition("is_a_cat:Garfield", None, None, "action")
+        )
+        self.assertFalse(
+            policy._check_condition("is_a_cat:Snoopy", None, None, "action")
+        )
+
+    def test_get_condition_method_from_self(self):
+        class TestPolicy(AccessPolicy):
+            def is_a_cat(self, request, view, action):
+                return False
+
+        policy = TestPolicy()
+
+        self.assertEqual(policy._get_condition_method("is_a_cat"), policy.is_a_cat)
+
+    def test_get_condition_method_from_reusable_module(self):
+        class TestPolicy(AccessPolicy):
+            pass
+
+        policy = TestPolicy()
+        from test_project import global_access_conditions
+
+        self.assertEqual(
+            policy._get_condition_method("is_a_cat"), global_access_conditions.is_a_cat
+        )
+
+    def test_get_condition_method_throw_error(self):
+        class TestPolicy(AccessPolicy):
+            pass
+
+        policy = TestPolicy()
+
+        with self.assertRaises(AccessPolicyException) as context:
+            policy._get_condition_method("is_a_dog")
+
+        self.assertTrue(
+            "must be a method on the access policy or be defined in the 'reusable_conditions' module"
+            in str(context.exception)
+        )
+
     def test_evaluate_statements_false_if_no_statements(self,):
         class TestPolicy(AccessPolicy):
             def is_sunny(self, request, view, action):

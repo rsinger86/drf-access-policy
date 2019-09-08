@@ -38,6 +38,7 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
     * [condition](#condition)
   * [Policy Evaluation Logic](#policy-evaluation-logic)
   * [Object-Level Permissions/Conditions](#object-level-perm)
+  * [Re-Usable Conditions/Permissions](#reusable-conditions)
   * [Multitenancy Data/Restricting QuerySets](#multitenancy-data--restricting-querysets)
   * [Attaching to ViewSets and Function-Based Views](#attaching-to-viewsets-and-function-based-views)
   * [Loading Statements from External Source](#loading-statements-from-external-source)
@@ -193,7 +194,7 @@ def download_logs(request):
 
 ## Statement Elements
 
-### principal
+### *principal*
 
 <table>
     <tr>
@@ -233,7 +234,7 @@ def download_logs(request):
 </table>
 
 
-### action
+### *action*
 
 <table>
     <tr>
@@ -264,7 +265,7 @@ def download_logs(request):
 </table>
 
 
-### effect
+### *effect*
 
 <table>
     <tr>
@@ -284,7 +285,7 @@ def download_logs(request):
 </table>
 
 
-### condition
+### *condition*
 
 <table>
     <tr>
@@ -311,11 +312,11 @@ def download_logs(request):
 
 ## Policy Evaluation Logic
 
-To determine whether access to a request is granted, all applicable statements are first filtered. A statement is applicable to the current request if all of the following are true (1) the request user matches one of the statement's principals, (2) the name of the method/function matches one of its actions, and (3) any custom conditions evaluate to true.
+To determine whether access to a request is granted, two steps are applied: (1) finding out which statements apply to the request (2) denying or allowing the request based on those statements. 
+- *Filtering statements*: A statement is applicable to the current request if all of the following are true (a) the request user matches one of the statement's principals, (b) the name of the method/function matches one of its actions, and (c) all custom conditions evaluate to true.
+- *Allow or deny*: The request is allowed if any of the statements have an effect of "allow", and none have an effect of "deny". By default, all requests are denied. Requests are implicitly denied if no `Allow` statements are found, and they are explicitly denied if any `Deny` statements are found. `Deny` statements *trump* `Allow` statements.
 
-The request is allowed if any of the statements have an effect of "allow", and none have an effect of "deny". By default, all requests are denied.
-
-## Object-Level Permissions/Conditions <a id="object-level-perm"> </a>
+## Object-Level Permissions/Custom Conditions <a id="object-level-perm"> </a>
 
 What object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can  get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.
 
@@ -348,6 +349,30 @@ class AccountAccessPolicy(AccessPolicy):
 ```
 
 Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal fo the user of the request: the statement will only be effective if this condition passes.
+
+## Re-Usable Conditions/Permissions <a id="reusable-conditions"> </a>
+
+If you'd like to re-use custom conditions across policies, you can define them globally in a module and point to it via the setttings.
+
+```python
+# in your project settings.py
+
+DRF_ACCESS_POLICY = {"reusable_conditions": "myproject.global_access_conditions"}
+```
+
+```python
+# in myproject.global_access_conditions.py
+
+def is_the_weather_nice(request, view, action: str) -> bool:
+    data = weather_api.load_today()
+    return data["temperature"] > 68
+
+def user_must_be(self, request, view, action, field: str) -> bool:
+    account = view.get_object()
+    return getattr(account, field) == request.user
+```
+
+The policy class will first check its own methods for what's been defined in the `condition` property. If nothing is found, it will check the module defined in the `reusable_conditions` setting.
 
 ## Multitenancy Data / Restricting QuerySets
 
@@ -436,6 +461,9 @@ class FriendRequestPolicy(permissions.BasePermission):
 ```
 
 # Changelog <a id="changelog"></a>
+
+## 0.5.0 (September 2019)
+* Add option to define re-usable custom conditions/permissions in a module that can be referenced by multiple policies.
 
 ## 0.4.2 (June 2019)
 * Fixes readme format for Pypy display.

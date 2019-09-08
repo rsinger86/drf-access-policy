@@ -121,3 +121,5 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+
+DRF_ACCESS_POLICY = {"reusable_conditions": "test_project.global_access_conditions"}

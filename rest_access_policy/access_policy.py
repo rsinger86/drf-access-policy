@@ -1,7 +1,9 @@
+import importlib
 from typing import List
 
-from rest_framework import permissions
+from django.conf import settings
 from rest_access_policy import AccessPolicyException
+from rest_framework import permissions
 
 
 class AccessPolicy(permissions.BasePermission):
@@ -162,13 +164,7 @@ class AccessPolicy(permissions.BasePermission):
         parts = condition.split(":", 1)
         method_name = parts[0]
         arg = parts[1] if len(parts) == 2 else None
-
-        if not hasattr(self, method_name):
-            raise AccessPolicyException(
-                "condition '%s' must be a method on the access policy" % method_name
-            )
-
-        method = getattr(self, method_name)
+        method = self._get_condition_method(method_name)
 
         if arg is not None:
             result = method(request, view, action, arg)
@@ -182,3 +178,21 @@ class AccessPolicy(permissions.BasePermission):
             )
 
         return result
+
+    def _get_condition_method(self, method_name: str):
+        if hasattr(self, method_name):
+            return getattr(self, method_name)
+
+        if hasattr(settings, "DRF_ACCESS_POLICY"):
+            module_path = settings.DRF_ACCESS_POLICY.get("reusable_conditions")
+
+            if module_path:
+                module = importlib.import_module(module_path)
+
+                if hasattr(module, method_name):
+                    return getattr(module, method_name)
+
+        raise AccessPolicyException(
+            "condition '%s' must be a method on the access policy or be defined in the 'reusable_conditions' module"
+            % method_name
+        )
