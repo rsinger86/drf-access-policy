@@ -1,0 +1,25 @@
+site_name: Dango REST - Access Policy
+
+theme:
+  name: "material"
+  language: en
+  feature:
+    tabs: false
+  palette:
+    primary: black
+    accent: red
+  font:
+    text: Roboto
+    code: Roboto Mono
+  logo:
+    icon: "security"
+repo_name: rsinger86/drf-access-policy
+repo_url: https://github.com/rsinger86/drf-access-policy
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
