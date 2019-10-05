@@ -1,0 +1,690 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>Dango REST - Access Policy</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/application.30686662.css">
+      
+      
+    
+    
+      <script src="assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#django-rest-access-policy" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="." title="Dango REST - Access Policy" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Dango REST - Access Policy
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Django REST - Access Policy
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="." title="Dango REST - Access Policy" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Dango REST - Access Policy
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+    <a href="." title="Django REST - Access Policy" class="md-nav__link md-nav__link--active">
+      Django REST - Access Policy
+    </a>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="django-rest-access-policy">Django REST - Access Policy</h1>
+<p><a href="https://pypi.python.org/pypi/drf-access-policy"><img alt="Package version" src="https://badge.fury.io/py/drf-access-policy.svg" /></a>
+<a href="https://img.shields.io/pypi/status/drf-access-policy.svg/"><img alt="Python versions" src="https://img.shields.io/pypi/status/drf-access-policy.svg" /></a></p>
+<p>This project brings a declaritive, organized approach to managing access control in Django REST Framework projects. Each ViewSet or function-based view can be assigned an explicit policy for the exposed resource(s). No more digging through views or seralizers to understand access logic -- it's all in one place in a format that less technical stakeholders can understand. If you're familiar with other declaritive access models, such as AWS' IAM, the syntax will be familiar. </p>
+<p>In short, you can start expressing your access rules like this:</p>
+<pre><code class="python">class ArticleAccessPolicy(AccessPolicy):
+    statements = [
+        {
+            &quot;action&quot;: [&quot;list&quot;, &quot;retrieve&quot;],
+            &quot;principal&quot;: &quot;*&quot;,
+            &quot;effect&quot;: &quot;allow&quot;
+        },
+        {
+            &quot;action&quot;: [&quot;publish&quot;, &quot;unpublish&quot;],
+            &quot;principal&quot;: [&quot;group:editor&quot;],
+            &quot;effect&quot;: &quot;allow&quot;            
+        }
+    ]
+</code></pre>
+
+<p>This project has complete test coverage and the base <code>AccessPolicy</code> class is only ~150 lines of code: there's no magic here.</p>
+<h1 id="table-of-contents">Table of Contents:</h1>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#example-1-policy-for-viewset">Example #1: Policy for ViewSet</a></li>
+<li><a href="#example-2-policy-for-function-based-view">Example #2: Policy for Function-Based View</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#statement-elements">Statement Elements</a><ul>
+<li><a href="#principal">principal</a></li>
+<li><a href="#action">action</a></li>
+<li><a href="#effect">effect</a></li>
+<li><a href="#condition">condition</a></li>
+</ul>
+</li>
+<li><a href="#policy-evaluation-logic">Policy Evaluation Logic</a></li>
+<li><a href="#object-level-perm">Object-Level Permissions/Conditions</a></li>
+<li><a href="#reusable-conditions">Re-Usable Conditions/Permissions</a></li>
+<li><a href="#multitenancy-data--restricting-querysets">Multitenancy Data/Restricting QuerySets</a></li>
+<li><a href="#attaching-to-viewsets-and-function-based-views">Attaching to ViewSets and Function-Based Views</a></li>
+<li><a href="#loading-statements-from-external-source">Loading Statements from External Source</a></li>
+<li><a href="#customizing-user-grouprole-values">Customizing User Group/Role Values</a></li>
+<li><a href="#customizing-principal-prefixes">Customizing Principal Prefixes</a></li>
+<li><a href="#changelog">Changelog</a></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h1 id="setup">Setup</h1>
+<pre><code>pip install drf-access-policy
+</code></pre>
+
+<p>To define a policy, import <code>AccessPolicy</code> and subclass it:</p>
+<pre><code class="python">from rest_access_policy import AccessPolicy
+
+
+class ShoppingCartAccessPolicy(AccessPolicy):
+    statements = [] # Now read on...
+</code></pre>
+
+<h1 id="example-1-policy-for-viewset">Example #1: Policy for ViewSet</h1>
+<p>In a nutshell, a policy is comprised of "statements" that declare what "actions" a "principal" can or cannot perform on the resource, with optional custom checks that can examine any detail of the current request.</p>
+<p>Here are two more key points to remember going forward:
+* all access is implicitly denied by default
+* any statement with the "deny" effect overrides any and all "allow" statement</p>
+<p>Now let's look at the policy below an articles endpoint, provided through a view set.</p>
+<pre><code class="python">class ArticleAccessPolicy(AccessPolicy):
+    statements = [
+        {
+            &quot;action&quot;: [&quot;list&quot;, &quot;retrieve&quot;],
+            &quot;principal&quot;: &quot;*&quot;,
+            &quot;effect&quot;: &quot;allow&quot;
+        },
+        {
+            &quot;action&quot;: [&quot;publish&quot;, &quot;unpublish&quot;],
+            &quot;principal&quot;: [&quot;group:editor&quot;],
+            &quot;effect&quot;: &quot;allow&quot;            
+        },
+        {
+            &quot;action&quot;: [&quot;delete&quot;],
+            &quot;principal&quot;: [&quot;*&quot;],
+            &quot;effect&quot;: &quot;allow&quot;,
+            &quot;condition&quot;: &quot;is_author&quot;         
+        },
+        {
+            &quot;action&quot;: [&quot;*&quot;],
+            &quot;principal&quot;: [&quot;*&quot;],
+            &quot;effect&quot;: &quot;deny&quot;,
+            &quot;condition&quot;: &quot;is_happy_hour&quot;
+        }
+    ]
+
+    def is_author(self, request, view, action) -&gt; bool:
+        article = view.get_object()
+        return request.user == article.author 
+
+    def is_happy_hour(self, request, view, action) -&gt; bool:
+        now = datetime.datetime.now()
+        return now.hour &gt;= 17 and now.hour &lt;= 18:
+
+    @classmethod
+    def scope_queryset(cls, request, queryset):
+        if request.user.groups.filter(name='editor').exists():
+            return queryset
+
+        return queryset.filter(status='published')
+
+
+class ArticleViewSet(ModelViewSet):
+    # Just stick the policy here, as you would do with
+    # regular DRF &quot;permissions&quot;
+    permission_classes = (ArticleAccessPolicy, )
+
+    # Helper property here to make get_queryset logic
+    # more explicit
+    @property
+    def access_policy(self):
+        return self.permission_classes[0]
+
+    # Ensure that current user can only see the models 
+    # they are allowed to see
+    def get_queryset(self):
+        return self.access_policy.scope_queryset(
+            self.request, Articles.objects.all()
+        )
+
+    @action(method=&quot;POST&quot;)
+    def publish(self, request, *args, **kwargs):
+        pass
+
+    @action(method=&quot;POST&quot;)
+    def unpublish(self, request, *args, **kwargs):
+        pass
+
+    # the rest of you view set definition...
+</code></pre>
+
+<p>The actions correspond to the names of methods on the ViewSet. </p>
+<p>In the example above, the following rules are put in place:
+- anyone is allowed to list and retrieve articles
+- users in the editor group are allowed to publish and unpublish articles
+- in order to delete an article, the user must be the author of the article. Notice how the condition method <code>is_author</code> calls <code>get_object()</code> on the view to get the current article.
+- if the condition <code>is_happy_hour</code>, evaluates to <code>True</code>, then no one is allowed to do anything.</p>
+<p>Additionally, we have some logic in the <code>scope_queryset</code> method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
+<h1 id="example-2-policy-for-function-based-view">Example #2: Policy for Function-Based View</h1>
+<p>You can also you policies with function-based views. The action to reference in your policy statements is the name of the function. You can also bundle multiple functions into the same policy as the example below shows.</p>
+<pre><code class="python">class AuditLogsAccessPolicy(AccessPolicy):
+    statements = [
+        {
+            &quot;action&quot;: [&quot;search_logs&quot;],
+            &quot;principal&quot;: &quot;group:it_staff&quot;,
+            &quot;effect&quot;: &quot;allow&quot;
+        },
+        {
+            &quot;action&quot;: [&quot;download_logs&quot;],
+            &quot;principal&quot;: [&quot;group:it_admin&quot;],
+            &quot;effect&quot;: &quot;allow&quot;            
+        }
+    ]
+
+
+@api_view([&quot;GET&quot;])
+@permission_classes((AuditLogsAccessPolicy,))
+def search_logs(request):
+    ## you logic here...
+    pass
+
+
+@api_view([&quot;GET&quot;])
+@permission_classes((AuditLogsAccessPolicy,))
+def download_logs(request):
+    ## you logic here...
+    pass
+</code></pre>
+
+<h1 id="documentation">Documentation</h1>
+<h2 id="statement-elements">Statement Elements</h2>
+<h3 id="principal"><em>principal</em></h3>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+            Should match the user of the current request by identifying a group they belong to or their user ID.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Special Values</b></td>
+        <td>
+         <code>"*"</code> (any user) <br> 
+         <code>"authenticated"</code> (any authenticated user) <br> 
+         <code>"anonymous"</code> (any non-authenticated user)
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td> <code>Union[str, List[str]]</code> </td>
+    </tr>
+    <tr>
+        <td><b>Format</b></td>
+        <td>
+             Match by group with <code>"group:{name}"</code> <br> 
+             Match by ID with <code>"id:{id}" </code>
+        </td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+         <code>["group:admins", "id:9322"]</code> <br> 
+         <code>["id:5352"]</code> <br> 
+         <code>["anonymous"]</code> <br> 
+         <code>"*"</code>
+        </td>
+    </tr>
+</table>
+
+<h3 id="action"><em>action</em></h3>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+         The action or actions that the statement applies to. The value should match the name of a view set method or the name of the view function.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Special Values</b></td>
+        <td>
+            <code>"*"</code> (any action) <br> 
+            <code>"&lt;safe_methods&gt;"</code> (a read-only HTTP request: HEAD, GET, OPTIONS)
+        </td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <code>["list", "delete", "create]</code> <br> 
+            <code>["*"]</code> <br> 
+            <code>["&lt;safe_methods&gt;"]</code>
+        </td>
+    </tr>
+</table>
+
+<h3 id="effect"><em>effect</em></h3>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use <code>deny</code> when you'd like to override an <code>allow</code> statement that will also be in effect.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>str</code></td>
+    </tr>
+    <tr>
+        <td><b>Values</b></td>
+        <td>Either <code>"allow"</code> or <code>"deny"</code></td>
+    </tr>
+</table>
+
+<h3 id="condition"><em>condition</em></h3>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        The name of a method on the policy that returns a boolean. The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If you want to pass a custom argument to the condition's method, format the value as <code>{method_name}:{value}</code>, e.g. <code>user_must_be:owner</code> will call a method named <code>user_must_be</code>, passing it the string <code>"owner"</code> as the final argument. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to <code>True</code>.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <code>"is_manager_of_account"</code> <br>
+            <code>"is_author_of_post"</code> <br>
+            <code>["balance_is_positive", "account_is_not_frozen"]`</code>
+            <br> 
+            <code>"user_must_be:account_manager"</code>
+        </td>
+    </tr>
+</table>
+
+<h2 id="policy-evaluation-logic">Policy Evaluation Logic</h2>
+<p>To determine whether access to a request is granted, two steps are applied: (1) finding out which statements apply to the request (2) denying or allowing the request based on those statements. 
+- <em>Filtering statements</em>: A statement is applicable to the current request if all of the following are true (a) the request user matches one of the statement's principals, (b) the name of the method/function matches one of its actions, and (c) all custom conditions evaluate to true.
+- <em>Allow or deny</em>: The request is allowed if any of the statements have an effect of "allow", and none have an effect of "deny". By default, all requests are denied. Requests are implicitly denied if no <code>Allow</code> statements are found, and they are explicitly denied if any <code>Deny</code> statements are found. <code>Deny</code> statements <em>trump</em> <code>Allow</code> statements.</p>
+<h2 id="object-level-permissionscustom-conditions">Object-Level Permissions/Custom Conditions <a id="object-level-perm"> </a></h2>
+<p>What object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the <code>view</code> instance, so you can  get the model instance with a call to <code>view.get_object()</code>. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.</p>
+<pre><code class="python">class AccountAccessPolicy(AccessPolicy):
+    statements = [
+        ## ... other statements ...
+        {
+            &quot;action&quot;: [&quot;withdraw&quot;],
+            &quot;principal&quot;: [&quot;*&quot;],
+            &quot;effect&quot;: &quot;allow&quot;,
+            &quot;condition&quot;: [&quot;balance_is_positive&quot;, &quot;user_must_be:owner&quot;]     
+        },
+        {
+            &quot;action&quot;: [&quot;upgrade_to_gold_status&quot;],
+            &quot;principal&quot;: [&quot;*&quot;],
+            &quot;effect&quot;: &quot;allow&quot;,
+            &quot;condition&quot;: [&quot;user_must_be:account_advisor&quot;]
+        }
+        ## ... other statements ...
+    ]
+
+    def balance_is_positive(self, request, view, action) -&gt; bool:
+        account = view.get_object()
+        return account.balance &gt; 0
+
+    def user_must_be(self, request, view, action, field: str) -&gt; bool:
+        account = view.get_object()
+        return getattr(account, field) == request.user
+</code></pre>
+
+<p>Notice how we're re-using the <code>user_must_be</code> method by parameterizing it with the model field that should be equal fo the user of the request: the statement will only be effective if this condition passes.</p>
+<h2 id="re-usable-conditionspermissions">Re-Usable Conditions/Permissions <a id="reusable-conditions"> </a></h2>
+<p>If you'd like to re-use custom conditions across policies, you can define them globally in a module and point to it via the setttings.</p>
+<pre><code class="python"># in your project settings.py
+
+DRF_ACCESS_POLICY = {&quot;reusable_conditions&quot;: &quot;myproject.global_access_conditions&quot;}
+</code></pre>
+
+<pre><code class="python"># in myproject.global_access_conditions.py
+
+def is_the_weather_nice(request, view, action: str) -&gt; bool:
+    data = weather_api.load_today()
+    return data[&quot;temperature&quot;] &gt; 68
+
+def user_must_be(self, request, view, action, field: str) -&gt; bool:
+    account = view.get_object()
+    return getattr(account, field) == request.user
+</code></pre>
+
+<p>The policy class will first check its own methods for what's been defined in the <code>condition</code> property. If nothing is found, it will check the module defined in the <code>reusable_conditions</code> setting.</p>
+<h2 id="multitenancy-data-restricting-querysets">Multitenancy Data / Restricting QuerySets</h2>
+<p>You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.</p>
+<pre><code class="python">    class PhotoAlbumAccessPolicy(AccessPolicy):
+        # ... statements, etc ...
+
+        # Users can only access albums they have created
+        @classmethod
+        def scope_queryset(cls, request, qs):
+            return qs.filter(creator=request.user)
+
+
+    class TodoListAccessPolicy(AccessPolicy):
+        # ... statements, etc ...
+
+        # Users can only access todo lists owned by their organization
+        @classmethod
+        def scope_queryset(cls, request, qs):
+            user_orgs = request.user.organizations.all()
+            return qs.filter(org__id__in=user_orgs)
+</code></pre>
+
+<h2 id="attaching-to-viewsets-and-function-based-views">Attaching to ViewSets and Function-Based Views</h2>
+<p>You attach access policies the same way you do with regular DRF permissions.</p>
+<p>For ViewSets, add it to <code>permissions</code> property:</p>
+<pre><code class="python">class ArticleViewSet(ModelViewSet):
+    permission_classes = (ArticleAccessPolicy, )
+</code></pre>
+
+<p>For function-based views, add it to <code>permissions_classes</code> decorator:</p>
+<pre><code class="python">@api_view([&quot;GET&quot;])
+@permission_classes((ArticleAccessPolicy,))
+def create_article(request):
+    ## you logic here...
+    pass
+</code></pre>
+
+<h2 id="loading-statements-from-external-source">Loading Statements from External Source</h2>
+<p>If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step to take because you can then change access rules without redeploying code. </p>
+<p>Just define a method on your policy class called <code>get_policy_statements</code>, which has the following signature:
+<code>get_policy_statements(self, request, view) -&gt; List[dict]</code></p>
+<p>Example:</p>
+<pre><code class="python">class UserAccessPolicy(AccessPolicy):
+    id = 'user-policy'
+
+    def get_policy_statements(self, request, view) -&gt; List[dict]:
+        statements = data_api.load_json(self.id)
+        return json.loads(statements)
+</code></pre>
+
+<p>You probably want to only define this method once on your own custom subclass of <code>AccessPolicy</code>, from which all your other access policies inherit.</p>
+<h2 id="customizing-user-grouprole-values">Customizing User Group/Role Values</h2>
+<p>If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called <code>get_user_group_values</code> on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".</p>
+<pre><code class="python">class UserAccessPolicy(AccessPolicy):
+    # ... other properties and methods ...
+
+    def get_user_group_values(self, user) -&gt; List[str]:
+        return list(user.roles.values_list(&quot;title&quot;, flat=True))
+</code></pre>
+
+<h2 id="customizing-principal-prefixes">Customizing Principal Prefixes</h2>
+<p>By default, the prefixes to identify the type of principle (user or group) are "id:" and "group:", respectively. You can customize this by setting these properties on your policy class:</p>
+<pre><code class="python">class FriendRequestPolicy(permissions.BasePermission):
+    group_prefix = &quot;role:&quot;
+    id_prefix = &quot;staff_id:&quot;
+
+    # .. the rest of you policy definition ..
+</code></pre>
+
+<h1 id="changelog">Changelog <a id="changelog"></a></h1>
+<h2 id="050-september-2019">0.5.0 (September 2019)</h2>
+<ul>
+<li>Add option to define re-usable custom conditions/permissions in a module that can be referenced by multiple policies.</li>
+</ul>
+<h2 id="042-june-2019">0.4.2 (June 2019)</h2>
+<ul>
+<li>Fixes readme format for Pypy display.</li>
+</ul>
+<h2 id="040-june-2019">0.4.0 (June 2019)</h2>
+<ul>
+<li>Allow passing arguments to condition methods, via condition values formatted as <code>{method_name}:{arg_value}</code>.</li>
+</ul>
+<h2 id="030-may-2019">0.3.0 (May 2019)</h2>
+<ul>
+<li>Adds special <code>&lt;safe_methods&gt;</code> action key that matches when the current request is an HTTP read-only method: HEAD, GET, OPTIONS.</li>
+</ul>
+<h2 id="020-may-2019">0.2.0 (May 2019)</h2>
+<ul>
+<li>Adds special <code>authenticated</code> and <code>anonymous</code> principal keys to match any authenticated user and any non-authenticated user, respectively. Thanks @bogdandm for discussion/advice!</li>
+</ul>
+<h2 id="010-may-2019">0.1.0 (May 2019)</h2>
+<ul>
+<li>Initial release</li>
+</ul>
+<h1 id="testing">Testing</h1>
+<p>Tests are found in a simplified Django project in the <code>/tests</code> folder. Install the project requirements and do <code>./manage.py test</code> to run them.</p>
+<h1 id="license">License</h1>
+<p>See <a href="LICENSE.md">License</a>.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      
+    
+  </body>
+</html>
