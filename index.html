@@ -42,6 +42,12 @@
     
       <link rel="stylesheet" href="assets/stylesheets/application.30686662.css">
       
+        <link rel="stylesheet" href="assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
       
     
     
@@ -63,11 +69,15 @@
     
   </head>
   
-    <body dir="ltr">
+    
+    
+    <body dir="ltr" data-md-color-primary="black" data-md-color-accent="red">
   
     <svg class="md-svg">
       <defs>
         
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
         
       </defs>
     </svg>
@@ -86,7 +96,7 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <a href="." title="Dango REST - Access Policy" class="md-header-nav__button md-logo">
           
-            <i class="md-icon"></i>
+            <i class="md-icon">security</i>
           
         </a>
       </div>
@@ -136,6 +146,28 @@
         
       </div>
       
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/rsinger86/drf-access-policy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rsinger86/drf-access-policy
+  </div>
+</a>
+          </div>
+        </div>
+      
     </div>
   </nav>
 </header>
@@ -156,11 +188,31 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href="." title="Dango REST - Access Policy" class="md-nav__button md-logo">
       
-        <i class="md-icon"></i>
+        <i class="md-icon">security</i>
       
     </a>
     Dango REST - Access Policy
   </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/rsinger86/drf-access-policy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rsinger86/drf-access-policy
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -212,29 +264,32 @@
             <article class="md-content__inner md-typeset">
               
                 
+                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
-                <h1 id="django-rest-access-policy">Django REST - Access Policy</h1>
+                
+                <h1 id="django-rest-access-policy">Django REST - Access Policy<a class="headerlink" href="#django-rest-access-policy" title="Permanent link">&para;</a></h1>
 <p><a href="https://pypi.python.org/pypi/drf-access-policy"><img alt="Package version" src="https://badge.fury.io/py/drf-access-policy.svg" /></a>
 <a href="https://img.shields.io/pypi/status/drf-access-policy.svg/"><img alt="Python versions" src="https://img.shields.io/pypi/status/drf-access-policy.svg" /></a></p>
 <p>This project brings a declaritive, organized approach to managing access control in Django REST Framework projects. Each ViewSet or function-based view can be assigned an explicit policy for the exposed resource(s). No more digging through views or seralizers to understand access logic -- it's all in one place in a format that less technical stakeholders can understand. If you're familiar with other declaritive access models, such as AWS' IAM, the syntax will be familiar. </p>
 <p>In short, you can start expressing your access rules like this:</p>
-<pre><code class="python">class ArticleAccessPolicy(AccessPolicy):
-    statements = [
-        {
-            &quot;action&quot;: [&quot;list&quot;, &quot;retrieve&quot;],
-            &quot;principal&quot;: &quot;*&quot;,
-            &quot;effect&quot;: &quot;allow&quot;
-        },
-        {
-            &quot;action&quot;: [&quot;publish&quot;, &quot;unpublish&quot;],
-            &quot;principal&quot;: [&quot;group:editor&quot;],
-            &quot;effect&quot;: &quot;allow&quot;            
-        }
-    ]
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
+        <span class="p">}</span>
+    <span class="p">]</span>
+</pre></div>
+
 
 <p>This project has complete test coverage and the base <code>AccessPolicy</code> class is only ~150 lines of code: there's no magic here.</p>
-<h1 id="table-of-contents">Table of Contents:</h1>
+<h1 id="table-of-contents">Table of Contents:<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h1>
 <ul>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#example-1-policy-for-viewset">Example #1: Policy for ViewSet</a></li>
@@ -259,94 +314,97 @@
 <li><a href="#testing">Testing</a></li>
 <li><a href="#license">License</a></li>
 </ul>
-<h1 id="setup">Setup</h1>
-<pre><code>pip install drf-access-policy
-</code></pre>
+<h1 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span>pip install drf-access-policy
+</pre></div>
+
 
 <p>To define a policy, import <code>AccessPolicy</code> and subclass it:</p>
-<pre><code class="python">from rest_access_policy import AccessPolicy
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">AccessPolicy</span>
 
 
-class ShoppingCartAccessPolicy(AccessPolicy):
-    statements = [] # Now read on...
-</code></pre>
+<span class="k">class</span> <span class="nc">ShoppingCartAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Now read on...</span>
+</pre></div>
 
-<h1 id="example-1-policy-for-viewset">Example #1: Policy for ViewSet</h1>
+
+<h1 id="example-1-policy-for-viewset">Example #1: Policy for ViewSet<a class="headerlink" href="#example-1-policy-for-viewset" title="Permanent link">&para;</a></h1>
 <p>In a nutshell, a policy is comprised of "statements" that declare what "actions" a "principal" can or cannot perform on the resource, with optional custom checks that can examine any detail of the current request.</p>
 <p>Here are two more key points to remember going forward:
 * all access is implicitly denied by default
 * any statement with the "deny" effect overrides any and all "allow" statement</p>
 <p>Now let's look at the policy below an articles endpoint, provided through a view set.</p>
-<pre><code class="python">class ArticleAccessPolicy(AccessPolicy):
-    statements = [
-        {
-            &quot;action&quot;: [&quot;list&quot;, &quot;retrieve&quot;],
-            &quot;principal&quot;: &quot;*&quot;,
-            &quot;effect&quot;: &quot;allow&quot;
-        },
-        {
-            &quot;action&quot;: [&quot;publish&quot;, &quot;unpublish&quot;],
-            &quot;principal&quot;: [&quot;group:editor&quot;],
-            &quot;effect&quot;: &quot;allow&quot;            
-        },
-        {
-            &quot;action&quot;: [&quot;delete&quot;],
-            &quot;principal&quot;: [&quot;*&quot;],
-            &quot;effect&quot;: &quot;allow&quot;,
-            &quot;condition&quot;: &quot;is_author&quot;         
-        },
-        {
-            &quot;action&quot;: [&quot;*&quot;],
-            &quot;principal&quot;: [&quot;*&quot;],
-            &quot;effect&quot;: &quot;deny&quot;,
-            &quot;condition&quot;: &quot;is_happy_hour&quot;
-        }
-    ]
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;delete&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="s2">&quot;is_author&quot;</span>         
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;deny&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="s2">&quot;is_happy_hour&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
 
-    def is_author(self, request, view, action) -&gt; bool:
-        article = view.get_object()
-        return request.user == article.author 
+    <span class="k">def</span> <span class="nf">is_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">article</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">==</span> <span class="n">article</span><span class="o">.</span><span class="n">author</span> 
 
-    def is_happy_hour(self, request, view, action) -&gt; bool:
-        now = datetime.datetime.now()
-        return now.hour &gt;= 17 and now.hour &lt;= 18:
+    <span class="k">def</span> <span class="nf">is_happy_hour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">now</span><span class="o">.</span><span class="n">hour</span> <span class="o">&gt;=</span> <span class="mi">17</span> <span class="ow">and</span> <span class="n">now</span><span class="o">.</span><span class="n">hour</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">:</span>
 
-    @classmethod
-    def scope_queryset(cls, request, queryset):
-        if request.user.groups.filter(name='editor').exists():
-            return queryset
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">scope_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;editor&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">queryset</span>
 
-        return queryset.filter(status='published')
+        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;published&#39;</span><span class="p">)</span>
 
 
-class ArticleViewSet(ModelViewSet):
-    # Just stick the policy here, as you would do with
-    # regular DRF &quot;permissions&quot;
-    permission_classes = (ArticleAccessPolicy, )
+<span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="c1"># Just stick the policy here, as you would do with</span>
+    <span class="c1"># regular DRF &quot;permissions&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ArticleAccessPolicy</span><span class="p">,</span> <span class="p">)</span>
 
-    # Helper property here to make get_queryset logic
-    # more explicit
-    @property
-    def access_policy(self):
-        return self.permission_classes[0]
+    <span class="c1"># Helper property here to make get_queryset logic</span>
+    <span class="c1"># more explicit</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">access_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">permission_classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    # Ensure that current user can only see the models 
-    # they are allowed to see
-    def get_queryset(self):
-        return self.access_policy.scope_queryset(
-            self.request, Articles.objects.all()
-        )
+    <span class="c1"># Ensure that current user can only see the models </span>
+    <span class="c1"># they are allowed to see</span>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">access_policy</span><span class="o">.</span><span class="n">scope_queryset</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">Articles</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="p">)</span>
 
-    @action(method=&quot;POST&quot;)
-    def publish(self, request, *args, **kwargs):
-        pass
+    <span class="nd">@action</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-    @action(method=&quot;POST&quot;)
-    def unpublish(self, request, *args, **kwargs):
-        pass
+    <span class="nd">@action</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-    # the rest of you view set definition...
-</code></pre>
+    <span class="c1"># the rest of you view set definition...</span>
+</pre></div>
+
 
 <p>The actions correspond to the names of methods on the ViewSet. </p>
 <p>In the example above, the following rules are put in place:
@@ -355,40 +413,41 @@ class ArticleViewSet(ModelViewSet):
 - in order to delete an article, the user must be the author of the article. Notice how the condition method <code>is_author</code> calls <code>get_object()</code> on the view to get the current article.
 - if the condition <code>is_happy_hour</code>, evaluates to <code>True</code>, then no one is allowed to do anything.</p>
 <p>Additionally, we have some logic in the <code>scope_queryset</code> method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
-<h1 id="example-2-policy-for-function-based-view">Example #2: Policy for Function-Based View</h1>
+<h1 id="example-2-policy-for-function-based-view">Example #2: Policy for Function-Based View<a class="headerlink" href="#example-2-policy-for-function-based-view" title="Permanent link">&para;</a></h1>
 <p>You can also you policies with function-based views. The action to reference in your policy statements is the name of the function. You can also bundle multiple functions into the same policy as the example below shows.</p>
-<pre><code class="python">class AuditLogsAccessPolicy(AccessPolicy):
-    statements = [
-        {
-            &quot;action&quot;: [&quot;search_logs&quot;],
-            &quot;principal&quot;: &quot;group:it_staff&quot;,
-            &quot;effect&quot;: &quot;allow&quot;
-        },
-        {
-            &quot;action&quot;: [&quot;download_logs&quot;],
-            &quot;principal&quot;: [&quot;group:it_admin&quot;],
-            &quot;effect&quot;: &quot;allow&quot;            
-        }
-    ]
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AuditLogsAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;search_logs&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;group:it_staff&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;download_logs&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:it_admin&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
+        <span class="p">}</span>
+    <span class="p">]</span>
 
 
-@api_view([&quot;GET&quot;])
-@permission_classes((AuditLogsAccessPolicy,))
-def search_logs(request):
-    ## you logic here...
-    pass
+<span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@permission_classes</span><span class="p">((</span><span class="n">AuditLogsAccessPolicy</span><span class="p">,))</span>
+<span class="k">def</span> <span class="nf">search_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1">## you logic here...</span>
+    <span class="k">pass</span>
 
 
-@api_view([&quot;GET&quot;])
-@permission_classes((AuditLogsAccessPolicy,))
-def download_logs(request):
-    ## you logic here...
-    pass
-</code></pre>
+<span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@permission_classes</span><span class="p">((</span><span class="n">AuditLogsAccessPolicy</span><span class="p">,))</span>
+<span class="k">def</span> <span class="nf">download_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1">## you logic here...</span>
+    <span class="k">pass</span>
+</pre></div>
 
-<h1 id="documentation">Documentation</h1>
-<h2 id="statement-elements">Statement Elements</h2>
-<h3 id="principal"><em>principal</em></h3>
+
+<h1 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h1>
+<h2 id="statement-elements">Statement Elements<a class="headerlink" href="#statement-elements" title="Permanent link">&para;</a></h2>
+<h3 id="principal"><em>principal</em><a class="headerlink" href="#principal" title="Permanent link">&para;</a></h3>
 <table>
     <tr>
         <td><b>Description</b></td>
@@ -426,7 +485,7 @@ def download_logs(request):
     </tr>
 </table>
 
-<h3 id="action"><em>action</em></h3>
+<h3 id="action"><em>action</em><a class="headerlink" href="#action" title="Permanent link">&para;</a></h3>
 <table>
     <tr>
         <td><b>Description</b></td>
@@ -455,7 +514,7 @@ def download_logs(request):
     </tr>
 </table>
 
-<h3 id="effect"><em>effect</em></h3>
+<h3 id="effect"><em>effect</em><a class="headerlink" href="#effect" title="Permanent link">&para;</a></h3>
 <table>
     <tr>
         <td><b>Description</b></td>
@@ -473,7 +532,7 @@ def download_logs(request):
     </tr>
 </table>
 
-<h3 id="condition"><em>condition</em></h3>
+<h3 id="condition"><em>condition</em><a class="headerlink" href="#condition" title="Permanent link">&para;</a></h3>
 <table>
     <tr>
         <td><b>Description</b></td>
@@ -497,155 +556,164 @@ def download_logs(request):
     </tr>
 </table>
 
-<h2 id="policy-evaluation-logic">Policy Evaluation Logic</h2>
+<h2 id="policy-evaluation-logic">Policy Evaluation Logic<a class="headerlink" href="#policy-evaluation-logic" title="Permanent link">&para;</a></h2>
 <p>To determine whether access to a request is granted, two steps are applied: (1) finding out which statements apply to the request (2) denying or allowing the request based on those statements. 
 - <em>Filtering statements</em>: A statement is applicable to the current request if all of the following are true (a) the request user matches one of the statement's principals, (b) the name of the method/function matches one of its actions, and (c) all custom conditions evaluate to true.
 - <em>Allow or deny</em>: The request is allowed if any of the statements have an effect of "allow", and none have an effect of "deny". By default, all requests are denied. Requests are implicitly denied if no <code>Allow</code> statements are found, and they are explicitly denied if any <code>Deny</code> statements are found. <code>Deny</code> statements <em>trump</em> <code>Allow</code> statements.</p>
-<h2 id="object-level-permissionscustom-conditions">Object-Level Permissions/Custom Conditions <a id="object-level-perm"> </a></h2>
+<h2 id="object-level-permissionscustom-conditions">Object-Level Permissions/Custom Conditions <a id="object-level-perm"> </a><a class="headerlink" href="#object-level-permissionscustom-conditions" title="Permanent link">&para;</a></h2>
 <p>What object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the <code>view</code> instance, so you can  get the model instance with a call to <code>view.get_object()</code>. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.</p>
-<pre><code class="python">class AccountAccessPolicy(AccessPolicy):
-    statements = [
-        ## ... other statements ...
-        {
-            &quot;action&quot;: [&quot;withdraw&quot;],
-            &quot;principal&quot;: [&quot;*&quot;],
-            &quot;effect&quot;: &quot;allow&quot;,
-            &quot;condition&quot;: [&quot;balance_is_positive&quot;, &quot;user_must_be:owner&quot;]     
-        },
-        {
-            &quot;action&quot;: [&quot;upgrade_to_gold_status&quot;],
-            &quot;principal&quot;: [&quot;*&quot;],
-            &quot;effect&quot;: &quot;allow&quot;,
-            &quot;condition&quot;: [&quot;user_must_be:account_advisor&quot;]
-        }
-        ## ... other statements ...
-    ]
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AccountAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1">## ... other statements ...</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;withdraw&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;balance_is_positive&quot;</span><span class="p">,</span> <span class="s2">&quot;user_must_be:owner&quot;</span><span class="p">]</span>     
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;upgrade_to_gold_status&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_must_be:account_advisor&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="c1">## ... other statements ...</span>
+    <span class="p">]</span>
 
-    def balance_is_positive(self, request, view, action) -&gt; bool:
-        account = view.get_object()
-        return account.balance &gt; 0
+    <span class="k">def</span> <span class="nf">balance_is_positive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">account</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">account</span><span class="o">.</span><span class="n">balance</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-    def user_must_be(self, request, view, action, field: str) -&gt; bool:
-        account = view.get_object()
-        return getattr(account, field) == request.user
-</code></pre>
+    <span class="k">def</span> <span class="nf">user_must_be</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">account</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+</pre></div>
+
 
 <p>Notice how we're re-using the <code>user_must_be</code> method by parameterizing it with the model field that should be equal fo the user of the request: the statement will only be effective if this condition passes.</p>
-<h2 id="re-usable-conditionspermissions">Re-Usable Conditions/Permissions <a id="reusable-conditions"> </a></h2>
+<h2 id="re-usable-conditionspermissions">Re-Usable Conditions/Permissions <a id="reusable-conditions"> </a><a class="headerlink" href="#re-usable-conditionspermissions" title="Permanent link">&para;</a></h2>
 <p>If you'd like to re-use custom conditions across policies, you can define them globally in a module and point to it via the setttings.</p>
-<pre><code class="python"># in your project settings.py
+<div class="codehilite"><pre><span></span><span class="c1"># in your project settings.py</span>
 
-DRF_ACCESS_POLICY = {&quot;reusable_conditions&quot;: &quot;myproject.global_access_conditions&quot;}
-</code></pre>
+<span class="n">DRF_ACCESS_POLICY</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;reusable_conditions&quot;</span><span class="p">:</span> <span class="s2">&quot;myproject.global_access_conditions&quot;</span><span class="p">}</span>
+</pre></div>
 
-<pre><code class="python"># in myproject.global_access_conditions.py
 
-def is_the_weather_nice(request, view, action: str) -&gt; bool:
-    data = weather_api.load_today()
-    return data[&quot;temperature&quot;] &gt; 68
+<div class="codehilite"><pre><span></span><span class="c1"># in myproject.global_access_conditions.py</span>
 
-def user_must_be(self, request, view, action, field: str) -&gt; bool:
-    account = view.get_object()
-    return getattr(account, field) == request.user
-</code></pre>
+<span class="k">def</span> <span class="nf">is_the_weather_nice</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">weather_api</span><span class="o">.</span><span class="n">load_today</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">68</span>
+
+<span class="k">def</span> <span class="nf">user_must_be</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+</pre></div>
+
 
 <p>The policy class will first check its own methods for what's been defined in the <code>condition</code> property. If nothing is found, it will check the module defined in the <code>reusable_conditions</code> setting.</p>
-<h2 id="multitenancy-data-restricting-querysets">Multitenancy Data / Restricting QuerySets</h2>
+<h2 id="multitenancy-data-restricting-querysets">Multitenancy Data / Restricting QuerySets<a class="headerlink" href="#multitenancy-data-restricting-querysets" title="Permanent link">&para;</a></h2>
 <p>You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.</p>
-<pre><code class="python">    class PhotoAlbumAccessPolicy(AccessPolicy):
-        # ... statements, etc ...
+<div class="codehilite"><pre><span></span>    <span class="k">class</span> <span class="nc">PhotoAlbumAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+        <span class="c1"># ... statements, etc ...</span>
 
-        # Users can only access albums they have created
-        @classmethod
-        def scope_queryset(cls, request, qs):
-            return qs.filter(creator=request.user)
+        <span class="c1"># Users can only access albums they have created</span>
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">scope_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">qs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
 
-    class TodoListAccessPolicy(AccessPolicy):
-        # ... statements, etc ...
+    <span class="k">class</span> <span class="nc">TodoListAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+        <span class="c1"># ... statements, etc ...</span>
 
-        # Users can only access todo lists owned by their organization
-        @classmethod
-        def scope_queryset(cls, request, qs):
-            user_orgs = request.user.organizations.all()
-            return qs.filter(org__id__in=user_orgs)
-</code></pre>
+        <span class="c1"># Users can only access todo lists owned by their organization</span>
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">scope_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">qs</span><span class="p">):</span>
+            <span class="n">user_orgs</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">organizations</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">org__id__in</span><span class="o">=</span><span class="n">user_orgs</span><span class="p">)</span>
+</pre></div>
 
-<h2 id="attaching-to-viewsets-and-function-based-views">Attaching to ViewSets and Function-Based Views</h2>
+
+<h2 id="attaching-to-viewsets-and-function-based-views">Attaching to ViewSets and Function-Based Views<a class="headerlink" href="#attaching-to-viewsets-and-function-based-views" title="Permanent link">&para;</a></h2>
 <p>You attach access policies the same way you do with regular DRF permissions.</p>
 <p>For ViewSets, add it to <code>permissions</code> property:</p>
-<pre><code class="python">class ArticleViewSet(ModelViewSet):
-    permission_classes = (ArticleAccessPolicy, )
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ArticleAccessPolicy</span><span class="p">,</span> <span class="p">)</span>
+</pre></div>
+
 
 <p>For function-based views, add it to <code>permissions_classes</code> decorator:</p>
-<pre><code class="python">@api_view([&quot;GET&quot;])
-@permission_classes((ArticleAccessPolicy,))
-def create_article(request):
-    ## you logic here...
-    pass
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@permission_classes</span><span class="p">((</span><span class="n">ArticleAccessPolicy</span><span class="p">,))</span>
+<span class="k">def</span> <span class="nf">create_article</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1">## you logic here...</span>
+    <span class="k">pass</span>
+</pre></div>
 
-<h2 id="loading-statements-from-external-source">Loading Statements from External Source</h2>
+
+<h2 id="loading-statements-from-external-source">Loading Statements from External Source<a class="headerlink" href="#loading-statements-from-external-source" title="Permanent link">&para;</a></h2>
 <p>If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step to take because you can then change access rules without redeploying code. </p>
 <p>Just define a method on your policy class called <code>get_policy_statements</code>, which has the following signature:
 <code>get_policy_statements(self, request, view) -&gt; List[dict]</code></p>
 <p>Example:</p>
-<pre><code class="python">class UserAccessPolicy(AccessPolicy):
-    id = 'user-policy'
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">UserAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;user-policy&#39;</span>
 
-    def get_policy_statements(self, request, view) -&gt; List[dict]:
-        statements = data_api.load_json(self.id)
-        return json.loads(statements)
-</code></pre>
+    <span class="k">def</span> <span class="nf">get_policy_statements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="n">statements</span> <span class="o">=</span> <span class="n">data_api</span><span class="o">.</span><span class="n">load_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">statements</span><span class="p">)</span>
+</pre></div>
+
 
 <p>You probably want to only define this method once on your own custom subclass of <code>AccessPolicy</code>, from which all your other access policies inherit.</p>
-<h2 id="customizing-user-grouprole-values">Customizing User Group/Role Values</h2>
+<h2 id="customizing-user-grouprole-values">Customizing User Group/Role Values<a class="headerlink" href="#customizing-user-grouprole-values" title="Permanent link">&para;</a></h2>
 <p>If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called <code>get_user_group_values</code> on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".</p>
-<pre><code class="python">class UserAccessPolicy(AccessPolicy):
-    # ... other properties and methods ...
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">UserAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="c1"># ... other properties and methods ...</span>
 
-    def get_user_group_values(self, user) -&gt; List[str]:
-        return list(user.roles.values_list(&quot;title&quot;, flat=True))
-</code></pre>
+    <span class="k">def</span> <span class="nf">get_user_group_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+</pre></div>
 
-<h2 id="customizing-principal-prefixes">Customizing Principal Prefixes</h2>
+
+<h2 id="customizing-principal-prefixes">Customizing Principal Prefixes<a class="headerlink" href="#customizing-principal-prefixes" title="Permanent link">&para;</a></h2>
 <p>By default, the prefixes to identify the type of principle (user or group) are "id:" and "group:", respectively. You can customize this by setting these properties on your policy class:</p>
-<pre><code class="python">class FriendRequestPolicy(permissions.BasePermission):
-    group_prefix = &quot;role:&quot;
-    id_prefix = &quot;staff_id:&quot;
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">FriendRequestPolicy</span><span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="n">group_prefix</span> <span class="o">=</span> <span class="s2">&quot;role:&quot;</span>
+    <span class="n">id_prefix</span> <span class="o">=</span> <span class="s2">&quot;staff_id:&quot;</span>
 
-    # .. the rest of you policy definition ..
-</code></pre>
+    <span class="c1"># .. the rest of you policy definition ..</span>
+</pre></div>
 
-<h1 id="changelog">Changelog <a id="changelog"></a></h1>
-<h2 id="050-september-2019">0.5.0 (September 2019)</h2>
+
+<h1 id="changelog">Changelog <a id="changelog"></a><a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
+<h2 id="050-september-2019">0.5.0 (September 2019)<a class="headerlink" href="#050-september-2019" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Add option to define re-usable custom conditions/permissions in a module that can be referenced by multiple policies.</li>
 </ul>
-<h2 id="042-june-2019">0.4.2 (June 2019)</h2>
+<h2 id="042-june-2019">0.4.2 (June 2019)<a class="headerlink" href="#042-june-2019" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Fixes readme format for Pypy display.</li>
 </ul>
-<h2 id="040-june-2019">0.4.0 (June 2019)</h2>
+<h2 id="040-june-2019">0.4.0 (June 2019)<a class="headerlink" href="#040-june-2019" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Allow passing arguments to condition methods, via condition values formatted as <code>{method_name}:{arg_value}</code>.</li>
 </ul>
-<h2 id="030-may-2019">0.3.0 (May 2019)</h2>
+<h2 id="030-may-2019">0.3.0 (May 2019)<a class="headerlink" href="#030-may-2019" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Adds special <code>&lt;safe_methods&gt;</code> action key that matches when the current request is an HTTP read-only method: HEAD, GET, OPTIONS.</li>
 </ul>
-<h2 id="020-may-2019">0.2.0 (May 2019)</h2>
+<h2 id="020-may-2019">0.2.0 (May 2019)<a class="headerlink" href="#020-may-2019" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Adds special <code>authenticated</code> and <code>anonymous</code> principal keys to match any authenticated user and any non-authenticated user, respectively. Thanks @bogdandm for discussion/advice!</li>
 </ul>
-<h2 id="010-may-2019">0.1.0 (May 2019)</h2>
+<h2 id="010-may-2019">0.1.0 (May 2019)<a class="headerlink" href="#010-may-2019" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Initial release</li>
 </ul>
-<h1 id="testing">Testing</h1>
+<h1 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h1>
 <p>Tests are found in a simplified Django project in the <code>/tests</code> folder. Install the project requirements and do <code>./manage.py test</code> to run them.</p>
-<h1 id="license">License</h1>
+<h1 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h1>
 <p>See <a href="LICENSE.md">License</a>.</p>
                 
                   
