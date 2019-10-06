@@ -1,14 +1,15 @@
 # Policy for ViewSet
 
-In a nutshell, a policy is comprised of "statements" that declare what "actions" a "principal" can or cannot perform on the resource, with optional custom checks that can examine any detail of the current request.
+A policy is comprised of "statements" that declare what "actions" a "principal" can or cannot perform on the resource, with optional custom checks that can examine any detail of the current request.
 
-Here are two more key points to remember going forward:
+Two key points to remember going forward:
+
 * all access is implicitly denied by default
 * any statement with the "deny" effect overrides any and all "allow" statement
 
-Now let's look at the policy below an articles endpoint, provided through a view set.
+Let's look at the policy below, which is for an articles endpoint exposed through a `ViewSet`.
 
-```python
+```python hl_lines="9"
 class ArticleAccessPolicy(AccessPolicy):
     statements = [
         {
@@ -49,8 +50,20 @@ class ArticleAccessPolicy(AccessPolicy):
             return queryset
 
         return queryset.filter(status='published')
+```
 
+The actions correspond to the names of methods on the ViewSet and the following rules are put in place:
 
+- anyone is allowed to list and retrieve articles
+- users in the editor group are allowed to publish and unpublish articles
+- in order to delete an article, the user must be the author of the article. Notice how the condition method `is_author` calls `get_object()` on the view to get the current article.
+- if the condition `is_happy_hour`, evaluates to `True`, then no one is allowed to do anything.
+
+Additionally, we have some logic in the `scope_queryset` method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.
+
+Below is a `ViewSet` with the policy attached. Notice how the `publish` and `unpublish` methods correspond to the `action` declarations in the policy.
+
+```python hl_lines="20 24"
 class ArticleViewSet(ModelViewSet):
     # Just stick the policy here, as you would do with
     # regular DRF "permissions"
@@ -79,13 +92,3 @@ class ArticleViewSet(ModelViewSet):
 
     # the rest of you view set definition...
 ```
-
-The actions correspond to the names of methods on the ViewSet. 
-
-In the example above, the following rules are put in place:
-- anyone is allowed to list and retrieve articles
-- users in the editor group are allowed to publish and unpublish articles
-- in order to delete an article, the user must be the author of the article. Notice how the condition method `is_author` calls `get_object()` on the view to get the current article.
-- if the condition `is_happy_hour`, evaluates to `True`, then no one is allowed to do anything.
-
-Additionally, we have some logic in the `scope_queryset` method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.

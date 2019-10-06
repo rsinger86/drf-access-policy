@@ -1,6 +1,6 @@
 # Multitenancy Data / Restricting QuerySets
 
-You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.
+You can define a class method on your policy class that takes a `QuerySet` and the current request and returns a securely scoped `QuerySet` representing only the database rows the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. You could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.
 
 ```python
     class PhotoAlbumAccessPolicy(AccessPolicy):

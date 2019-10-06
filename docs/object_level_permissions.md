@@ -2,7 +2,7 @@
 
 What about object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can  get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.
 
-```python
+```python hl_lines="14 25"
 class AccountAccessPolicy(AccessPolicy):
     statements = [
         ## ... other statements ...

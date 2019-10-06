@@ -1,5 +1,7 @@
 # Statement Elements
 
+JSON policies are made up of elements that together determine *who* can do *what* with your application and under what *conditions*.
+
 ## *principal*
 
 <table>

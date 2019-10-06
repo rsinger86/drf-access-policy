@@ -1,6 +1,6 @@
 # Loading Statements from External Source
 
-If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step to take because you can then change access rules without redeploying code. 
+If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step because you can change access rules without redeploying code. 
 
 Just define a method on your policy class called `get_policy_statements`, which has the following signature:
 `get_policy_statements(self, request, view) -> List[dict]`

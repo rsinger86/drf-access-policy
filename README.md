@@ -25,6 +25,14 @@ class ArticleAccessPolicy(AccessPolicy):
 
 This project has complete test coverage and the base `AccessPolicy` class is only ~150 lines of code: there's no magic here.
 
+---
+
+**Documentation**: <a href="https://rsinger86.github.io/drf-access-policy/" target="_blank">https://rsinger86.github.io/drf-access-policy</a>
+
+**Source Code**: <a href="https://github.com/rsinger86/drf-access-policy" target="_blank">https://github.com/rsinger86/drf-access-policy</a>
+
+---
+
 # Changelog <a id="changelog"></a>
 
 ## 0.5.0 (September 2019)
