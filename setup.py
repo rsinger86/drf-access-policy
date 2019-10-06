@@ -11,12 +11,13 @@ def readme():
 
 classifiers = [
     # Pick your license as you wish (should match "license" above)
-    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.3",
     "Programming Language :: Python :: 3.4",
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
 ]
 setup(
     name="drf-access-policy",

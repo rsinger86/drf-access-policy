@@ -23,3 +23,16 @@ markdown_extensions:
       guess_lang: false
   - toc:
       permalink: true
+
+nav:
+  - Intro: index.md
+  - Usage - ViewSets: usage/view_set_usage.md
+  - Usage - Function-Based Views: usage/function_based_view_usage.md
+  - Statement Elements: statement_elements.md
+  - Policy Evaluation Logic: policy_logic.md
+  - Custom/Object-Level Conditions: object_level_permissions.md
+  - Reuse Conditions/Permissions: reusable_conditions.md
+  - Loading External Statements: loading_external_source.md
+  - Multitenancy/Scoping QuerySets: multi_tenacy.md
+  - Customizing: customization.md
+  - License: license.md
