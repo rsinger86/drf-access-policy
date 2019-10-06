@@ -31,18 +31,18 @@
       
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
-      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
     
     
       
-        <title>Dango REST - Access Policy</title>
+        <title>Multitenancy/Scoping QuerySets - Dango REST - Access Policy</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.30686662.css">
       
-        <link rel="stylesheet" href="assets/stylesheets/application-palette.a8b3c06d.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
       
       
         
@@ -51,7 +51,7 @@
       
     
     
-      <script src="assets/javascripts/modernizr.74668098.js"></script>
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
     
     
       
@@ -60,7 +60,7 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
     
     
     
@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#django-rest-access-policy" tabindex="1" class="md-skip">
+      <a href="#multitenancy-data-restricting-querysets" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -94,7 +94,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="." title="Dango REST - Access Policy" class="md-header-nav__button md-logo">
+        <a href=".." title="Dango REST - Access Policy" class="md-header-nav__button md-logo">
           
             <i class="md-icon">security</i>
           
@@ -111,7 +111,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Intro
+                Multitenancy/Scoping QuerySets
               
             </span>
           
@@ -186,7 +186,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="." title="Dango REST - Access Policy" class="md-nav__button md-logo">
+    <a href=".." title="Dango REST - Access Policy" class="md-nav__button md-logo">
       
         <i class="md-icon">security</i>
       
@@ -220,63 +220,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Intro
-      </label>
-    
-    <a href="." title="Intro" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href=".." title="Intro" class="md-nav__link">
       Intro
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    Quick Example
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -286,7 +234,7 @@
 
 
   <li class="md-nav__item">
-    <a href="usage/view_set_usage/" title="Usage - ViewSets" class="md-nav__link">
+    <a href="../usage/view_set_usage/" title="Usage - ViewSets" class="md-nav__link">
       Usage - ViewSets
     </a>
   </li>
@@ -298,7 +246,7 @@
 
 
   <li class="md-nav__item">
-    <a href="usage/function_based_view_usage/" title="Usage - Function-Based Views" class="md-nav__link">
+    <a href="../usage/function_based_view_usage/" title="Usage - Function-Based Views" class="md-nav__link">
       Usage - Function-Based Views
     </a>
   </li>
@@ -310,7 +258,7 @@
 
 
   <li class="md-nav__item">
-    <a href="statement_elements/" title="Statement Elements" class="md-nav__link">
+    <a href="../statement_elements/" title="Statement Elements" class="md-nav__link">
       Statement Elements
     </a>
   </li>
@@ -322,7 +270,7 @@
 
 
   <li class="md-nav__item">
-    <a href="policy_logic/" title="Policy Evaluation Logic" class="md-nav__link">
+    <a href="../policy_logic/" title="Policy Evaluation Logic" class="md-nav__link">
       Policy Evaluation Logic
     </a>
   </li>
@@ -334,7 +282,7 @@
 
 
   <li class="md-nav__item">
-    <a href="object_level_permissions/" title="Custom/Object-Level Conditions" class="md-nav__link">
+    <a href="../object_level_permissions/" title="Custom/Object-Level Conditions" class="md-nav__link">
       Custom/Object-Level Conditions
     </a>
   </li>
@@ -346,7 +294,7 @@
 
 
   <li class="md-nav__item">
-    <a href="reusable_conditions/" title="Reuse Conditions/Permissions" class="md-nav__link">
+    <a href="../reusable_conditions/" title="Reuse Conditions/Permissions" class="md-nav__link">
       Reuse Conditions/Permissions
     </a>
   </li>
@@ -358,7 +306,7 @@
 
 
   <li class="md-nav__item">
-    <a href="loading_external_source/" title="Loading External Statements" class="md-nav__link">
+    <a href="../loading_external_source/" title="Loading External Statements" class="md-nav__link">
       Loading External Statements
     </a>
   </li>
@@ -368,11 +316,20 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="multi_tenacy/" title="Multitenancy/Scoping QuerySets" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+    <a href="./" title="Multitenancy/Scoping QuerySets" class="md-nav__link md-nav__link--active">
       Multitenancy/Scoping QuerySets
     </a>
+    
   </li>
 
     
@@ -382,7 +339,7 @@
 
 
   <li class="md-nav__item">
-    <a href="customization/" title="Customizing" class="md-nav__link">
+    <a href="../customization/" title="Customizing" class="md-nav__link">
       Customizing
     </a>
   </li>
@@ -394,7 +351,7 @@
 
 
   <li class="md-nav__item">
-    <a href="license/" title="License" class="md-nav__link">
+    <a href="../license/" title="License" class="md-nav__link">
       License
     </a>
   </li>
@@ -417,36 +374,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    Quick Example
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -457,72 +384,29 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/multi_tenacy.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="django-rest-access-policy">Django REST - Access Policy<a class="headerlink" href="#django-rest-access-policy" title="Permanent link">&para;</a></h1>
-<p><a href="https://pypi.python.org/pypi/drf-access-policy"><img alt="Package version" src="https://badge.fury.io/py/drf-access-policy.svg" /></a>
-<a href="https://img.shields.io/pypi/status/drf-access-policy.svg/"><img alt="Python versions" src="https://img.shields.io/pypi/status/drf-access-policy.svg" /></a></p>
-<p>This project brings a declaritive, organized approach to managing access control in Django REST Framework projects. Each <code>ViewSet</code> or function-based view can be assigned an explicit policy for the exposed resource(s). No more digging through views or seralizers to understand access logic -- it's all in one place in a format that less technical stakeholders can understand. If you're familiar with other declaritive access models, such as AWS' IAM, the syntax will be familiar. </p>
-<p>In short, you can start expressing your access rules like this:</p>
-<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
-        <span class="p">}</span>
-    <span class="p">]</span>
+                <h1 id="multitenancy-data-restricting-querysets">Multitenancy Data / Restricting QuerySets<a class="headerlink" href="#multitenancy-data-restricting-querysets" title="Permanent link">&para;</a></h1>
+<p>You can define a class method on your policy class that takes a QuerySet and the current request and returns a securely scoped QuerySet representing only the database rows that the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. Of course you could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.</p>
+<div class="codehilite"><pre><span></span>    <span class="k">class</span> <span class="nc">PhotoAlbumAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+        <span class="c1"># ... statements, etc ...</span>
+
+        <span class="c1"># Users can only access albums they have created</span>
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">scope_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">qs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+
+    <span class="k">class</span> <span class="nc">TodoListAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+        <span class="c1"># ... statements, etc ...</span>
+
+        <span class="c1"># Users can only access todo lists owned by their organization</span>
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">scope_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">qs</span><span class="p">):</span>
+            <span class="n">user_orgs</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">organizations</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">org__id__in</span><span class="o">=</span><span class="n">user_orgs</span><span class="p">)</span>
 </pre></div>
-
-
-<p>Key Features:</p>
-<ul>
-<li>A declarative JSON syntax makes access rules easy to understand, reducing the chance of accidental exposure</li>
-<li>The <a href="/loading_external_source">option</a> to load access statements from an external source means non-programmers can edit access policies without redeployments</li>
-<li>Write <a href="/object_level_permissions">plain Python methods that examine every facet</a> of the current request (user, data, model instance) for more granular, contextual access rules</li>
-<li>Keep all your access logic in one place: add <code>scope_queryset</code> methods to access policy classes to <a href="/multi_tenacy">apply filtering for multitenant databases</a></li>
-</ul>
-<p>This project has complete test coverage and the base <code>AccessPolicy</code> class is only ~150 lines of code: there's no magic here.</p>
-<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
-<p>Python 3.5+</p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span>pip install drf-access-policy
-</pre></div>
-
-
-<h2 id="quick-example">Quick Example<a class="headerlink" href="#quick-example" title="Permanent link">&para;</a></h2>
-<p>To define a policy, import <code>AccessPolicy</code> and subclass it:</p>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework.viewsets</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
-<span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">AccessPolicy</span>
-
-
-<span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
-        <span class="p">}</span>
-    <span class="p">]</span>
-
-
-<span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ArticleAccessPolicy</span><span class="p">,</span> <span class="p">)</span>
-</pre></div>
-
-
-<p><a href="/usage/view_set_usage">Read on</a> for a full example of how to add an access policy to a <code>ViewSet</code>.</p>
                 
                   
                 
@@ -543,14 +427,28 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
+          <a href="../loading_external_source/" title="Loading External Statements" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Loading External Statements
+              </span>
+            </div>
+          </a>
         
-          <a href="usage/view_set_usage/" title="Usage - ViewSets" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+        
+          <a href="../customization/" title="Customizing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Usage - ViewSets
+                Customizing
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -578,9 +476,9 @@
       
     </div>
     
-      <script src="assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="../assets/javascripts/application.ac79c3b0.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
     
   </body>
