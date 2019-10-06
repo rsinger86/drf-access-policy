@@ -388,17 +388,17 @@
                 
                 
                 <h1 id="policy-for-function-based-view">Policy for Function-Based View<a class="headerlink" href="#policy-for-function-based-view" title="Permanent link">&para;</a></h1>
-<p>You can also you policies with function-based views. The action to reference in your policy statements is the name of the function. You can also bundle multiple functions into the same policy as the example below shows.</p>
+<p>You can also use policies with function-based views. The action to reference in your policy statements is the name of the function. You can also bundle multiple functions into the same policy as the example below shows.</p>
 <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AuditLogsAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
     <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;search_logs&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;group:it_staff&quot;</span><span class="p">,</span>
+<span class="hll">            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;search_logs&quot;</span><span class="p">],</span>
+</span>            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;group:it_staff&quot;</span><span class="p">,</span>
             <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;download_logs&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:it_admin&quot;</span><span class="p">],</span>
+<span class="hll">            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;download_logs&quot;</span><span class="p">],</span>
+</span>            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:it_admin&quot;</span><span class="p">],</span>
             <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
         <span class="p">}</span>
     <span class="p">]</span>
@@ -406,15 +406,15 @@
 
 <span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">((</span><span class="n">AuditLogsAccessPolicy</span><span class="p">,))</span>
-<span class="k">def</span> <span class="nf">search_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c1">## you logic here...</span>
+<span class="hll"><span class="k">def</span> <span class="nf">search_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</span>    <span class="c1">## you logic here...</span>
     <span class="k">pass</span>
 
 
 <span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">((</span><span class="n">AuditLogsAccessPolicy</span><span class="p">,))</span>
-<span class="k">def</span> <span class="nf">download_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c1">## you logic here...</span>
+<span class="hll"><span class="k">def</span> <span class="nf">download_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</span>    <span class="c1">## you logic here...</span>
     <span class="k">pass</span>
 </pre></div>
                 

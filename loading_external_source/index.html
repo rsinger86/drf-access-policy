@@ -388,7 +388,7 @@
                 
                 
                 <h1 id="loading-statements-from-external-source">Loading Statements from External Source<a class="headerlink" href="#loading-statements-from-external-source" title="Permanent link">&para;</a></h1>
-<p>If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step to take because you can then change access rules without redeploying code. </p>
+<p>If you don't want your policy statements hardcoded into the classes, you can load them from an external data source: a great step because you can change access rules without redeploying code. </p>
 <p>Just define a method on your policy class called <code>get_policy_statements</code>, which has the following signature:
 <code>get_policy_statements(self, request, view) -&gt; List[dict]</code></p>
 <p>Example:</p>

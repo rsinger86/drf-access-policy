@@ -388,11 +388,13 @@
                 
                 
                 <h1 id="policy-for-viewset">Policy for ViewSet<a class="headerlink" href="#policy-for-viewset" title="Permanent link">&para;</a></h1>
-<p>In a nutshell, a policy is comprised of "statements" that declare what "actions" a "principal" can or cannot perform on the resource, with optional custom checks that can examine any detail of the current request.</p>
-<p>Here are two more key points to remember going forward:
-* all access is implicitly denied by default
-* any statement with the "deny" effect overrides any and all "allow" statement</p>
-<p>Now let's look at the policy below an articles endpoint, provided through a view set.</p>
+<p>A policy is comprised of "statements" that declare what "actions" a "principal" can or cannot perform on the resource, with optional custom checks that can examine any detail of the current request.</p>
+<p>Two key points to remember going forward:</p>
+<ul>
+<li>all access is implicitly denied by default</li>
+<li>any statement with the "deny" effect overrides any and all "allow" statement</li>
+</ul>
+<p>Let's look at the policy below, which is for an articles endpoint exposed through a <code>ViewSet</code>.</p>
 <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
     <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
@@ -401,8 +403,8 @@
             <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
+<span class="hll">            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
+</span>            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
             <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
         <span class="p">},</span>
         <span class="p">{</span>
@@ -433,9 +435,19 @@
             <span class="k">return</span> <span class="n">queryset</span>
 
         <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;published&#39;</span><span class="p">)</span>
+</pre></div>
 
 
-<span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+<p>The actions correspond to the names of methods on the ViewSet and the following rules are put in place:</p>
+<ul>
+<li>anyone is allowed to list and retrieve articles</li>
+<li>users in the editor group are allowed to publish and unpublish articles</li>
+<li>in order to delete an article, the user must be the author of the article. Notice how the condition method <code>is_author</code> calls <code>get_object()</code> on the view to get the current article.</li>
+<li>if the condition <code>is_happy_hour</code>, evaluates to <code>True</code>, then no one is allowed to do anything.</li>
+</ul>
+<p>Additionally, we have some logic in the <code>scope_queryset</code> method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
+<p>Below is a <code>ViewSet</code> with the policy attached. Notice how the <code>publish</code> and <code>unpublish</code> methods correspond to the <code>action</code> declarations in the policy.</p>
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
     <span class="c1"># Just stick the policy here, as you would do with</span>
     <span class="c1"># regular DRF &quot;permissions&quot;</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ArticleAccessPolicy</span><span class="p">,</span> <span class="p">)</span>
@@ -454,24 +466,15 @@
         <span class="p">)</span>
 
     <span class="nd">@action</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">pass</span>
+<span class="hll">    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span>        <span class="k">pass</span>
 
     <span class="nd">@action</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">pass</span>
+<span class="hll">    <span class="k">def</span> <span class="nf">unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span>        <span class="k">pass</span>
 
     <span class="c1"># the rest of you view set definition...</span>
 </pre></div>
-
-
-<p>The actions correspond to the names of methods on the ViewSet. </p>
-<p>In the example above, the following rules are put in place:
-- anyone is allowed to list and retrieve articles
-- users in the editor group are allowed to publish and unpublish articles
-- in order to delete an article, the user must be the author of the article. Notice how the condition method <code>is_author</code> calls <code>get_object()</code> on the view to get the current article.
-- if the condition <code>is_happy_hour</code>, evaluates to <code>True</code>, then no one is allowed to do anything.</p>
-<p>Additionally, we have some logic in the <code>scope_queryset</code> method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
                 
                   
                 

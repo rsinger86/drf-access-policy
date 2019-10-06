@@ -278,9 +278,38 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Policy Evaluation Logic
+      </label>
+    
     <a href="./" title="Policy Evaluation Logic" class="md-nav__link md-nav__link--active">
       Policy Evaluation Logic
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -374,6 +403,22 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -393,6 +438,33 @@
 <li><em>Filtering statements</em>: A statement is applicable to the current request if all of the following are true (a) the request user matches one of the statement's principals, (b) the name of the method/function matches one of its actions, and (c) all custom conditions evaluate to true.</li>
 <li><em>Allow or deny</em>: The request is allowed if any of the statements have an effect of "allow", and none have an effect of "deny". By default, all requests are denied. Requests are implicitly denied if no <code>Allow</code> statements are found, and they are explicitly denied if any <code>Deny</code> statements are found. <code>Deny</code> statements <em>trump</em> <code>Allow</code> statements.</li>
 </ol>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>Consider the following access policy and <code>ViewSet</code>.</p>
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
+        <span class="p">}</span>
+    <span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ArticleAccessPolicy</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="nd">@action</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+
+
+<p>A user in the group <code>sales</code> is allowed to <code>list</code> and <code>retrieve</code> articles because of the first statement. They cannot <code>publish</code> because all access is implicitly denied, however uses in the group <code>editor</code> can <code>publish</code> due to the second statement.</p>
                 
                   
                 
