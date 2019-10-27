@@ -1,4 +1,4 @@
-site_name: Dango REST - Access Policy
+site_name: Django REST - Access Policy
 
 theme:
   name: "material"
