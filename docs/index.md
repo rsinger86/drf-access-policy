@@ -67,4 +67,4 @@ class ArticleViewSet(ModelViewSet):
     permission_classes = (ArticleAccessPolicy, )
 ```
 
-[Read on](/usage/view_set_usage) for a full example of how to add an access policy to a `ViewSet`.
+[Read on](usage/view_set_usage) for a full example of how to add an access policy to a `ViewSet`.
