@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.5.1 (December 2019)
+* Tox config updates and typo fixes in docs.
+
 ## 0.5.0 (September 2019)
 * Add option to define re-usable custom conditions/permissions in a module that can be referenced by multiple policies.
 
