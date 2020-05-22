@@ -2,6 +2,7 @@ import importlib
 from typing import List
 
 from django.conf import settings
+from django.db.models import prefetch_related_objects
 from rest_access_policy import AccessPolicyException
 from rest_framework import permissions
 
@@ -24,7 +25,8 @@ class AccessPolicy(permissions.BasePermission):
         return self.statements
 
     def get_user_group_values(self, user) -> List[str]:
-        return list(user.groups.values_list("name", flat=True))
+        prefetch_related_objects([user,], "groups")
+        return [g.name for g in user.groups.all()]
 
     @classmethod
     def scope_queryset(cls, request, qs):
