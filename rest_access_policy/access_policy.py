@@ -25,7 +25,9 @@ class AccessPolicy(permissions.BasePermission):
         return self.statements
 
     def get_user_group_values(self, user) -> List[str]:
-        prefetch_related_objects([user,], "groups")
+        if user.is_anonymous:
+            return []
+        prefetch_related_objects([user], "groups")
         return [g.name for g in user.groups.all()]
 
     @classmethod
