@@ -78,7 +78,7 @@ class AccessPolicy(permissions.BasePermission):
         self, request, statements: List[dict]
     ) -> List[dict]:
         user = request.user
-        user_roles = self.get_user_group_values(user)
+        user_roles = None
         matched = []
 
         for statement in statements:
@@ -94,6 +94,9 @@ class AccessPolicy(permissions.BasePermission):
             elif self.id_prefix + str(user.id) in principals:
                 found = True
             else:
+                if not user_roles:
+                    user_roles = self.get_user_group_values(user)
+
                 for user_role in user_roles:
                     if self.group_prefix + user_role in principals:
                         found = True
