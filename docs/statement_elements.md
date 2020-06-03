@@ -65,7 +65,7 @@ JSON policies are made up of elements that together determine *who* can do *what
     <tr>
         <td><b>Examples</b></td>
         <td>
-            <code>["list", "delete", "create]</code> <br> 
+            <code>["list", "destroy", "create]</code> <br> 
             <code>["*"]</code> <br> 
             <code>["&lt;safe_methods&gt;"]</code>
         </td>
