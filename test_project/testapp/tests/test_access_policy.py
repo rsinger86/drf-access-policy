@@ -70,7 +70,7 @@ class AccessPolicyTests(TestCase):
             [
                 {
                     "principal": "group:admin",
-                    "action": "delete",
+                    "action": "destroy",
                     "condition": "is_nice_day",
                 }
             ]
@@ -81,7 +81,7 @@ class AccessPolicyTests(TestCase):
             [
                 {
                     "principal": ["group:admin"],
-                    "action": ["delete"],
+                    "action": ["destroy"],
                     "condition": ["is_nice_day"],
                 }
             ],
@@ -94,7 +94,7 @@ class AccessPolicyTests(TestCase):
 
         statements = [
             {"principal": ["id:5"], "action": ["create"]},
-            {"principal": ["group:dev"], "action": ["delete"]},
+            {"principal": ["group:dev"], "action": ["destroy"]},
             {"principal": ["group:cooks"], "action": ["do_something"]},
             {"principal": ["*"], "action": ["*"]},
             {"principal": ["id:79"], "action": ["vote"]},
@@ -141,7 +141,7 @@ class AccessPolicyTests(TestCase):
 
         statements = [
             {"principal": ["id:5"], "action": ["create"]},
-            {"principal": ["group:dev"], "action": ["delete"]},
+            {"principal": ["group:dev"], "action": ["destroy"]},
             {"principal": ["group:cooks"], "action": ["do_something"]},
             {"principal": ["*"], "action": ["*"]},
             {"principal": ["id:79"], "action": ["vote"]},
@@ -151,11 +151,11 @@ class AccessPolicyTests(TestCase):
         policy = AccessPolicy()
 
         result = policy._get_statements_matching_action(
-            FakeRequest(user, method="DELETE"), "delete", statements
+            FakeRequest(user, method="DELETE"), "destroy", statements
         )
 
         self.assertEqual(len(result), 2)
-        self.assertEqual(result[0]["action"], ["delete"])
+        self.assertEqual(result[0]["action"], ["destroy"])
         self.assertEqual(result[1]["action"], ["*"])
 
     def test_get_statements_matching_action_when_method_safe(self):
@@ -167,7 +167,7 @@ class AccessPolicyTests(TestCase):
             {"principal": ["*"], "action": ["list"]},
             {"principal": ["id:5"], "action": ["*"]},
             {"principal": ["group:cooks"], "action": ["<safe_methods>"]},
-            {"principal": ["group:devs"], "action": ["delete"]},
+            {"principal": ["group:devs"], "action": ["destroy"]},
         ]
 
         policy = AccessPolicy()
