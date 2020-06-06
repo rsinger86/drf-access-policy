@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.6.1 (June 2020)
+* Replaces references to "delete" action with "destroy" in docs/tests, to be consistent with DRF's ViewSet actions. Thanks @greenled!
+
 ## 0.6.0 (May 2020)
 * Only call database-hitting `get_user_group_values` if needed in private method. Thanks KillianMeersman!
 * Use `prefetch_related_objects` to ensure that user's groups aren't fetched more than once. Thanks filwaline!
