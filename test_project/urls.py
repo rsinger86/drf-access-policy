@@ -4,7 +4,7 @@ from test_project.testapp.views import UserAccountViewSet, delete_logs, get_logs
 
 # Standard viewsets
 router = routers.DefaultRouter()
-router.register(r"accounts", UserAccountViewSet, base_name="account")
+router.register(r"accounts", UserAccountViewSet, basename="account")
 
 urlpatterns = [
     url(r"^", include(router.urls)),
