@@ -21,13 +21,13 @@ class AuditLogsAccessPolicy(AccessPolicy):
 @api_view(["GET"])
 @permission_classes((AuditLogsAccessPolicy,))
 def search_logs(request):
-    ## you logic here...
+    ## your logic here...
     pass
 
 
 @api_view(["GET"])
 @permission_classes((AuditLogsAccessPolicy,))
 def download_logs(request):
-    ## you logic here...
+    ## your logic here...
     pass
 ```
