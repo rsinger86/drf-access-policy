@@ -408,7 +408,7 @@
             <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;delete&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;destroy&quot;</span><span class="p">],</span>
             <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
             <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
             <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="s2">&quot;is_author&quot;</span>         
@@ -442,7 +442,7 @@
 <ul>
 <li>anyone is allowed to list and retrieve articles</li>
 <li>users in the editor group are allowed to publish and unpublish articles</li>
-<li>in order to delete an article, the user must be the author of the article. Notice how the condition method <code>is_author</code> calls <code>get_object()</code> on the view to get the current article.</li>
+<li>in order to destroy an article, the user must be the author of the article. Notice how the condition method <code>is_author</code> calls <code>get_object()</code> on the view to get the current article.</li>
 <li>if the condition <code>is_happy_hour</code>, evaluates to <code>True</code>, then no one is allowed to do anything.</li>
 </ul>
 <p>Additionally, we have some logic in the <code>scope_queryset</code> method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
