@@ -82,11 +82,11 @@ class ArticleViewSet(ModelViewSet):
             self.request, Articles.objects.all()
         )
     
-    @action(method="POST")
+    @action(methods=['POST'], detail=False)
     def publish(self, request, *args, **kwargs):
         pass
 
-    @action(method="POST")
+    @action(methods=['POST'], detail=False)
     def unpublish(self, request, *args, **kwargs):
         pass
 
