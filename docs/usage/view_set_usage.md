@@ -59,7 +59,7 @@ The actions correspond to the names of methods on the ViewSet and the following 
 - in order to destroy an article, the user must be the author of the article. Notice how the condition method `is_author` calls `get_object()` on the view to get the current article.
 - if the condition `is_happy_hour`, evaluates to `True`, then no one is allowed to do anything.
 
-Additionally, we have some logic in the `scope_queryset` method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.
+Additionally, we have some logic in the `scope_queryset` method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they can see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.
 
 Below is a `ViewSet` with the policy attached. Notice how the `publish` and `unpublish` methods correspond to the `action` declarations in the policy.
 
@@ -82,11 +82,11 @@ class ArticleViewSet(ModelViewSet):
             self.request, Articles.objects.all()
         )
     
-    @action(method="POST")
+    @action(methods=['POST'], detail=False)
     def publish(self, request, *args, **kwargs):
         pass
 
-    @action(method="POST")
+    @action(methods=['POST'], detail=False)
     def unpublish(self, request, *args, **kwargs):
         pass
 
