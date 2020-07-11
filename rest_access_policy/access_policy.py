@@ -95,7 +95,7 @@ class AccessPolicy(permissions.BasePermission):
                 found = not user.is_anonymous
             elif "anonymous" in principals:
                 found = user.is_anonymous
-            elif self.id_prefix + str(user.id) in principals:
+            elif self.id_prefix + str(user.pk) in principals:
                 found = True
             else:
                 if not user_roles:
