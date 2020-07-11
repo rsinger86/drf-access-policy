@@ -445,7 +445,7 @@
 <li>in order to destroy an article, the user must be the author of the article. Notice how the condition method <code>is_author</code> calls <code>get_object()</code> on the view to get the current article.</li>
 <li>if the condition <code>is_happy_hour</code>, evaluates to <code>True</code>, then no one is allowed to do anything.</li>
 </ul>
-<p>Additionally, we have some logic in the <code>scope_queryset</code> method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they case see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
+<p>Additionally, we have some logic in the <code>scope_queryset</code> method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they can see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
 <p>Below is a <code>ViewSet</code> with the policy attached. Notice how the <code>publish</code> and <code>unpublish</code> methods correspond to the <code>action</code> declarations in the policy.</p>
 <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
     <span class="c1"># Just stick the policy here, as you would do with</span>
@@ -465,11 +465,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">Articles</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
         <span class="p">)</span>
 
-    <span class="nd">@action</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
+    <span class="nd">@action</span><span class="p">(</span><span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">],</span> <span class="n">detail</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="hll">    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 </span>        <span class="k">pass</span>
 
-    <span class="nd">@action</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
+    <span class="nd">@action</span><span class="p">(</span><span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">],</span> <span class="n">detail</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="hll">    <span class="k">def</span> <span class="nf">unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 </span>        <span class="k">pass</span>
 
