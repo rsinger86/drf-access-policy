@@ -35,6 +35,10 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.7.0 (August 2020)
+* Allows using HTTP method placeholders in `action` element of statements to match request.
+  * For example, `"action": ["<method:post>"]` will match all POST requests. 
+
 ## 0.6.2 (July 2020)
 * Uses `user.pk` instead of `user.id` in user principal check, for compatibility with non-`id` primary keys.
 * Fixes to documentation. Thanks @oguzhancelikarslan!

@@ -16,6 +16,7 @@ class AccessPolicy(permissions.BasePermission):
     def has_permission(self, request, view) -> bool:
         action = self._get_invoked_action(view)
         statements = self.get_policy_statements(request, view)
+
         if len(statements) == 0:
             return False
 
@@ -120,9 +121,12 @@ class AccessPolicy(permissions.BasePermission):
         """
         matched = []
         SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
+        http_method = "<method:%s>" % request.method.lower()
 
         for statement in statements:
             if action in statement["action"] or "*" in statement["action"]:
+                matched.append(statement)
+            elif http_method in statement["action"]:
                 matched.append(statement)
             elif (
                 "<safe_methods>" in statement["action"]

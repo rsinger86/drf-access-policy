@@ -181,6 +181,26 @@ class AccessPolicyTests(TestCase):
         self.assertEqual(result[1]["principal"], ["id:5"])
         self.assertEqual(result[2]["principal"], ["group:cooks"])
 
+    def test_get_statements_matching_action_when_using_http_method_placeholder(self):
+        cooks = Group.objects.create(name="cooks")
+        user = User.objects.create(id=5)
+        user.groups.add(cooks)
+
+        statements = [
+            {"principal": ["*"], "action": ["create"]},
+            {"principal": ["group:cooks"], "action": ["<method:post>"]},
+            {"principal": ["group:devs"], "action": ["destroy"]},
+        ]
+
+        policy = AccessPolicy()
+
+        result = policy._get_statements_matching_action(
+            FakeRequest(user, method="POST"), "an action that won't match", statements
+        )
+
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["principal"], ["group:cooks"])
+
     def test_get_statements_matching_context_conditions(self):
         class TestPolicy(AccessPolicy):
             def is_sunny(self, request, view, action):
