@@ -487,9 +487,17 @@
     <tr>
         <td><b>Special Values</b></td>
         <td>
-         <code>"*"</code> (any user) <br> 
-         <code>"authenticated"</code> (any authenticated user) <br> 
-         <code>"anonymous"</code> (any non-authenticated user)
+            <ul>
+                <li>
+                    <code>"*"</code> (any user)
+                </li>
+                <li>
+                    <code>"authenticated"</code> (any authenticated user)
+                </li>
+                <li>
+                    <code>"anonymous"</code> (any non-authenticated user)
+                </li>
+            </ul>
         </td>
     </tr>
     <tr>
@@ -497,19 +505,35 @@
         <td> <code>Union[str, List[str]]</code> </td>
     </tr>
     <tr>
-        <td><b>Format</b></td>
+        <td><b>Formats</b></td>
         <td>
-             Match by group with <code>"group:{name}"</code> <br> 
-             Match by ID with <code>"id:{id}" </code>
+            <ul>
+                <li>
+                   Match by group with <code>"group:{name}"</code>
+                </li>
+                <li>
+                   Match by ID with <code>"id:{id}" </code>
+                </li>
+            </ul>      
         </td>
     </tr>
     <tr>
         <td><b>Examples</b></td>
         <td>
-         <code>["group:admins", "id:9322"]</code> <br> 
-         <code>["id:5352"]</code> <br> 
-         <code>["anonymous"]</code> <br> 
-         <code>"*"</code>
+            <ul>
+                <li>
+                   <code>["group:admins", "id:9322"]</code>
+                </li>
+                <li>
+                   <code>["id:5352"]</code>
+                </li>
+                <li>
+                    <code>["anonymous"]</code> 
+                </li>
+                <li>
+                    <code>"*"</code>
+                </li>
+            </ul>
         </td>
     </tr>
 </table>
@@ -519,7 +543,7 @@
     <tr>
         <td><b>Description</b></td>
         <td>
-         The action or actions that the statement applies to. The value should match the name of a view set method or the name of the view function.
+         The action or actions that the statement applies to. The value should match the name of a view set method or the name of the view function. <br><br> Alternatively, you can use placeholders to match the current request's HTTP method.
         </td>
     </tr>
     <tr>
@@ -529,16 +553,36 @@
     <tr>
         <td><b>Special Values</b></td>
         <td>
-            <code>"*"</code> (any action) <br> 
-            <code>"&lt;safe_methods&gt;"</code> (a read-only HTTP request: HEAD, GET, OPTIONS)
+            <ul>
+                <li>
+                    <code>"*"</code> (any action)
+                </li>
+                <li>
+                    <code>"&lt;safe_methods&gt;"</code> (a read-only HTTP request: HEAD, GET, OPTIONS)
+                </li>
+                <li>
+                    <code>"&lt;method:GET|HEAD|DELETE|PUT|PATCH|POST&gt;"</code> (match a specific HTTP method)
+                </li>
+            </ul>
         </td>
     </tr>
     <tr>
         <td><b>Examples</b></td>
         <td>
-            <code>["list", "destroy", "create]</code> <br> 
-            <code>["*"]</code> <br> 
-            <code>["&lt;safe_methods&gt;"]</code>
+            <ul>
+                <li>
+                    <code>["list", "destroy", "create]</code>
+                </li>
+                <li>
+                    <code>["*"]</code> 
+                </li>
+                <li>
+                    <code>["&lt;safe_methods&gt;"]</code> <br>
+                </li>
+                <li>
+                     <code>["&lt;method:POST&gt;"]</code>
+                </li>
+            </ul>
         </td>
     </tr>
 </table>
@@ -557,7 +601,16 @@
     </tr>
     <tr>
         <td><b>Values</b></td>
-        <td>Either <code>"allow"</code> or <code>"deny"</code></td>
+        <td>
+            <ul>
+                <li>
+                   <code>"allow"</code>
+                </li>
+                <li>
+                   <code>"deny"</code>
+                </li>
+            </ul>
+        </td>
     </tr>
 </table>
 
@@ -566,7 +619,11 @@
     <tr>
         <td><b>Description</b></td>
         <td>
-        The name of a method on the policy that returns a boolean. The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If you want to pass a custom argument to the condition's method, format the value as <code>{method_name}:{value}</code>, e.g. <code>user_must_be:owner</code> will call a method named <code>user_must_be</code>, passing it the string <code>"owner"</code> as the final argument. If true, the policy will be in effect. Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to <code>True</code>.
+        The name of a method on the policy that returns a boolean. If you want to pass a custom argument to the condition's method, format the value as <code>{method_name}:{value}</code>, e.g. <code>user_must_be:owner</code> will call a method named <code>user_must_be</code>, passing it the string <code>"owner"</code> as the final argument.
+        <br><br>
+         The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If it returns <code>True</code>, the statement will be in effect.
+         <br><br>
+         Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to <code>True</code>.
         </td>
     </tr>
     <tr>
@@ -576,11 +633,20 @@
     <tr>
         <td><b>Examples</b></td>
         <td>
-            <code>"is_manager_of_account"</code> <br>
-            <code>"is_author_of_post"</code> <br>
-            <code>["balance_is_positive", "account_is_not_frozen"]`</code>
-            <br> 
-            <code>"user_must_be:account_manager"</code>
+            <ul>
+                <li>
+                   <code>"is_manager_of_account"</code> 
+                </li>
+                <li>
+                   <code>"is_author_of_post"</code>
+                </li>
+                <li>
+                    <code>["balance_is_positive", "account_is_not_frozen"]`</code>
+                </li>
+                <li>
+                    <code>"user_must_be:account_manager"</code>
+                </li>
+            </ul>
         </td>
     </tr>
 </table>
