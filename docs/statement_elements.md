@@ -90,7 +90,7 @@ JSON policies are made up of elements that together determine *who* can do *what
                     <code>"&lt;safe_methods&gt;"</code> (a read-only HTTP request: HEAD, GET, OPTIONS)
                 </li>
                 <li>
-                    <code>"&lt;method:GET|HEAD|DELETE|PUT|PATCH|POST&gt;"</code> (match a specific HTTP method)
+                    <code>"&lt;method:get|head|delete|put|patch|post&gt;"</code> (match a specific HTTP method)
                 </li>
             </ul>
         </td>
@@ -109,7 +109,7 @@ JSON policies are made up of elements that together determine *who* can do *what
                     <code>["&lt;safe_methods&gt;"]</code> <br>
                 </li>
                 <li>
-                     <code>["&lt;method:POST&gt;"]</code>
+                     <code>["&lt;method:post&gt;"]</code>
                 </li>
             </ul>
         </td>
