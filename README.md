@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.8.0 (September 2020)
+* Workaround for quirk resulting in `action` not always being set. Thanks @oguzhancelikarslan!
+
 ## 0.7.0 (August 2020)
 * Allows using HTTP method placeholders in `action` element of statements to match request.
   * For example, `"action": ["<method:post>"]` will match all POST requests. 
