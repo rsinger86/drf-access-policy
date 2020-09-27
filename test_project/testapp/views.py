@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from test_project.testapp.access_policies import (
     LogsAccessPolicy,
@@ -14,6 +14,10 @@ class UserAccountViewSet(viewsets.ModelViewSet):
     permission_classes = (UserAccountAccessPolicy,)
     serializer_class = UserAccountSerializer
     queryset = UserAccount.objects.all()
+
+    @action(detail=True, methods=["post"])
+    def set_password(self, request, pk=None):
+        return Response({}, status=200)
 
 
 @api_view(["GET"])

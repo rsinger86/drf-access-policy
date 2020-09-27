@@ -41,3 +41,28 @@ class UserAccountTestCase(APITestCase):
 
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, 403)
+
+    def test_set_password_should_be_allowed(self):
+        account = UserAccount.objects.create(
+            username="fred", first_name="Fred", last_name="Rogers"
+        )
+        regular_users_group = Group.objects.create(name="regular_users")
+        user = User.objects.create()
+        user.groups.add(regular_users_group)
+        self.client.force_authenticate(user=user)
+
+        url = reverse("account-set-password", args=[account.id])
+
+        response = self.client.post(url, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    def test_set_password_should_be_denied(self):
+        account = UserAccount.objects.create(
+            username="fred", first_name="Fred", last_name="Rogers"
+        )
+        user = User.objects.create()
+        self.client.force_authenticate(user=user)
+
+        url = reverse("account-set-password", args=[account.id])
+        response = self.client.post(url, format="json")
+        self.assertEqual(response.status_code, 403)

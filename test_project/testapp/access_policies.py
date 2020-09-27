@@ -5,6 +5,11 @@ class UserAccountAccessPolicy(AccessPolicy):
     statements = [
         {"principal": "group:admin", "action": "create", "effect": "allow"},
         {"principal": "group:banned", "action": "retrieve", "effect": "deny"},
+        {
+            "principal": "group:regular_users",
+            "action": "set_password",
+            "effect": "allow",
+        },
     ]
 
 
