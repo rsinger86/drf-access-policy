@@ -41,13 +41,13 @@ class AccessPolicy(permissions.BasePermission):
             the name of the function.
         """
         if hasattr(view, "action"):
-            return view.action
+            return list(view.action_map.values())[0]
         elif hasattr(view, "__class__"):
             return view.__class__.__name__
         raise AccessPolicyException("Could not determine action of request")
 
     def _evaluate_statements(
-        self, statements: List[dict], request, view, action: str
+            self, statements: List[dict], request, view, action: str
     ) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
@@ -80,7 +80,7 @@ class AccessPolicy(permissions.BasePermission):
         return statements
 
     def _get_statements_matching_principal(
-        self, request, statements: List[dict]
+            self, request, statements: List[dict]
     ) -> List[dict]:
         user = request.user
         user_roles = None
@@ -113,7 +113,7 @@ class AccessPolicy(permissions.BasePermission):
         return matched
 
     def _get_statements_matching_action(
-        self, request, action: str, statements: List[dict]
+            self, request, action: str, statements: List[dict]
     ):
         """
             Filter statements and return only those that match the specified
@@ -129,15 +129,15 @@ class AccessPolicy(permissions.BasePermission):
             elif http_method in statement["action"]:
                 matched.append(statement)
             elif (
-                "<safe_methods>" in statement["action"]
-                and request.method in SAFE_METHODS
+                    "<safe_methods>" in statement["action"]
+                    and request.method in SAFE_METHODS
             ):
                 matched.append(statement)
 
         return matched
 
     def _get_statements_matching_context_conditions(
-        self, request, view, action: str, statements: List[dict]
+            self, request, view, action: str, statements: List[dict]
     ):
         """
             Filter statements and only return those that match all of their
