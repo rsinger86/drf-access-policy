@@ -41,7 +41,10 @@ class AccessPolicy(permissions.BasePermission):
             the name of the function.
         """
         if hasattr(view, "action"):
-            return view.action or list(view.action_map.values())[0]
+            if hasattr(view, 'action_map'):
+                return view.action or list(view.action_map.values())[0]
+            return view.action
+
         elif hasattr(view, "__class__"):
             return view.__class__.__name__
         raise AccessPolicyException("Could not determine action of request")
