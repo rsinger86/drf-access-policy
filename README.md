@@ -35,6 +35,10 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.8.1 (October 2020)
+* Fixes case where object has no `action_map`. Thanks @oguzhancelikarslan!
+* Added missing info to docs. Thanks @hardntrash!
+
 ## 0.8.0 (September 2020)
 * Workaround for quirk resulting in `action` not always being set. Thanks @oguzhancelikarslan!
 
