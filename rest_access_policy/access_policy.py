@@ -3,8 +3,11 @@ from typing import List
 
 from django.conf import settings
 from django.db.models import prefetch_related_objects
-from rest_access_policy import AccessPolicyException
+from pyparsing import infixNotation, opAssoc
 from rest_framework import permissions
+
+from rest_access_policy import AccessPolicyException
+from .parsing import ConditionOperand, boolOperand, BoolNot, BoolAnd, BoolOr
 
 
 class AccessPolicy(permissions.BasePermission):
@@ -157,7 +160,17 @@ class AccessPolicy(permissions.BasePermission):
             fails = 0
 
             for condition in statement["condition"]:
-                passed = self._check_condition(condition, request, view, action)
+
+                ConditionOperand.check_condition_fn = lambda _, cond: self._check_condition(cond, request, view, action)
+                boolOperand.setParseAction(ConditionOperand)
+
+                boolExpr = infixNotation(boolOperand, [
+                    ("not", 1, opAssoc.RIGHT, BoolNot),
+                    ("and", 2, opAssoc.LEFT, BoolAnd),
+                    ("or", 2, opAssoc.LEFT, BoolOr),
+                ])
+
+                passed = bool(boolExpr.parseString(condition)[0])
 
                 if not passed:
                     fails += 1
