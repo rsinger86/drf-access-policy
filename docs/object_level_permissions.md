@@ -30,4 +30,4 @@ class AccountAccessPolicy(AccessPolicy):
         return getattr(account, field) == request.user
 ```
 
-Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal fo the user of the request: the statement will only be effective if this condition passes.
+Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal for the user of the request: the statement will only be effective if this condition passes.
