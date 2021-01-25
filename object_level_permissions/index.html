@@ -417,7 +417,24 @@
 </span></pre></div>
 
 
-<p>Notice how we're re-using the <code>user_must_be</code> method by parameterizing it with the model field that should be equal fo the user of the request: the statement will only be effective if this condition passes.</p>
+<p>Notice how we're re-using the <code>user_must_be</code> method by parameterizing it with the model field that should be equal for the user of the request: the statement will only be effective if this condition passes.</p>
+<p>If you have multiple custom methods defined no the policy, you can construct boolean expressions to combine them. The syntax is the same as Python's boolean expressions.</p>
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AccountAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;freeze&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;(is_request_from_account_owner or is_FBI_request)&quot;</span><span class="p">,</span> <span class="p">]</span>     
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">is_FBI_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">is_request_from_fbi</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_request_from_account_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">account</span><span class="o">.</span><span class="n">owner</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+</pre></div>
                 
                   
                 
