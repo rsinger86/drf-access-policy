@@ -32,4 +32,5 @@ setup(
     long_description=readme(),
     classifiers=classifiers,
     long_description_content_type="text/markdown",
+    install_requires=["pyparsing"],
 )
