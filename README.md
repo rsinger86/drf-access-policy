@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.8.5 (January 2021)
+* Adds support for boolean expressions in `condition` statement elements. Thanks @tanonl!
+
 ## 0.8.1 (October 2020)
 * Fixes case where object has no `action_map`. Thanks @oguzhancelikarslan!
 * Added missing info to docs. Thanks @hardntrash!

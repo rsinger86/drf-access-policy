@@ -44,7 +44,7 @@ class AccessPolicy(permissions.BasePermission):
             the name of the function.
         """
         if hasattr(view, "action"):
-            if hasattr(view, 'action_map'):
+            if hasattr(view, "action_map"):
                 return view.action or list(view.action_map.values())[0]
             return view.action
 
@@ -160,15 +160,19 @@ class AccessPolicy(permissions.BasePermission):
             fails = 0
 
             for condition in statement["condition"]:
-
-                ConditionOperand.check_condition_fn = lambda _, cond: self._check_condition(cond, request, view, action)
+                ConditionOperand.check_condition_fn = lambda _, cond: self._check_condition(
+                    cond, request, view, action
+                )
                 boolOperand.setParseAction(ConditionOperand)
 
-                boolExpr = infixNotation(boolOperand, [
-                    ("not", 1, opAssoc.RIGHT, BoolNot),
-                    ("and", 2, opAssoc.LEFT, BoolAnd),
-                    ("or", 2, opAssoc.LEFT, BoolOr),
-                ])
+                boolExpr = infixNotation(
+                    boolOperand,
+                    [
+                        ("not", 1, opAssoc.RIGHT, BoolNot),
+                        ("and", 2, opAssoc.LEFT, BoolAnd),
+                        ("or", 2, opAssoc.LEFT, BoolOr),
+                    ],
+                )
 
                 passed = bool(boolExpr.parseString(condition)[0])
 
