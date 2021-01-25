@@ -32,7 +32,7 @@ class AccountAccessPolicy(AccessPolicy):
 
 Notice how we're re-using the `user_must_be` method by parameterizing it with the model field that should be equal for the user of the request: the statement will only be effective if this condition passes.
 
-If you have multiple custom methods defined no the policy, you can construct boolean expressions to combine them. The syntax is the same as Python's boolean expressions.
+If you have multiple custom methods defined on the policy, you can construct boolean expressions to combine them. The syntax is the same as Python's boolean expressions.
 
 ```python
 class AccountAccessPolicy(AccessPolicy):
@@ -41,7 +41,7 @@ class AccountAccessPolicy(AccessPolicy):
             "action": ["freeze"],
             "principal": ["*"],
             "effect": "allow",
-            "condition": ["(is_request_from_account_owner or is_FBI_request)", ]     
+            "condition": ["(is_request_from_account_owner or is_FBI_request)"]     
         },
     ]
 
