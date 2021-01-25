@@ -2,9 +2,10 @@ import unittest.mock as mock
 
 from django.contrib.auth.models import AnonymousUser, Group, User
 from django.test import TestCase
-from rest_access_policy import AccessPolicy, AccessPolicyException
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
+
+from rest_access_policy import AccessPolicy, AccessPolicyException
 
 
 class FakeRequest(object):
@@ -203,16 +204,34 @@ class AccessPolicyTests(TestCase):
 
     def test_get_statements_matching_context_conditions(self):
         class TestPolicy(AccessPolicy):
-            def is_sunny(self, request, view, action):
+            def is_true(self, request, view, action):
                 return True
 
-            def is_cloudy(self, request, view, action):
+            def is_false(self, request, view, action):
                 return False
+
+            def is_cloudy(self, request, view, action):
+                return True
+
+            def is_arg_true(self, request, view, action, arg):
+                return eval(arg)
 
         statements = [
             {"principal": ["id:1"], "action": ["create"], "condition": []},
-            {"principal": ["id:2"], "action": ["create"], "condition": ["is_sunny"]},
-            {"principal": ["id:3"], "action": ["create"], "condition": ["is_cloudy"]},
+            {"principal": ["id:2"], "action": ["create"], "condition": ["is_true"]},
+            {"principal": ["id:4"], "action": ["create"], "condition": ["is_false"]},
+            {"principal": ["id:5"], "action": ["create"], "condition": ["is_cloudy", "is_false and is_true"]},
+            {"principal": ["id:6"], "action": ["create"], "condition": ["is_false and is_true", "is_cloudy"]},
+            {"principal": ["id:7"], "action": ["create"], "condition": ["is_true or is_false"]},
+            {"principal": ["id:8"], "action": ["create"], "condition": ["is_true and not is_false"]},
+            {"principal": ["id:9"], "action": ["create"], "condition": ["not not is_true"]},
+            {"principal": ["id:10"], "action": ["create"], "condition": ["not (is_true and is_false)"]},
+            {"principal": ["id:11"], "action": ["create"], "condition": ["is_false or not is_true and is_cloudy"]},
+            {"principal": ["id:12"], "action": ["create"], "condition": ["is_false or not is_true or not is_cloudy"]},
+            {"principal": ["id:13"], "action": ["create"], "condition": ["is_false or not (is_true and is_cloudy)"]},
+            {"principal": ["id:14"], "action": ["create"], "condition": ["is_true or is_false or is_cloudy"]},
+            {"principal": ["id:15"], "action": ["create"], "condition": ["is_false or is_arg_true:True"]},
+            {"principal": ["id:16"], "action": ["create"], "condition": ["is_false or is_arg_true:False"]}
         ]
 
         policy = TestPolicy()
@@ -225,11 +244,13 @@ class AccessPolicyTests(TestCase):
             result,
             [
                 {"principal": ["id:1"], "action": ["create"], "condition": []},
-                {
-                    "principal": ["id:2"],
-                    "action": ["create"],
-                    "condition": ["is_sunny"],
-                },
+                {"principal": ["id:2"], "action": ["create"], "condition": ["is_true"]},
+                {"principal": ["id:7"], "action": ["create"], "condition": ["is_true or is_false"]},
+                {"principal": ["id:8"], "action": ["create"], "condition": ["is_true and not is_false"]},
+                {"principal": ["id:9"], "action": ["create"], "condition": ["not not is_true"]},
+                {"principal": ["id:10"], "action": ["create"], "condition": ["not (is_true and is_false)"]},
+                {"principal": ["id:14"], "action": ["create"], "condition": ["is_true or is_false or is_cloudy"]},
+                {"principal": ["id:15"], "action": ["create"], "condition": ["is_false or is_arg_true:True"]},
             ],
         )
 
