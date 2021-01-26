@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.8.6 (January 2021)
+* Adds missing requirement to setup.py. Thanks @daviddavis!
+
 ## 0.8.5 (January 2021)
 * Adds support for boolean expressions in `condition` statement elements. Thanks @tanonl!
 
