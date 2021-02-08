@@ -28,17 +28,14 @@ class AccessPolicy(permissions.BasePermission):
 
         result = self._evaluate_statements(statements, request, view, action)
 
-        log.debug('"%s" perm check was %s for action=%s "%s %s" view="%s-%s-%s" for user="%s" with groups=%s',
+        log.debug('"%s" perm check was %s for action=%s "%s %s" view="%s-%s" for user="%s" with groups=%s',
                   self.__class__.__name__,
                   result,
                   action,
-                  None,
-                  # getattr(request, '_request', request._request.method,
-                  None,
-                  # request._request.path,
-                  getattr(view, 'basename', 'NotAViewSet'),
-                  getattr(view, 'action', 'NotAViewSet'),
-                  getattr(view, 'detail', 'NotAViewSet'),
+                  request.method,
+                  request.path,
+                  getattr(view, 'basename', view.get_view_name()),
+                  getattr(view, 'action', ''),
                   request.user, ','.join([x.name for x in request.user.groups.all()]),
                   )
 
@@ -49,8 +46,8 @@ class AccessPolicy(permissions.BasePermission):
 
         log.debug('"%s" %s %s view=%s-%s-%s for user=%s, groups=%s obj=%s had result: %s',
                   self.__class__.__name__,
-                  request._request.method,
-                  request._request.path,
+                  request.method,
+                  request.path,
                   view.basename, view.action, view.detail,
                   request.user,
                   ','.join([x.name for x in request.user.groups.all()]),
