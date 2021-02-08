@@ -7,16 +7,20 @@ from rest_framework.viewsets import ModelViewSet
 
 from rest_access_policy import AccessPolicy, AccessPolicyException
 
-
 class FakeRequest(object):
-    def __init__(self, user: User, method: str = "GET"):
+    def __init__(self, user: User, method: str = "GET", path: str = "/fake"):
         self.user = user
         self.method = method
+        self.path = path
 
 
 class FakeViewSet(object):
     def __init__(self, action: str = "create"):
         self.action = action
+        self.basename = 'fake_viewset'
+
+    def get_view_name(self):
+        return self.basename
 
 
 class AccessPolicyTests(TestCase):
