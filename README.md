@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.8.7 (February 2021)
+* Fixed bug preventing argument being passed to custom condition method if "*" character used.
+
 ## 0.8.6 (January 2021)
 * Adds missing requirement to setup.py. Thanks @daviddavis!
 

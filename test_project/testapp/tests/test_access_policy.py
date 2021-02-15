@@ -413,3 +413,38 @@ class AccessPolicyTests(TestCase):
                 view,
                 "create",
             )
+
+    def test_has_permission_with_custom_condition_and_star_character(self):
+        class TestPolicy(AccessPolicy):
+            statements = [
+                {
+                    'action': '*',
+                    'principal': 'group:hr',
+                    'effect': 'allow',
+                    'condition': ['check_permissions:*'] 
+                },
+                {
+                    'action': '*',
+                    'principal': 'group:admin',
+                    'effect': 'allow',
+                    'condition': ['check_permissions:reboot'] 
+                }
+            ]
+
+            def check_permissions(self, request, view, action, permissions: str):
+                if permissions == '*':
+                    return True
+                else:
+                    return False
+
+        policy = TestPolicy()
+        view = FakeViewSet(action="create")
+
+        fred = User.objects.create(username="fred")
+        fred.groups.add(Group.objects.create(name="admin"))
+
+        jane = User.objects.create(username="jane")
+        jane.groups.add(Group.objects.create(name="hr"))
+
+        self.assertFalse(policy.has_permission(FakeRequest(user=fred), view))
+        self.assertTrue(policy.has_permission(FakeRequest(user=jane), view))

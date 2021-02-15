@@ -64,4 +64,4 @@ class BoolNot(object):
 
 TRUE = Keyword("True")
 FALSE = Keyword("False")
-boolOperand = TRUE | FALSE | Word(alphanums + '_:.', max=256)
+boolOperand = TRUE | FALSE | Word(alphanums + '_:.*', max=256)
