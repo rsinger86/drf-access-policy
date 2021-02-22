@@ -101,7 +101,7 @@ class AccessPolicy(permissions.BasePermission):
             elif "admin" in principals:
                 found = user.is_superuser
             elif "staff" in principals:
-                found = user.is_superuser
+                found = user.is_staff
             elif "authenticated" in principals:
                 found = not user.is_anonymous
             elif "anonymous" in principals:
