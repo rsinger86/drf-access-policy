@@ -24,7 +24,7 @@ pkginfo==1.5.0.1
 Pygments==2.4.2
 pymdown-extensions==6.1
 pytz==2019.1
-PyYAML==5.1.2
+PyYAML==5.4
 readme-renderer==24.0
 requests==2.22.0
 requests-toolbelt==0.9.1
