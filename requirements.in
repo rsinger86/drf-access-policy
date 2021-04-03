@@ -1,6 +1,6 @@
 # to update requirements.txt, add the new package here
 # then run pip install pip-tools
 # then run pip-compile && pip-sync
-Django==3.0.7
 djangorestframework==3.11.2
+Django==3.0.12
 pyparsing==2.4.7
