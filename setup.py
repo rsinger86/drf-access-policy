@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-from setuptools import setup
 from codecs import open
-from os import path
+
+from setuptools import setup
 
 
 def readme():

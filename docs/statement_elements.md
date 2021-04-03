@@ -19,6 +19,12 @@ JSON policies are made up of elements that together determine *who* can do *what
                     <code>"*"</code> (any user)
                 </li>
                 <li>
+                    <code>"admin"</code> (any admin user)
+                </li>
+                <li>
+                    <code>"staff"</code> (any staff user)
+                </li>
+                <li>
                     <code>"authenticated"</code> (any authenticated user)
                 </li>
                 <li>

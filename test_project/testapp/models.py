@@ -1,9 +1,4 @@
-import uuid
-
-from django.utils import timezone
-from django.core import mail
 from django.db import models
-from django.utils.functional import cached_property
 
 
 class UserAccount(models.Model):

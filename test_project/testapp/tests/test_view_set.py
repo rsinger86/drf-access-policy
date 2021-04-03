@@ -1,8 +1,7 @@
-import datetime
-
 from django.contrib.auth.models import Group, User
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
+
 from test_project.testapp.models import UserAccount
 
 

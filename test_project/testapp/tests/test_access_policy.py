@@ -88,7 +88,7 @@ class AccessPolicyTests(TestCase):
             ],
         )
 
-    def test_get_statements_matching_principalif_user_is_authenticated(self):
+    def test_get_statements_matching_principal_if_user_is_authenticated(self):
         cooks = Group.objects.create(name="cooks")
         user = User.objects.create(id=5)
         user.groups.add(cooks)
@@ -101,6 +101,8 @@ class AccessPolicyTests(TestCase):
             {"principal": ["id:79"], "action": ["vote"]},
             {"principal": ["anonymous"], "action": ["anonymous_action"]},
             {"principal": ["authenticated"], "action": ["authenticated_action"]},
+            {"principal": ["staff"], "action": ["staff_action"]},
+            {"principal": ["admin"], "action": ["admin_action"]},
         ]
 
         policy = AccessPolicy()
@@ -115,14 +117,82 @@ class AccessPolicyTests(TestCase):
         self.assertEqual(result[2]["action"], ["*"])
         self.assertEqual(result[3]["action"], ["authenticated_action"])
 
+    def test_get_statements_matching_principal_if_user_is_staff(self):
+        cooks = Group.objects.create(name="cooks")
+        user = User.objects.create(id=5)
+        user.groups.add(cooks)
+        user.is_staff = True
+        user.save()
+
+        statements = [
+            {"principal": ["id:5"], "action": ["create"]},
+            {"principal": ["group:dev"], "action": ["destroy"]},
+            {"principal": ["group:cooks"], "action": ["do_something"]},
+            {"principal": ["*"], "action": ["*"]},
+            {"principal": ["id:79"], "action": ["vote"]},
+            {"principal": ["anonymous"], "action": ["anonymous_action"]},
+            {"principal": ["authenticated"], "action": ["authenticated_action"]},
+            {"principal": ["staff"], "action": ["staff_action"]},
+            {"principal": ["admin"], "action": ["admin_action"]},
+        ]
+
+        policy = AccessPolicy()
+
+        result = policy._get_statements_matching_principal(
+            FakeRequest(user), statements
+        )
+
+        self.assertEqual(len(result), 5)
+        self.assertEqual(result[0]["action"], ["create"])
+        self.assertEqual(result[1]["action"], ["do_something"])
+        self.assertEqual(result[2]["action"], ["*"])
+        self.assertEqual(result[3]["action"], ["authenticated_action"])
+        self.assertEqual(result[4]["action"], ["staff_action"])
+
+    def test_get_statements_matching_principal_if_user_is_admin(self):
+        cooks = Group.objects.create(name="cooks")
+        user = User.objects.create(id=5)
+        user.groups.add(cooks)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+
+        statements = [
+            {"principal": ["id:5"], "action": ["create"]},
+            {"principal": ["group:dev"], "action": ["destroy"]},
+            {"principal": ["group:cooks"], "action": ["do_something"]},
+            {"principal": ["*"], "action": ["*"]},
+            {"principal": ["id:79"], "action": ["vote"]},
+            {"principal": ["anonymous"], "action": ["anonymous_action"]},
+            {"principal": ["authenticated"], "action": ["authenticated_action"]},
+            {"principal": ["staff"], "action": ["staff_action"]},
+            {"principal": ["admin"], "action": ["admin_action"]},
+        ]
+
+        policy = AccessPolicy()
+
+        result = policy._get_statements_matching_principal(
+            FakeRequest(user), statements
+        )
+
+        self.assertEqual(len(result), 6)
+        self.assertEqual(result[0]["action"], ["create"])
+        self.assertEqual(result[1]["action"], ["do_something"])
+        self.assertEqual(result[2]["action"], ["*"])
+        self.assertEqual(result[3]["action"], ["authenticated_action"])
+        self.assertEqual(result[4]["action"], ["staff_action"])
+        self.assertEqual(result[5]["action"], ["admin_action"])
+
     def test_get_statements_matching_principal_if_user_is_anonymous(self):
         user = AnonymousUser()
 
         statements = [
             {"principal": ["id:5"], "action": ["create"]},
             {"principal": ["*"], "action": ["list"]},
-            {"principal": ["authenticated"], "action": ["authenticated_action"]},
             {"principal": ["anonymous"], "action": ["anonymous_action"]},
+            {"principal": ["authenticated"], "action": ["authenticated_action"]},
+            {"principal": ["staff"], "action": ["staff_action"]},
+            {"principal": ["admin"], "action": ["admin_action"]},
         ]
 
         policy = AccessPolicy()
