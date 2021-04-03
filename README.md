@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.9.0 (April 2021)
+* Adds special `admin` and `staff` principal keys to match users with `is_superuser` and `is_staff` set to `True`. Thanks @BarnabasSzabolcs!
+
 ## 0.8.7 (February 2021)
 * Fixed bug preventing argument being passed to custom condition method if "*" character used.
 
