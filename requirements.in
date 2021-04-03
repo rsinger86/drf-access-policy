@@ -2,5 +2,5 @@
 # then run pip install pip-tools
 # then run pip-compile && pip-sync
 Django==3.0.7
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 pyparsing==2.4.7
