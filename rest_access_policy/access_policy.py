@@ -1,3 +1,4 @@
+import logging
 import importlib
 from typing import List
 
@@ -8,6 +9,8 @@ from rest_framework import permissions
 
 from rest_access_policy import AccessPolicyException
 from .parsing import ConditionOperand, boolOperand, BoolNot, BoolAnd, BoolOr
+
+log = logging.getLogger(__name__)
 
 
 class AccessPolicy(permissions.BasePermission):
@@ -23,7 +26,35 @@ class AccessPolicy(permissions.BasePermission):
         if len(statements) == 0:
             return False
 
-        return self._evaluate_statements(statements, request, view, action)
+        result = self._evaluate_statements(statements, request, view, action)
+
+        log.debug('"%s" perm check was %s for action=%s "%s %s" view="%s-%s" for user="%s" with groups=%s',
+                  self.__class__.__name__,
+                  result,
+                  action,
+                  request.method,
+                  request.path,
+                  getattr(view, 'basename', view.get_view_name()),
+                  getattr(view, 'action', ''),
+                  request.user, ','.join([x.name for x in request.user.groups.all()]),
+                  )
+
+        return result
+
+    def has_object_permission(self, request, view, obj):
+        result = super().has_object_permission(request, view, obj)
+
+        log.debug('"%s" %s %s view=%s-%s-%s for user=%s, groups=%s obj=%s had result: %s',
+                  self.__class__.__name__,
+                  request.method,
+                  request.path,
+                  view.basename, view.action, view.detail,
+                  request.user,
+                  ','.join([x.name for x in request.user.groups.all()]),
+                  obj,
+                  result)
+
+        return result
 
     def get_policy_statements(self, request, view) -> List[dict]:
         return self.statements
@@ -57,7 +88,21 @@ class AccessPolicy(permissions.BasePermission):
     ) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
+
+        matched_principals = set()
+        for match in matched:
+            for principal in match['principal']:
+                matched_principals.add(principal)
+
+        log.debug('"%s" user "%s" in groups %s matched access policy principals %s',
+                  self.__class__.__name__,
+                  request.user,
+                  ",".join(['"%s"' % ug for ug in self.get_user_group_values(request.user)]),
+                  matched_principals)
+
         matched = self._get_statements_matching_action(request, action, matched)
+        log.debug('"%s" action "%s" matched statements %s',
+                  self.__class__.__name__, action, matched)
 
         matched = self._get_statements_matching_context_conditions(
             request, view, action, matched
@@ -109,6 +154,11 @@ class AccessPolicy(permissions.BasePermission):
             elif self.id_prefix + str(user.pk) in principals:
                 found = True
             else:
+                log.debug("No '*', 'authenticated', 'anonymous', or user id in principals %s, "
+                          + "trying groups %s",
+                          principals,
+                          user_roles)
+
                 if not user_roles:
                     user_roles = self.get_user_group_values(user)
 
@@ -211,6 +261,14 @@ class AccessPolicy(permissions.BasePermission):
                 "condition '%s' must return true/false, not %s"
                 % (condition, type(result))
             )
+
+        log.debug('"%s" action "%s" for user "%s" |%s| conditions "%s"',
+                  self.__class__.__name__,
+                  action,
+                  getattr(request, 'user', 'NoUser'),
+                  result,
+                  condition,
+                  )
 
         return result
 

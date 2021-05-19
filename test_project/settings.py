@@ -123,3 +123,24 @@ STATIC_URL = "/static/"
 
 
 DRF_ACCESS_POLICY = {"reusable_conditions": "test_project.global_access_conditions"}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {name} {module}.{funcName}:{lineno:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
