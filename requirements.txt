@@ -4,9 +4,9 @@
 #
 #    pip-compile
 #
-asgiref==3.2.7
+asgiref==3.3.4
     # via django
-django==3.0.14
+django==3.1.9
     # via
     #   -r requirements.in
     #   djangorestframework
