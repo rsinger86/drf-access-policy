@@ -32,9 +32,8 @@ matrix:
 
 install:
   - pip install -U pip
-  - pip install -q Django==$DJANGO_VERSION
+  - pip install -q Django==$DJANGO
   - python setup.py install
-  - pip install -r requirements-dev.txt
   - pip install -U codecov
 
 script:
