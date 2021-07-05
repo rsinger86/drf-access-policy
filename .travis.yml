@@ -33,6 +33,7 @@ matrix:
 install:
   - pip install -U pip
   - pip install -q Django==$DJANGO
+  - if [[ $DJANGO == 1.8.19 ]]; then pip install django_lifecycle; fi
   - python setup.py install
   - pip install -U codecov
 
