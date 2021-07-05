@@ -19,7 +19,6 @@ class AnonymousUser(object):
         self.is_superuser = False
 
 
-
 class AccessPolicy(permissions.BasePermission):
     statements = []
     id = None
@@ -50,8 +49,8 @@ class AccessPolicy(permissions.BasePermission):
 
     def _get_invoked_action(self, view) -> str:
         """
-            If a CBV, the name of the method. If a regular function view,
-            the name of the function.
+        If a CBV, the name of the method. If a regular function view,
+        the name of the function.
         """
         if hasattr(view, "action"):
             if hasattr(view, "action_map"):
@@ -62,16 +61,12 @@ class AccessPolicy(permissions.BasePermission):
             return view.__class__.__name__
         raise AccessPolicyException("Could not determine action of request")
 
-    def _evaluate_statements(
-        self, statements: List[dict], request, view, action: str
-    ) -> bool:
+    def _evaluate_statements(self, statements: List[dict], request, view, action: str) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
         matched = self._get_statements_matching_action(request, action, matched)
 
-        matched = self._get_statements_matching_context_conditions(
-            request, view, action, matched
-        )
+        matched = self._get_statements_matching_context_conditions(request, view, action, matched)
 
         denied = [_ for _ in matched if _["effect"] != "allow"]
 
@@ -95,9 +90,7 @@ class AccessPolicy(permissions.BasePermission):
 
         return statements
 
-    def _get_statements_matching_principal(
-        self, request, statements: List[dict]
-    ) -> List[dict]:
+    def _get_statements_matching_principal(self, request, statements: List[dict]) -> List[dict]:
         user = request.user or AnonymousUser()
         user_roles = None
         matched = []
@@ -132,12 +125,10 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _get_statements_matching_action(
-        self, request, action: str, statements: List[dict]
-    ):
+    def _get_statements_matching_action(self, request, action: str, statements: List[dict]):
         """
-            Filter statements and return only those that match the specified
-            action.
+        Filter statements and return only those that match the specified
+        action.
         """
         matched = []
         SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
@@ -148,10 +139,7 @@ class AccessPolicy(permissions.BasePermission):
                 matched.append(statement)
             elif http_method in statement["action"]:
                 matched.append(statement)
-            elif (
-                "<safe_methods>" in statement["action"]
-                and request.method in SAFE_METHODS
-            ):
+            elif "<safe_methods>" in statement["action"] and request.method in SAFE_METHODS:
                 matched.append(statement)
 
         return matched
@@ -160,9 +148,9 @@ class AccessPolicy(permissions.BasePermission):
         self, request, view, action: str, statements: List[dict]
     ):
         """
-            Filter statements and only return those that match all of their
-            custom context conditions; if no conditions are provided then
-            the statement should be returned.
+        Filter statements and only return those that match all of their
+        custom context conditions; if no conditions are provided then
+        the statement should be returned.
         """
         matched = []
 
@@ -201,10 +189,10 @@ class AccessPolicy(permissions.BasePermission):
 
     def _check_condition(self, condition: str, request, view, action: str):
         """
-            Evaluate a custom context condition; if method does not exist on
-            the access policy class, then return False.
-            Condition value can contain a value that is passed to method, if
-            formatted as `<method_name>:<arg_value>`.
+        Evaluate a custom context condition; if method does not exist on
+        the access policy class, then return False.
+        Condition value can contain a value that is passed to method, if
+        formatted as `<method_name>:<arg_value>`.
         """
         parts = condition.split(":", 1)
         method_name = parts[0]
@@ -218,8 +206,7 @@ class AccessPolicy(permissions.BasePermission):
 
         if type(result) is not bool:
             raise AccessPolicyException(
-                "condition '%s' must return true/false, not %s"
-                % (condition, type(result))
+                "condition '%s' must return true/false, not %s" % (condition, type(result))
             )
 
         return result
@@ -229,22 +216,19 @@ class AccessPolicy(permissions.BasePermission):
             return getattr(self, method_name)
 
         if hasattr(settings, "DRF_ACCESS_POLICY"):
-            module_list = settings.DRF_ACCESS_POLICY.get("reusable_conditions")
-            
-            if(not isinstance(module_list, List)):
-                module_path = module_list
-                if module_path:
+            module_paths = settings.DRF_ACCESS_POLICY.get("reusable_conditions")
+
+            if module_paths:
+                if not isinstance(module_paths, (str, list, tuple)):
+                    raise ValueError("Define 'resusable_conditions' as list, tuple or str")
+
+                module_paths = [module_paths] if isinstance(module_paths, str) else module_paths
+
+                for module_path in module_paths:
                     module = importlib.import_module(module_path)
 
                     if hasattr(module, method_name):
                         return getattr(module, method_name)
-            else:
-                for module_path in module_list:
-                    if module_path:
-                        module = importlib.import_module(module_path)
-
-                        if hasattr(module, method_name):
-                            return getattr(module, method_name)
 
         raise AccessPolicyException(
             "condition '%s' must be a method on the access policy or be defined in the 'reusable_conditions' module"
