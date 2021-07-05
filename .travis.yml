@@ -37,7 +37,7 @@ install:
   - pip install -U codecov
 
 script:
-  - make cov
+  - python ./manage.py test --settings=test_project.settings
 
 after_success:
   - codecov
