@@ -1,15 +1,15 @@
 import unittest.mock as mock
+from typing import Optional
 
 from django.contrib.auth.models import AnonymousUser, Group, User
 from django.test import TestCase
+from rest_access_policy import AccessPolicy, AccessPolicyException
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
 
-from rest_access_policy import AccessPolicy, AccessPolicyException
-
 
 class FakeRequest(object):
-    def __init__(self, user: User, method: str = "GET"):
+    def __init__(self, user: Optional[User], method: str = "GET"):
         self.user = user
         self.method = method
 
@@ -518,3 +518,34 @@ class AccessPolicyTests(TestCase):
 
         self.assertFalse(policy.has_permission(FakeRequest(user=fred), view))
         self.assertTrue(policy.has_permission(FakeRequest(user=jane), view))
+
+    def test_has_permission_is_true_when_user_is_none(self):
+        class TestPolicy(AccessPolicy):
+            statements = [
+                {
+                    'action': '*',
+                    'principal': 'anonymous',
+                    'effect': 'allow'
+                }
+            ]
+
+
+        view = FakeViewSet(action="create")
+        policy = TestPolicy()
+
+        self.assertTrue(policy.has_permission(FakeRequest(user=None), view))
+
+    def test_has_permission_is_false_when_user_is_none(self):
+        class TestPolicy(AccessPolicy):
+            statements = [
+                {
+                    'action': '*',
+                    'principal': 'authenticated',
+                    'effect': 'allow'
+                }
+            ]
+
+
+        view = FakeViewSet(action="create")
+        policy = TestPolicy()
+        self.assertFalse(policy.has_permission(FakeRequest(user=None), view))

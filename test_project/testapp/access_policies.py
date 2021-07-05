@@ -19,3 +19,9 @@ class LogsAccessPolicy(AccessPolicy):
         {"principal": "group:dev", "action": "get_logs", "effect": "allow"},
         {"principal": "group:dev", "action": "delete_logs", "effect": "deny"},
     ]
+
+
+class LandingPageAccessPolicy(AccessPolicy):
+    statements = [
+        {"principal": ["anonymous", "authenticated"], "action": "*", "effect": "allow"},
+    ]

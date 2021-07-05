@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from rest_framework import routers
-from test_project.testapp.views import UserAccountViewSet, delete_logs, get_logs
+from test_project.testapp.views import UserAccountViewSet, delete_logs, get_logs, get_landing_page
 
 # Standard viewsets
 router = routers.DefaultRouter()
@@ -10,4 +10,6 @@ urlpatterns = [
     url(r"^", include(router.urls)),
     url(r"^delete-logs/", delete_logs, name="delete-logs"),
     url(r"^get-logs/", get_logs, name="get-logs"),
+    url(r"^get-landing-page/", get_landing_page, name="get-landing-page"),
+
 ]

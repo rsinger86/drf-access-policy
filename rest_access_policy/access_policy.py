@@ -7,7 +7,17 @@ from pyparsing import infixNotation, opAssoc
 from rest_framework import permissions
 
 from rest_access_policy import AccessPolicyException
-from .parsing import ConditionOperand, boolOperand, BoolNot, BoolAnd, BoolOr
+
+from .parsing import BoolAnd, BoolNot, BoolOr, ConditionOperand, boolOperand
+
+
+class AnonymousUser(object):
+    def __init__(self):
+        self.pk = None
+        self.is_anonymous = True
+        self.is_staff = False
+        self.is_superuser = False
+
 
 
 class AccessPolicy(permissions.BasePermission):
@@ -88,7 +98,7 @@ class AccessPolicy(permissions.BasePermission):
     def _get_statements_matching_principal(
         self, request, statements: List[dict]
     ) -> List[dict]:
-        user = request.user
+        user = request.user or AnonymousUser()
         user_roles = None
         matched = []
 
@@ -98,14 +108,14 @@ class AccessPolicy(permissions.BasePermission):
 
             if "*" in principals:
                 found = True
-            elif "admin" in principals:
-                found = user.is_superuser
-            elif "staff" in principals:
-                found = user.is_staff
-            elif "authenticated" in principals:
-                found = not user.is_anonymous
-            elif "anonymous" in principals:
-                found = user.is_anonymous
+            elif "admin" in principals and user.is_superuser:
+                found = True
+            elif "staff" in principals and user.is_staff:
+                found = True
+            elif "authenticated" in principals and not user.is_anonymous:
+                found = True
+            elif "anonymous" in principals and user.is_anonymous:
+                found = True
             elif self.id_prefix + str(user.pk) in principals:
                 found = True
             else:

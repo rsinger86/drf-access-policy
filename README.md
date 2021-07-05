@@ -35,6 +35,9 @@ This project has complete test coverage and the base `AccessPolicy` class is onl
 
 # Changelog <a id="changelog"></a>
 
+## 0.9.1 (July 2021)
+* Fixes to work when `request.user` is `None` in case Django's `AuthenticationMiddleware` is not used. If `request.user` is `None`, the user is anonymous.
+
 ## 0.9.0 (April 2021)
 * Adds special `admin` and `staff` principal keys to match users with `is_superuser` and `is_staff` set to `True`. Thanks @BarnabasSzabolcs!
 

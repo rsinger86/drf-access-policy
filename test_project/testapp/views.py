@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from test_project.testapp.access_policies import (
     LogsAccessPolicy,
     UserAccountAccessPolicy,
+    LandingPageAccessPolicy
 )
 from test_project.testapp.models import UserAccount
 from test_project.testapp.serializers import UserAccountSerializer
@@ -29,4 +30,10 @@ def get_logs(request):
 @api_view(["DELETE"])
 @permission_classes((LogsAccessPolicy,))
 def delete_logs(request):
+    return Response({"status": "OK"})
+
+
+@api_view(["GET"])
+@permission_classes((LandingPageAccessPolicy,))
+def get_landing_page(request):
     return Response({"status": "OK"})

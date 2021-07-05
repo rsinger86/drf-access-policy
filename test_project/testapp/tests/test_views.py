@@ -1,3 +1,4 @@
+from test_project.settings import MIDDLEWARE
 from django.contrib.auth.models import Group, User
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
@@ -5,7 +6,7 @@ from rest_framework.test import APITestCase
 from test_project.testapp.models import UserAccount
 
 
-class LogsTestCase(APITestCase):
+class ViewsTestCase(APITestCase):
     def setUp(self):
         UserAccount.objects.all().delete()
         User.objects.all().delete()
@@ -38,3 +39,17 @@ class LogsTestCase(APITestCase):
         url = reverse("delete-logs")
         response = self.client.delete(url, format="json")
         self.assertEqual(response.status_code, 403)
+
+    def test_anonymous_user_can_view_landing_page(self):
+        url = reverse("get-landing-page")
+        response = self.client.get(url, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    def test_authenticated_user_can_view_landing_page(self):
+        user = User.objects.create()
+        self.client.force_authenticate(user=user)
+        url = reverse("get-landing-page")
+        response = self.client.get(url, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    
