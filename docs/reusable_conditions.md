@@ -1,11 +1,11 @@
 # Re-Usable Conditions/Permissions
 
-If you'd like to re-use custom conditions across policies, you can define them globally in a module and point to it via the setttings.
+If you'd like to re-use custom conditions across policies, you can define them globally in a module and point to it via the setttings. You can also provide a `List` of paths to check multiple files.
 
 ```python
 # in your project settings.py
 
-DRF_ACCESS_POLICY = {"reusable_conditions": "myproject.global_access_conditions"}
+DRF_ACCESS_POLICY = {"reusable_conditions": ["myproject.global_access_conditions"]}
 ```
 
 ```python

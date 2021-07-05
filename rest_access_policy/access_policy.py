@@ -229,13 +229,22 @@ class AccessPolicy(permissions.BasePermission):
             return getattr(self, method_name)
 
         if hasattr(settings, "DRF_ACCESS_POLICY"):
-            module_path = settings.DRF_ACCESS_POLICY.get("reusable_conditions")
+            module_list = settings.DRF_ACCESS_POLICY.get("reusable_conditions")
+            
+            if(not isinstance(module_list, List)):
+                module_path = module_list
+                if module_path:
+                    module = importlib.import_module(module_path)
 
-            if module_path:
-                module = importlib.import_module(module_path)
+                    if hasattr(module, method_name):
+                        return getattr(module, method_name)
+            else:
+                for module_path in module_list:
+                    if module_path:
+                        module = importlib.import_module(module_path)
 
-                if hasattr(module, method_name):
-                    return getattr(module, method_name)
+                        if hasattr(module, method_name):
+                            return getattr(module, method_name)
 
         raise AccessPolicyException(
             "condition '%s' must be a method on the access policy or be defined in the 'reusable_conditions' module"
