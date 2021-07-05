@@ -1,0 +1,44 @@
+language: python
+sudo: false
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+  - "3.9"
+
+env:
+  - DJANGO=1.8.19
+  - DJANGO=1.11.29
+  - DJANGO=2.0.13
+  - DJANGO=3.2.5
+
+matrix:
+  exclude:
+    - env: DJANGO=1.8
+      python: 3.6
+    - env: DJANGO=1.8
+      python: 3.7
+    - env: DJANGO=1.8
+      python: 3.8
+    - env: DJANGO=1.8
+      python: 3.9
+    - env: DJANGO=1.11
+      python: 3.8
+    - env: DJANGO=1.11
+      python: 3.9
+    - env: DJANGO=3.0
+      python: 3.5
+
+install:
+  - pip install -U pip
+  - pip install -q Django==$DJANGO_VERSION
+  - python setup.py install
+  - pip install -r requirements-dev.txt
+  - pip install -U codecov
+
+script:
+  - make cov
+
+after_success:
+  - codecov
