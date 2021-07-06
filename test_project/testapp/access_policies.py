@@ -9,7 +9,7 @@ class UserAccountAccessPolicy(AccessPolicy):
             "principal": "group:regular_users",
             "action": "set_password",
             "effect": "allow",
-        }
+        },
     ]
 
 

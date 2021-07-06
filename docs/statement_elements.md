@@ -1,8 +1,8 @@
 # Statement Elements
 
-JSON policies are made up of elements that together determine *who* can do *what* with your application and under what *conditions*.
+JSON policies are made up of elements that together determine _who_ can do _what_ with your application and under what _conditions_.
 
-## *principal*
+## _principal_
 
 <table>
     <tr>
@@ -71,8 +71,7 @@ JSON policies are made up of elements that together determine *who* can do *what
     </tr>
 </table>
 
-
-## *action*
+## _action_
 
 <table>
     <tr>
@@ -122,8 +121,7 @@ JSON policies are made up of elements that together determine *who* can do *what
     </tr>
 </table>
 
-
-## *effect*
+## _effect_
 
 <table>
     <tr>
@@ -151,8 +149,7 @@ JSON policies are made up of elements that together determine *who* can do *what
     </tr>
 </table>
 
-
-## *condition*
+## _condition_
 
 <table>
     <tr>
@@ -184,6 +181,39 @@ JSON policies are made up of elements that together determine *who* can do *what
                 </li>
                 <li>
                     <code>"user_must_be:account_manager"</code>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+## _condition_expression_
+
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        Same as the *condition` element, but with added support for evaluating boolean combinations of policy methods. The expressions follow Python's boolean syntax.
+        <br><br>
+         The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If it returns <code>True</code>, the statement will be in effect.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <ul>
+                <li>
+                    <code>["(is_request_from_account_owner or is_FBI_request)"]</code>
+                </li>
+                <li>
+                    <code>"is_sunny and is_weekend"</code>
+                </li>
+                <li>
+                    <code>"is_tasty and not is_expensive"</code>
                 </li>
             </ul>
         </td>

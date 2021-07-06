@@ -1,6 +1,6 @@
 # Object-Level Permissions/Custom Conditions
 
-What about object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can  get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.
+What about object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the `view` instance, so you can get the model instance with a call to `view.get_object()`. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.
 
 ```python hl_lines="14 25"
 class AccountAccessPolicy(AccessPolicy):
@@ -10,7 +10,7 @@ class AccountAccessPolicy(AccessPolicy):
             "action": ["withdraw"],
             "principal": ["*"],
             "effect": "allow",
-            "condition": ["balance_is_positive", "user_must_be:owner"]     
+            "condition": ["balance_is_positive", "user_must_be:owner"]
         },
         {
             "action": ["upgrade_to_gold_status"],
@@ -34,6 +34,8 @@ Notice how we're re-using the `user_must_be` method by parameterizing it with th
 
 If you have multiple custom methods defined on the policy, you can construct boolean expressions to combine them. The syntax is the same as Python's boolean expressions.
 
+Note that the `condition_expression` element is used instead of `condition`.
+
 ```python
 class AccountAccessPolicy(AccessPolicy):
     statements = [
@@ -41,13 +43,13 @@ class AccountAccessPolicy(AccessPolicy):
             "action": ["freeze"],
             "principal": ["*"],
             "effect": "allow",
-            "condition": ["(is_request_from_account_owner or is_FBI_request)"]     
+            "condition_expression": ["(is_request_from_account_owner or is_FBI_request)"]
         },
     ]
 
     def is_FBI_request(self, request, view, action) -> bool:
         return is_request_from_fbi(request)
-    
+
     def is_request_from_account_owner(self, request, view, action) -> bool:
         return account.owner == request.user
 ```

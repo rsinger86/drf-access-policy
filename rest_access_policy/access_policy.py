@@ -66,7 +66,13 @@ class AccessPolicy(permissions.BasePermission):
         matched = self._get_statements_matching_principal(request, statements)
         matched = self._get_statements_matching_action(request, action, matched)
 
-        matched = self._get_statements_matching_context_conditions(request, view, action, matched)
+        matched = self._get_statements_matching_conditions(
+            request, view, action=action, statements=matched, is_expression=False
+        )
+
+        matched = self._get_statements_matching_conditions(
+            request, view, action=action, statements=matched, is_expression=True
+        )
 
         denied = [_ for _ in matched if _["effect"] != "allow"]
 
@@ -87,6 +93,11 @@ class AccessPolicy(permissions.BasePermission):
                 statement["condition"] = []
             elif isinstance(statement["condition"], str):
                 statement["condition"] = [statement["condition"]]
+
+            if "condition_expression" not in statement:
+                statement["condition_expression"] = []
+            elif isinstance(statement["condition_expression"], str):
+                statement["condition_expression"] = [statement["condition_expression"]]
 
         return statements
 
@@ -144,8 +155,8 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _get_statements_matching_context_conditions(
-        self, request, view, action: str, statements: List[dict]
+    def _get_statements_matching_conditions(
+        self, request, view, *, action: str, statements: List[dict], is_expression: bool
     ):
         """
         Filter statements and only return those that match all of their
@@ -153,30 +164,36 @@ class AccessPolicy(permissions.BasePermission):
         the statement should be returned.
         """
         matched = []
+        element_key = "condition_expression" if is_expression else "condition"
 
         for statement in statements:
-            if len(statement["condition"]) == 0:
+            conditions = statement[element_key]
+
+            if len(conditions) == 0:
                 matched.append(statement)
                 continue
 
             fails = 0
 
-            for condition in statement["condition"]:
-                ConditionOperand.check_condition_fn = lambda _, cond: self._check_condition(
-                    cond, request, view, action
-                )
-                boolOperand.setParseAction(ConditionOperand)
+            for condition in conditions:
+                if is_expression:
+                    ConditionOperand.check_condition_fn = lambda _, cond: self._check_condition(
+                        cond, request, view, action
+                    )
+                    boolOperand.setParseAction(ConditionOperand)
 
-                boolExpr = infixNotation(
-                    boolOperand,
-                    [
-                        ("not", 1, opAssoc.RIGHT, BoolNot),
-                        ("and", 2, opAssoc.LEFT, BoolAnd),
-                        ("or", 2, opAssoc.LEFT, BoolOr),
-                    ],
-                )
+                    boolExpr = infixNotation(
+                        boolOperand,
+                        [
+                            ("not", 1, opAssoc.RIGHT, BoolNot),
+                            ("and", 2, opAssoc.LEFT, BoolAnd),
+                            ("or", 2, opAssoc.LEFT, BoolOr),
+                        ],
+                    )
 
-                passed = bool(boolExpr.parseString(condition)[0])
+                    passed = bool(boolExpr.parseString(condition)[0])
+                else:
+                    passed = self._check_condition(condition, request, view, action)
 
                 if not passed:
                     fails += 1

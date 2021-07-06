@@ -11,18 +11,23 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo:
-    icon: "security"
+  icon:
+    logo: material/security
+
 repo_name: rsinger86/drf-access-policy
 repo_url: https://github.com/rsinger86/drf-access-policy
 
 # Extensions
 markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
   - admonition
   - codehilite:
       guess_lang: false
   - toc:
       permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
 
 nav:
   - Intro: index.md
@@ -35,4 +40,5 @@ nav:
   - Loading External Statements: loading_external_source.md
   - Multitenancy/Scoping QuerySets: multi_tenacy.md
   - Customizing: customization.md
+  - Migrating: migration_notes.md
   - License: license.md
