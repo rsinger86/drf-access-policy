@@ -14,7 +14,7 @@
     
     
       
-        <title>Django REST - Access Policy</title>
+        <title>Custom/Object-Level Conditions - Django REST - Access Policy</title>
       
     
     
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#django-rest-access-policy" class="md-skip">
+        <a href="#object-level-permissionscustom-conditions" class="md-skip">
           Skip to content
         </a>
       
@@ -95,7 +95,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Intro
+              Custom/Object-Level Conditions
             
           </span>
         </div>
@@ -199,65 +199,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Intro
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="index.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
         Intro
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    Quick Example
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -328,11 +274,21 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="object_level_permissions.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="object_level_permissions.html" class="md-nav__link md-nav__link--active">
         Custom/Object-Level Conditions
       </a>
+      
     </li>
   
 
@@ -446,35 +402,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    Quick Example
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -485,69 +412,58 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/object_level_permissions.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="django-rest-access-policy">Django REST - Access Policy<a class="headerlink" href="#django-rest-access-policy" title="Permanent link">&para;</a></h1>
-<p><a href="https://pypi.python.org/pypi/drf-access-policy"><img alt="Package version" src="https://badge.fury.io/py/drf-access-policy.svg" /></a>
-<a href="https://img.shields.io/pypi/status/drf-access-policy.svg/"><img alt="Python versions" src="https://img.shields.io/pypi/status/drf-access-policy.svg" /></a></p>
-<p>This project brings a declaritive, organized approach to managing access control in Django REST Framework projects. Each <code>ViewSet</code> or function-based view can be assigned an explicit policy for the exposed resources. No more digging through views or seralizers to understand access logic -- it's all in one place in a format that less technical stakeholders can understand. If you're familiar with other declaritive access models, such as AWS' IAM, the syntax will be familiar.</p>
-<p>In short, you can express access rules like this:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+                <h1 id="object-level-permissionscustom-conditions">Object-Level Permissions/Custom Conditions<a class="headerlink" href="#object-level-permissionscustom-conditions" title="Permanent link">&para;</a></h1>
+<p>What about object-level permissions? You can easily check object-level access in a custom condition that's evaluated to determine whether the statement takes effect. This condition is passed the <code>view</code> instance, so you can get the model instance with a call to <code>view.get_object()</code>. You can even reference multiple conditions, to keep your access methods focused and testable, as well as parametrize these conditions with arguments.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AccountAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
     <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1">## ... other statements ...</span>
         <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;withdraw&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;balance_is_positive&quot;</span><span class="p">,</span> <span class="s2">&quot;user_must_be:owner&quot;</span><span class="p">]</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">}</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;upgrade_to_gold_status&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+<span class="hll">            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_must_be:account_advisor&quot;</span><span class="p">]</span>
+</span>        <span class="p">}</span>
+        <span class="c1">## ... other statements ...</span>
     <span class="p">]</span>
-</code></pre></div>
-<p>Key Features:</p>
-<ul>
-<li>A declarative JSON syntax makes access rules easy to understand, reducing the chance of accidental exposure</li>
-<li>The <a href="/loading_external_source">option</a> to load access statements from an external source means non-programmers can edit access policies without redeployments</li>
-<li>Write <a href="/object_level_permissions">plain Python methods that examine every facet</a> of the current request (user, data, model instance) for more granular, contextual access rules</li>
-<li>Keep all your access logic in one place: add <code>scope_queryset</code> methods to access policy classes to <a href="/multi_tenacy">apply filtering for multitenant databases</a></li>
-</ul>
-<p><img alt="⚠" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/72x72/26a0.png" title=":warning:" /> 1.0 <strong>Breaking Change</strong> <img alt="⚠" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/72x72/26a0.png" title=":warning:" />
-See <a href="migration_notes">migration notes</a> if your policy statements combine multiple conditions into boolean expressions.</p>
-<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
-<p>Python 3.5+</p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>pip install drf-access-policy
-</code></pre></div>
-<h2 id="quick-example">Quick Example<a class="headerlink" href="#quick-example" title="Permanent link">&para;</a></h2>
-<p>To define a policy, import <code>AccessPolicy</code> and subclass it:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rest_framework.viewsets</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
-<span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">AccessPolicy</span>
 
+    <span class="k">def</span> <span class="nf">balance_is_positive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">account</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">account</span><span class="o">.</span><span class="n">balance</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-<span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">user_must_be</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">account</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+<span class="hll">        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+</span></code></pre></div>
+<p>Notice how we're re-using the <code>user_must_be</code> method by parameterizing it with the model field that should be equal for the user of the request: the statement will only be effective if this condition passes.</p>
+<p>If you have multiple custom methods defined on the policy, you can construct boolean expressions to combine them. The syntax is the same as Python's boolean expressions.</p>
+<p>Note that the <code>condition_expression</code> element is used instead of <code>condition</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AccountAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
     <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;freeze&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition_expression&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;(is_request_from_account_owner or is_FBI_request)&quot;</span><span class="p">]</span>
         <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">}</span>
     <span class="p">]</span>
 
+    <span class="k">def</span> <span class="nf">is_FBI_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">is_request_from_fbi</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ArticleAccessPolicy</span><span class="p">,</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">is_request_from_account_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">account</span><span class="o">.</span><span class="n">owner</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
 </code></pre></div>
-<p><a href="usage/view_set_usage">Read on</a> for a full example of how to add an access policy to a <code>ViewSet</code>.</p>
                 
               
               
@@ -566,15 +482,30 @@ See <a href="migration_notes">migration notes</a> if your policy statements comb
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
+        
+        <a href="policy_logic.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Policy Evaluation Logic" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Policy Evaluation Logic
+            </div>
+          </div>
+        </a>
+      
       
         
-        <a href="usage/view_set_usage.html" class="md-footer__link md-footer__link--next" aria-label="Next: Usage - ViewSets" rel="next">
+        <a href="reusable_conditions.html" class="md-footer__link md-footer__link--next" aria-label="Next: Reuse Conditions/Permissions" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Usage - ViewSets
+              Reuse Conditions/Permissions
             </div>
           </div>
           <div class="md-footer__button md-icon">

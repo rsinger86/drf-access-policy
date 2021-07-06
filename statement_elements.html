@@ -14,7 +14,7 @@
     
     
       
-        <title>Django REST - Access Policy</title>
+        <title>Statement Elements - Django REST - Access Policy</title>
       
     
     
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#django-rest-access-policy" class="md-skip">
+        <a href="#statement-elements" class="md-skip">
           Skip to content
         </a>
       
@@ -95,7 +95,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Intro
+              Statement Elements
             
           </span>
         </div>
@@ -199,65 +199,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Intro
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="index.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
         Intro
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    Quick Example
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -298,11 +244,79 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="statement_elements.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Statement Elements
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="statement_elements.html" class="md-nav__link md-nav__link--active">
         Statement Elements
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#principal" class="md-nav__link">
+    principal
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action" class="md-nav__link">
+    action
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#effect" class="md-nav__link">
+    effect
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condition" class="md-nav__link">
+    condition
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condition_expression" class="md-nav__link">
+    condition_expression
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -453,22 +467,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
+  <a href="#principal" class="md-nav__link">
+    principal
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
+  <a href="#action" class="md-nav__link">
+    action
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    Quick Example
+  <a href="#effect" class="md-nav__link">
+    effect
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condition" class="md-nav__link">
+    condition
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condition_expression" class="md-nav__link">
+    condition_expression
   </a>
   
 </li>
@@ -485,69 +513,225 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/statement_elements.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="django-rest-access-policy">Django REST - Access Policy<a class="headerlink" href="#django-rest-access-policy" title="Permanent link">&para;</a></h1>
-<p><a href="https://pypi.python.org/pypi/drf-access-policy"><img alt="Package version" src="https://badge.fury.io/py/drf-access-policy.svg" /></a>
-<a href="https://img.shields.io/pypi/status/drf-access-policy.svg/"><img alt="Python versions" src="https://img.shields.io/pypi/status/drf-access-policy.svg" /></a></p>
-<p>This project brings a declaritive, organized approach to managing access control in Django REST Framework projects. Each <code>ViewSet</code> or function-based view can be assigned an explicit policy for the exposed resources. No more digging through views or seralizers to understand access logic -- it's all in one place in a format that less technical stakeholders can understand. If you're familiar with other declaritive access models, such as AWS' IAM, the syntax will be familiar.</p>
-<p>In short, you can express access rules like this:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-</code></pre></div>
-<p>Key Features:</p>
-<ul>
-<li>A declarative JSON syntax makes access rules easy to understand, reducing the chance of accidental exposure</li>
-<li>The <a href="/loading_external_source">option</a> to load access statements from an external source means non-programmers can edit access policies without redeployments</li>
-<li>Write <a href="/object_level_permissions">plain Python methods that examine every facet</a> of the current request (user, data, model instance) for more granular, contextual access rules</li>
-<li>Keep all your access logic in one place: add <code>scope_queryset</code> methods to access policy classes to <a href="/multi_tenacy">apply filtering for multitenant databases</a></li>
-</ul>
-<p><img alt="⚠" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/72x72/26a0.png" title=":warning:" /> 1.0 <strong>Breaking Change</strong> <img alt="⚠" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/72x72/26a0.png" title=":warning:" />
-See <a href="migration_notes">migration notes</a> if your policy statements combine multiple conditions into boolean expressions.</p>
-<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
-<p>Python 3.5+</p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>pip install drf-access-policy
-</code></pre></div>
-<h2 id="quick-example">Quick Example<a class="headerlink" href="#quick-example" title="Permanent link">&para;</a></h2>
-<p>To define a policy, import <code>AccessPolicy</code> and subclass it:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rest_framework.viewsets</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
-<span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">AccessPolicy</span>
+                <h1 id="statement-elements">Statement Elements<a class="headerlink" href="#statement-elements" title="Permanent link">&para;</a></h1>
+<p>JSON policies are made up of elements that together determine <em>who</em> can do <em>what</em> with your application and under what <em>conditions</em>.</p>
+<h2 id="principal"><em>principal</em><a class="headerlink" href="#principal" title="Permanent link">&para;</a></h2>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+            Should match the user of the current request by identifying a group they belong to or their user ID.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Special Values</b></td>
+        <td>
+            <ul>
+                <li>
+                    <code>"*"</code> (any user)
+                </li>
+                <li>
+                    <code>"admin"</code> (any admin user)
+                </li>
+                <li>
+                    <code>"staff"</code> (any staff user)
+                </li>
+                <li>
+                    <code>"authenticated"</code> (any authenticated user)
+                </li>
+                <li>
+                    <code>"anonymous"</code> (any non-authenticated user)
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td> <code>Union[str, List[str]]</code> </td>
+    </tr>
+    <tr>
+        <td><b>Formats</b></td>
+        <td>
+            <ul>
+                <li>
+                   Match by group with <code>"group:{name}"</code>
+                </li>
+                <li>
+                   Match by ID with <code>"id:{id}" </code>
+                </li>
+            </ul>      
+        </td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <ul>
+                <li>
+                   <code>["group:admins", "id:9322"]</code>
+                </li>
+                <li>
+                   <code>["id:5352"]</code>
+                </li>
+                <li>
+                    <code>["anonymous"]</code> 
+                </li>
+                <li>
+                    <code>"*"</code>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
 
+<h2 id="action"><em>action</em><a class="headerlink" href="#action" title="Permanent link">&para;</a></h2>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+         The action or actions that the statement applies to. The value should match the name of a view set method or the name of the view function. <br><br> Alternatively, you can use placeholders to match the current request's HTTP method.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Special Values</b></td>
+        <td>
+            <ul>
+                <li>
+                    <code>"*"</code> (any action)
+                </li>
+                <li>
+                    <code>"&lt;safe_methods&gt;"</code> (a read-only HTTP request: HEAD, GET, OPTIONS)
+                </li>
+                <li>
+                    <code>"&lt;method:get|head|options|delete|put|patch|post&gt;"</code> (match a specific HTTP method)
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <ul>
+                <li>
+                    <code>["list", "destroy", "create]</code>
+                </li>
+                <li>
+                    <code>["*"]</code> 
+                </li>
+                <li>
+                    <code>["&lt;safe_methods&gt;"]</code> <br>
+                </li>
+                <li>
+                     <code>["&lt;method:post&gt;"]</code>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
 
-<span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">,</span> <span class="s2">&quot;unpublish&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:editor&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
+<h2 id="effect"><em>effect</em><a class="headerlink" href="#effect" title="Permanent link">&para;</a></h2>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        Whether the statement, if it is in effect, should allow or deny access. All access is denied by default, so use <code>deny</code> when you'd like to override an <code>allow</code> statement that will also be in effect.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>str</code></td>
+    </tr>
+    <tr>
+        <td><b>Values</b></td>
+        <td>
+            <ul>
+                <li>
+                   <code>"allow"</code>
+                </li>
+                <li>
+                   <code>"deny"</code>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
 
+<h2 id="condition"><em>condition</em><a class="headerlink" href="#condition" title="Permanent link">&para;</a></h2>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        The name of a method on the policy that returns a boolean. If you want to pass a custom argument to the condition's method, format the value as <code>{method_name}:{value}</code>, e.g. <code>user_must_be:owner</code> will call a method named <code>user_must_be</code>, passing it the string <code>"owner"</code> as the final argument.
+        <br><br>
+         The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If it returns <code>True</code>, the statement will be in effect.
+         <br><br>
+         Useful for enforcing object-level permissions. If list of conditions is given, all conditions must evaluate to <code>True</code>.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <ul>
+                <li>
+                   <code>"is_manager_of_account"</code> 
+                </li>
+                <li>
+                   <code>"is_author_of_post"</code>
+                </li>
+                <li>
+                    <code>["balance_is_positive", "account_is_not_frozen"]`</code>
+                </li>
+                <li>
+                    <code>"user_must_be:account_manager"</code>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
 
-<span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ArticleAccessPolicy</span><span class="p">,</span> <span class="p">)</span>
-</code></pre></div>
-<p><a href="usage/view_set_usage">Read on</a> for a full example of how to add an access policy to a <code>ViewSet</code>.</p>
+<h2 id="condition_expression"><em>condition_expression</em><a class="headerlink" href="#condition_expression" title="Permanent link">&para;</a></h2>
+<table>
+    <tr>
+        <td><b>Description</b></td>
+        <td>
+        Same as the *condition` element, but with added support for evaluating boolean combinations of policy methods. The expressions follow Python's boolean syntax.
+        <br><br>
+         The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If it returns <code>True</code>, the statement will be in effect.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Type</b></td>
+        <td><code>Union[str, List[str]]</code></td>
+    </tr>
+    <tr>
+        <td><b>Examples</b></td>
+        <td>
+            <ul>
+                <li>
+                    <code>["(is_request_from_account_owner or is_FBI_request)"]</code>
+                </li>
+                <li>
+                    <code>"is_sunny and is_weekend"</code>
+                </li>
+                <li>
+                    <code>"is_tasty and not is_expensive"</code>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
                 
               
               
@@ -566,15 +750,30 @@ See <a href="migration_notes">migration notes</a> if your policy statements comb
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
+        
+        <a href="usage/function_based_view_usage.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Usage - Function-Based Views" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Usage - Function-Based Views
+            </div>
+          </div>
+        </a>
+      
       
         
-        <a href="usage/view_set_usage.html" class="md-footer__link md-footer__link--next" aria-label="Next: Usage - ViewSets" rel="next">
+        <a href="policy_logic.html" class="md-footer__link md-footer__link--next" aria-label="Next: Policy Evaluation Logic" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Usage - ViewSets
+              Policy Evaluation Logic
             </div>
           </div>
           <div class="md-footer__button md-icon">
