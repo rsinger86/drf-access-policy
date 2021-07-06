@@ -26,6 +26,7 @@ class ArticleAccessPolicy(AccessPolicy):
 This project has complete test coverage and the base `AccessPolicy` class is only ~150 lines of code: there's no magic here.
 
 :warning: 1.0 **Breaking Change** :warning:
+
 See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_notes.html) if your policy statements combine multiple conditions into boolean expressions.
 
 ---

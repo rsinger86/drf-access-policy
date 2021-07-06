@@ -30,8 +30,9 @@ Key Features:
 - Write [plain Python methods that examine every facet](/object_level_permissions) of the current request (user, data, model instance) for more granular, contextual access rules
 - Keep all your access logic in one place: add `scope_queryset` methods to access policy classes to [apply filtering for multitenant databases](/multi_tenacy)
 
-:warning: 1.0 **Breaking Change** :warning:
-See [migration notes](migration_notes) if your policy statements combine multiple conditions into boolean expressions.
+:warning: **1.0 Breaking Change** :warning:
+
+See [migration notes](/migration_notes.html) if your policy statements combine multiple conditions into boolean expressions.
 
 ## Requirements
 
