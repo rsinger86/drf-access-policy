@@ -39,6 +39,10 @@ See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_no
 
 # Changelog <a id="changelog"></a>
 
+## 1.0.1 (July 2021)
+
+- Fixes race condition between concurrent requests in evaluation of condition expressions. Thanks @goranpavlovic!
+
 ## 1.0.0 (July 2021)
 
 - :warning: **Breaking Change** :warning:
