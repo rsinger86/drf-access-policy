@@ -2,18 +2,16 @@ from pyparsing import Keyword, Word, alphanums
 
 
 class ConditionOperand(object):
-    check_condition_fn = None
 
-    def __init__(self, t):
+    def __init__(self, t, check_cond_fn):
         self.label = t[0]
+        self.check_condition_fn = check_cond_fn
 
         assert self.check_condition_fn is not None, 'The check_condition_fn should should be set'
         assert callable(self.check_condition_fn), 'The check_condition_fn should should be callable'
 
-        self.value = self.check_condition_fn(t[0])
-
     def __bool__(self):
-        return self.value
+        return self.check_condition_fn(self.label)
 
     def __str__(self):
         return self.label
