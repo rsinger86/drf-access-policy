@@ -26,9 +26,9 @@ class ArticleAccessPolicy(AccessPolicy):
 Key Features:
 
 - A declarative JSON syntax makes access rules easy to understand, reducing the chance of accidental exposure
-- The [option](loading_external_source) to load access statements from an external source means non-programmers can edit access policies without redeployments
-- Write [plain Python methods that examine every facet](object_level_permissions) of the current request (user, data, model instance) for more granular, contextual access rules
-- Keep all your access logic in one place: add `scope_queryset` methods to access policy classes to [apply filtering for multitenant databases](multi_tenacy)
+- The [option](loading_external_source.md) to load access statements from an external source means non-programmers can edit access policies without redeployments
+- Write [plain Python methods that examine every facet](object_level_permissions.md) of the current request (user, data, model instance) for more granular, contextual access rules
+- Keep all your access logic in one place: add `scope_queryset` methods to access policy classes to [apply filtering for multitenant databases](multi_tenacy.md)
 
 :warning: **1.0 Breaking Change** :warning:
 
