@@ -32,6 +32,7 @@ class AccessPolicy(permissions.BasePermission):
         if len(statements) == 0:
             return False
 
+        request.accessed = {"action": action, "db_scoped": False}
         return self._evaluate_statements(statements, request, view, action)
 
     def get_policy_statements(self, request, view) -> List[dict]:
@@ -177,9 +178,7 @@ class AccessPolicy(permissions.BasePermission):
 
             for condition in conditions:
                 if is_expression:
-                    check_cond_fn = lambda cond: self._check_condition(
-                        cond, request, view, action
-                    )
+                    check_cond_fn = lambda cond: self._check_condition(cond, request, view, action)
 
                     boolOperand.setParseAction(lambda token: ConditionOperand(token, check_cond_fn))
 
