@@ -72,4 +72,16 @@ class ArticleViewSet(ModelViewSet):
     permission_classes = (ArticleAccessPolicy, )
 ```
 
+You'll probably have a single access policy per view set, so a mixin is also provided to make this more explicit:
+
+```python
+from rest_access_policy import AccessViewSetMixin
+
+
+class ArticleViewSet(AccessViewSetMixin, ModelViewSet):
+    access_policy = ArticleAccessPolicy
+```
+
+The mixin will ensure that the access_policy is set and automatically add it to the view's `permission_classes` so that DRF's request handler evaluates it.
+
 [Read on](usage/view_set_usage) for a full example of how to add an access policy to a `ViewSet`.

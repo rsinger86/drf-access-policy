@@ -21,7 +21,7 @@ class AccessViewSetMixin(object):
                 """
             )
 
-        self.permission_classes = self.permission_classes + [self.access_policy]
+        self.permission_classes = [self.access_policy] + self.permission_classes
 
     def finalize_response(self, request, response, *args, **kwargs) -> Response:
         response = super().finalize_response(request, response, *args, **kwargs)

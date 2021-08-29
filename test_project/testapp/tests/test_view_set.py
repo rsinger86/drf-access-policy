@@ -17,20 +17,19 @@ class UserAccountTestCase(APITestCase):
         admin_user.groups.add(admin_group)
         self.client.force_authenticate(user=admin_user)
 
-        url = reverse("account-list")
+        for name in ["account-mixin-test-list", "account-list"]:
+            url = reverse(name)
 
-        response = self.client.post(
-            url,
-            {"username": "fred", "first_name": "Fred", "last_name": "Rogers"},
-            format="json",
-        )
+            response = self.client.post(
+                url,
+                {"username": "fred", "first_name": "Fred", "last_name": "Rogers"},
+                format="json",
+            )
 
-        self.assertEqual(response.status_code, 201)
+            self.assertEqual(response.status_code, 201)
 
     def test_retrieve_denied(self):
-        account = UserAccount.objects.create(
-            username="fred", first_name="Fred", last_name="Rogers"
-        )
+        account = UserAccount.objects.create(username="fred", first_name="Fred", last_name="Rogers")
         banned_group = Group.objects.create(name="banned")
         banned_user = User.objects.create()
         banned_user.groups.add(banned_group)
@@ -42,9 +41,7 @@ class UserAccountTestCase(APITestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_set_password_should_be_allowed(self):
-        account = UserAccount.objects.create(
-            username="fred", first_name="Fred", last_name="Rogers"
-        )
+        account = UserAccount.objects.create(username="fred", first_name="Fred", last_name="Rogers")
         regular_users_group = Group.objects.create(name="regular_users")
         user = User.objects.create()
         user.groups.add(regular_users_group)
@@ -56,9 +53,7 @@ class UserAccountTestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_set_password_should_be_denied(self):
-        account = UserAccount.objects.create(
-            username="fred", first_name="Fred", last_name="Rogers"
-        )
+        account = UserAccount.objects.create(username="fred", first_name="Fred", last_name="Rogers")
         user = User.objects.create()
         self.client.force_authenticate(user=user)
 
