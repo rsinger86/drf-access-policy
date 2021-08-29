@@ -437,7 +437,7 @@
                 
                 
                 <h1 id="viewset-mixin">ViewSet Mixin<a class="headerlink" href="#viewset-mixin" title="Permanent link">&para;</a></h1>
-<p>Most likely, you'll only have one access policy per view set, to keep all the logic in one place for each resource. DRF allows setting multiple permission classes, which can the view set code less clear. For code clarity, a view set mixin is provided that allows you define to an <code>access_policy</code> class attribute. The mixin will add the policy class to the view's <code>permission_classes</code> to ensure DRF's request handler evaluates it.</p>
+<p>Most likely, you'll only have one access policy per <code>ViewSet</code>, to keep all the logic in one place for each resource. Django REST Framework allows setting multiple permission classes, which can make <code>ViewSet</code> code less clear. For clarity, a mixin is provided that allows you define to an <code>access_policy</code> class attribute. The mixin will add the policy class to the view's <code>permission_classes</code> to ensure DRF's request handler evaluates it.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">my_app_policies</span> <span class="kn">import</span> <span class="n">ArticleAccessPolicy</span>
 <span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">AccessViewSetMixin</span>
 
