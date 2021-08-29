@@ -9,19 +9,19 @@
       
       
       
-      <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.5">
     
     
       
-        <title>Migrating - Django REST - Access Policy</title>
+        <title>Usage - Function-Based Views - Django REST - Access Policy</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ca7ac06f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.be71726b.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.f1a3b89f.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
         
           
           
@@ -57,7 +57,7 @@
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="black" data-md-color-accent="red">
   
     
-    <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#migrating-to-10" class="md-skip">
+        <a href="#policy-for-function-based-view" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Django REST - Access Policy" class="md-header__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
+    <a href="../.." title="Django REST - Access Policy" class="md-header__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12h7c-.53 4.11-3.28 7.78-7 8.92V12H5V6.3l7-3.11M12 1 3 5v6c0 5.55 3.84 10.73 9 12 5.16-1.27 9-6.45 9-12V5l-9-4z"/></svg>
@@ -95,7 +95,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Migrating
+              Usage - Function-Based Views
             
           </span>
         </div>
@@ -112,14 +112,18 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-      </button>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -169,7 +173,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Django REST - Access Policy" class="md-nav__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
+    <a href="../.." title="Django REST - Access Policy" class="md-nav__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12h7c-.53 4.11-3.28 7.78-7 8.92V12H5V6.3l7-3.11M12 1 3 5v6c0 5.55 3.84 10.73 9 12 5.16-1.27 9-6.45 9-12V5l-9-4z"/></svg>
@@ -201,7 +205,7 @@
   
   
     <li class="md-nav__item">
-      <a href="index.html" class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Intro
       </a>
     </li>
@@ -216,128 +220,8 @@
   
   
     <li class="md-nav__item">
-      <a href="usage/view_set_usage.html" class="md-nav__link">
+      <a href="../view_set_usage/" class="md-nav__link">
         Usage - ViewSets
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="usage/function_based_view_usage.html" class="md-nav__link">
-        Usage - Function-Based Views
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="statement_elements.html" class="md-nav__link">
-        Statement Elements
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="policy_logic.html" class="md-nav__link">
-        Policy Evaluation Logic
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="object_level_permissions.html" class="md-nav__link">
-        Custom/Object-Level Conditions
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reusable_conditions.html" class="md-nav__link">
-        Reuse Conditions/Permissions
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="loading_external_source.html" class="md-nav__link">
-        Loading External Statements
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="multi_tenacy.html" class="md-nav__link">
-        Multitenancy/Scoping QuerySets
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="customization.html" class="md-nav__link">
-        Customizing
       </a>
     </li>
   
@@ -360,8 +244,8 @@
         
       
       
-      <a href="migration_notes.html" class="md-nav__link md-nav__link--active">
-        Migrating
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Usage - Function-Based Views
       </a>
       
     </li>
@@ -376,7 +260,142 @@
   
   
     <li class="md-nav__item">
-      <a href="license.html" class="md-nav__link">
+      <a href="../../statement_elements/" class="md-nav__link">
+        Statement Elements
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../policy_logic/" class="md-nav__link">
+        Policy Evaluation Logic
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../object_level_permissions/" class="md-nav__link">
+        Custom/Object-Level Conditions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../view_set_mixin/" class="md-nav__link">
+        ViewSet Mixin
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reusable_conditions/" class="md-nav__link">
+        Reuse Conditions/Permissions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../loading_external_source/" class="md-nav__link">
+        Loading External Statements
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multi_tenacy/" class="md-nav__link">
+        Multitenancy/Scoping QuerySets
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../customization/" class="md-nav__link">
+        Customizing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migration_notes/" class="md-nav__link">
+        Migrating
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
         License
       </a>
     </li>
@@ -412,35 +431,40 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/migration_notes.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/usage/function_based_view_usage.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="migrating-to-10">Migrating to 1.0<a class="headerlink" href="#migrating-to-10" title="Permanent link">&para;</a></h1>
-<p>The 1.0 version introduced a breaking change for projects that use the <code>condition</code> element to combine multiple condition methods with boolean logic.</p>
-<p>Projects that use the <code>condition</code> element in this way must update affected statements to use the <code>condition_expression</code> element instead, which evaluates expressions in the same way that occurred prior to 1.0.</p>
-<p><img alt="🚫" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/72x72/1f6ab.png" title=":no_entry_sign:" /> <strong>No longer works</strong></p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EmailAccountAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+                <h1 id="policy-for-function-based-view">Policy for Function-Based View<a class="headerlink" href="#policy-for-function-based-view" title="Permanent link">&para;</a></h1>
+<p>You can also use policies with function-based views. The action to reference in your policy statements is the name of the function. You can also bundle multiple functions into the same policy as the example below shows.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AuditLogsAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
     <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;authenticated&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="s2">&quot;is_owner or is_NSA&quot;</span>
+<span class="hll">            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;search_logs&quot;</span><span class="p">],</span>
+</span>            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;group:it_staff&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>
         <span class="p">},</span>
-    <span class="p">]</span>
-</code></pre></div>
-<p><img alt="🟢" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/72x72/1f7e2.png" title=":green_circle:" /> <strong>Change to</strong></p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EmailAccountAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="s2">&quot;authenticated&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;condition_expression&quot;</span><span class="p">:</span> <span class="s2">&quot;is_owner or is_NSA&quot;</span>
-        <span class="p">},</span>
+<span class="hll">            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;download_logs&quot;</span><span class="p">],</span>
+</span>            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;group:it_admin&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span>            
+        <span class="p">}</span>
     <span class="p">]</span>
+
+
+<span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@permission_classes</span><span class="p">((</span><span class="n">AuditLogsAccessPolicy</span><span class="p">,))</span>
+<span class="hll"><span class="k">def</span> <span class="nf">search_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</span>    <span class="c1">## your logic here...</span>
+    <span class="k">pass</span>
+
+
+<span class="nd">@api_view</span><span class="p">([</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="nd">@permission_classes</span><span class="p">((</span><span class="n">AuditLogsAccessPolicy</span><span class="p">,))</span>
+<span class="hll"><span class="k">def</span> <span class="nf">download_logs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</span>    <span class="c1">## your logic here...</span>
+    <span class="k">pass</span>
 </code></pre></div>
                 
               
@@ -461,7 +485,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="customization.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Customizing" rel="prev">
+        <a href="../view_set_usage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Usage - ViewSets" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -470,20 +494,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Customizing
+              Usage - ViewSets
             </div>
           </div>
         </a>
       
       
         
-        <a href="license.html" class="md-footer__link md-footer__link--next" aria-label="Next: License" rel="next">
+        <a href="../../statement_elements/" class="md-footer__link md-footer__link--next" aria-label="Next: Statement Elements" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              License
+              Statement Elements
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -512,10 +536,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.409db549.min.js", "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.82b56eb2.min.js"></script>
+      <script src="../../assets/javascripts/bundle.56a63758.min.js"></script>
       
     
   </body>
