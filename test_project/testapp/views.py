@@ -5,10 +5,21 @@ from rest_framework.response import Response
 from test_project.testapp.access_policies import (
     LogsAccessPolicy,
     UserAccountAccessPolicy,
-    LandingPageAccessPolicy
+    LandingPageAccessPolicy,
 )
 from test_project.testapp.models import UserAccount
 from test_project.testapp.serializers import UserAccountSerializer
+from rest_access_policy import AccessViewSetMixin
+
+
+class UserAccountViewSetWithMixin(AccessViewSetMixin, viewsets.ModelViewSet):
+    access_policy = UserAccountAccessPolicy
+    serializer_class = UserAccountSerializer
+    queryset = UserAccount.objects.all()
+
+    @action(detail=True, methods=["post"])
+    def set_password(self, request, pk=None):
+        return Response({}, status=200)
 
 
 class UserAccountViewSet(viewsets.ModelViewSet):

@@ -4,8 +4,8 @@ A policy is comprised of "statements" that declare what "actions" a "principal" 
 
 Two key points to remember going forward:
 
-* all access is implicitly denied by default
-* any statement with the "deny" effect overrides any and all "allow" statement
+- all access is implicitly denied by default
+- any statement with the "deny" effect overrides any and all "allow" statement
 
 Let's look at the policy below, which is for an articles endpoint exposed through a `ViewSet`.
 
@@ -20,13 +20,13 @@ class ArticleAccessPolicy(AccessPolicy):
         {
             "action": ["publish", "unpublish"],
             "principal": ["group:editor"],
-            "effect": "allow"            
+            "effect": "allow"
         },
         {
             "action": ["destroy"],
             "principal": ["*"],
             "effect": "allow",
-            "condition": "is_author"         
+            "condition": "is_author"
         },
         {
             "action": ["*"],
@@ -38,7 +38,7 @@ class ArticleAccessPolicy(AccessPolicy):
 
     def is_author(self, request, view, action) -> bool:
         article = view.get_object()
-        return request.user == article.author 
+        return request.user == article.author
 
     def is_happy_hour(self, request, view, action) -> bool:
         now = datetime.datetime.now()
@@ -63,11 +63,12 @@ Additionally, we have some logic in the `scope_queryset` method for filtering wh
 
 Below is a `ViewSet` with the policy attached. Notice how the `publish` and `unpublish` methods correspond to the `action` declarations in the policy.
 
-```python hl_lines="20 24"
-class ArticleViewSet(ModelViewSet):
-    # Just stick the policy here, as you would do with
-    # regular DRF "permissions"
-    permission_classes = (ArticleAccessPolicy, )
+```python hl_lines="21 25"
+class ArticleViewSet(AccessViewSetMixin, ModelViewSet):
+    access_policy = ArticleAccessPolicy
+
+    # If you prefer not to use the mixin, the policy class can be added to permission_classes
+    # permission_classes = (ArticleAccessPolicy,)
 
     # Helper property here to make get_queryset logic
     # more explicit
@@ -75,13 +76,13 @@ class ArticleViewSet(ModelViewSet):
     def access_policy(self):
         return self.permission_classes[0]
 
-    # Ensure that current user can only see the models 
+    # Ensure that current user can only see the models
     # they are allowed to see
     def get_queryset(self):
         return self.access_policy.scope_queryset(
             self.request, Articles.objects.all()
         )
-    
+
     @action(methods=['POST'], detail=False)
     def publish(self, request, *args, **kwargs):
         pass

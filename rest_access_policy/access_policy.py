@@ -19,8 +19,25 @@ class AnonymousUser(object):
         self.is_superuser = False
 
 
+class AccessEnforcement(object):
+    _action: str
+    _allowed: bool
+
+    def __init__(self, action: str, allowed: bool):
+        self._action = action
+        self._allowed = allowed
+
+    @property
+    def action(self) -> str:
+        return self._action
+
+    @property
+    def allowed(self) -> bool:
+        return self._allowed
+
+
 class AccessPolicy(permissions.BasePermission):
-    statements = []
+    statements: List[dict] = []
     id = None
     group_prefix = "group:"
     id_prefix = "id:"
@@ -32,7 +49,9 @@ class AccessPolicy(permissions.BasePermission):
         if len(statements) == 0:
             return False
 
-        return self._evaluate_statements(statements, request, view, action)
+        allowed = self._evaluate_statements(statements, request, view, action)
+        request.access_enforcement = AccessEnforcement(action=action, allowed=allowed)
+        return allowed
 
     def get_policy_statements(self, request, view) -> List[dict]:
         return self.statements
@@ -40,6 +59,7 @@ class AccessPolicy(permissions.BasePermission):
     def get_user_group_values(self, user) -> List[str]:
         if user.is_anonymous:
             return []
+
         prefetch_related_objects([user], "groups")
         return [g.name for g in user.groups.all()]
 
@@ -59,6 +79,7 @@ class AccessPolicy(permissions.BasePermission):
 
         elif hasattr(view, "__class__"):
             return view.__class__.__name__
+
         raise AccessPolicyException("Could not determine action of request")
 
     def _evaluate_statements(self, statements: List[dict], request, view, action: str) -> bool:
@@ -177,9 +198,7 @@ class AccessPolicy(permissions.BasePermission):
 
             for condition in conditions:
                 if is_expression:
-                    check_cond_fn = lambda cond: self._check_condition(
-                        cond, request, view, action
-                    )
+                    check_cond_fn = lambda cond: self._check_condition(cond, request, view, action)
 
                     boolOperand.setParseAction(lambda token: ConditionOperand(token, check_cond_fn))
 
