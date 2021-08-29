@@ -193,7 +193,7 @@ JSON policies are made up of elements that together determine _who_ can do _what
     <tr>
         <td><b>Description</b></td>
         <td>
-        Same as the *condition` element, but with added support for evaluating boolean combinations of policy methods. The expressions follow Python's boolean syntax.
+        Same as the <code>condition</code> element, but with added support for evaluating boolean combinations of policy methods. The expressions follow Python's boolean syntax.
         <br><br>
          The method signature is <code>condition(request, view, action: str, custom_arg: str=None)</code>. If it returns <code>True</code>, the statement will be in effect.
         </td>
