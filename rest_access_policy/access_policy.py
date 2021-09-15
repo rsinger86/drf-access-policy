@@ -38,6 +38,7 @@ class AccessEnforcement(object):
 
 class AccessPolicy(permissions.BasePermission):
     statements: List[dict] = []
+    field_permissions: dict = {}
     id = None
     group_prefix = "group:"
     id_prefix = "id:"
@@ -56,7 +57,8 @@ class AccessPolicy(permissions.BasePermission):
     def get_policy_statements(self, request, view) -> List[dict]:
         return self.statements
 
-    def get_user_group_values(self, user) -> List[str]:
+    @classmethod
+    def get_user_group_values(cls, user) -> List[str]:
         if user.is_anonymous:
             return []
 
@@ -82,7 +84,9 @@ class AccessPolicy(permissions.BasePermission):
 
         raise AccessPolicyException("Could not determine action of request")
 
-    def _evaluate_statements(self, statements: List[dict], request, view, action: str) -> bool:
+    def _evaluate_statements(
+        self, statements: List[dict], request, view, action: str
+    ) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
         matched = self._get_statements_matching_action(request, action, matched)
@@ -122,7 +126,10 @@ class AccessPolicy(permissions.BasePermission):
 
         return statements
 
-    def _get_statements_matching_principal(self, request, statements: List[dict]) -> List[dict]:
+    @classmethod
+    def _get_statements_matching_principal(
+        cls, request, statements: List[dict]
+    ) -> List[dict]:
         user = request.user or AnonymousUser()
         user_roles = None
         matched = []
@@ -141,14 +148,14 @@ class AccessPolicy(permissions.BasePermission):
                 found = True
             elif "anonymous" in principals and user.is_anonymous:
                 found = True
-            elif self.id_prefix + str(user.pk) in principals:
+            elif cls.id_prefix + str(user.pk) in principals:
                 found = True
             else:
                 if not user_roles:
-                    user_roles = self.get_user_group_values(user)
+                    user_roles = cls.get_user_group_values(user)
 
                 for user_role in user_roles:
-                    if self.group_prefix + user_role in principals:
+                    if cls.group_prefix + user_role in principals:
                         found = True
                         break
 
@@ -157,7 +164,9 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _get_statements_matching_action(self, request, action: str, statements: List[dict]):
+    def _get_statements_matching_action(
+        self, request, action: str, statements: List[dict]
+    ):
         """
         Filter statements and return only those that match the specified
         action.
@@ -171,7 +180,10 @@ class AccessPolicy(permissions.BasePermission):
                 matched.append(statement)
             elif http_method in statement["action"]:
                 matched.append(statement)
-            elif "<safe_methods>" in statement["action"] and request.method in SAFE_METHODS:
+            elif (
+                "<safe_methods>" in statement["action"]
+                and request.method in SAFE_METHODS
+            ):
                 matched.append(statement)
 
         return matched
@@ -198,9 +210,13 @@ class AccessPolicy(permissions.BasePermission):
 
             for condition in conditions:
                 if is_expression:
-                    check_cond_fn = lambda cond: self._check_condition(cond, request, view, action)
+                    check_cond_fn = lambda cond: self._check_condition(
+                        cond, request, view, action
+                    )
 
-                    boolOperand.setParseAction(lambda token: ConditionOperand(token, check_cond_fn))
+                    boolOperand.setParseAction(
+                        lambda token: ConditionOperand(token, check_cond_fn)
+                    )
 
                     boolExpr = infixNotation(
                         boolOperand,
@@ -243,7 +259,8 @@ class AccessPolicy(permissions.BasePermission):
 
         if type(result) is not bool:
             raise AccessPolicyException(
-                "condition '%s' must return true/false, not %s" % (condition, type(result))
+                "condition '%s' must return true/false, not %s"
+                % (condition, type(result))
             )
 
         return result
@@ -257,9 +274,13 @@ class AccessPolicy(permissions.BasePermission):
 
             if module_paths:
                 if not isinstance(module_paths, (str, list, tuple)):
-                    raise ValueError("Define 'resusable_conditions' as list, tuple or str")
+                    raise ValueError(
+                        "Define 'resusable_conditions' as list, tuple or str"
+                    )
 
-                module_paths = [module_paths] if isinstance(module_paths, str) else module_paths
+                module_paths = (
+                    [module_paths] if isinstance(module_paths, str) else module_paths
+                )
 
                 for module_path in module_paths:
                     module = importlib.import_module(module_path)

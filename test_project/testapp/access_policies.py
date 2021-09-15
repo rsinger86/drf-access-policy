@@ -3,7 +3,12 @@ from rest_access_policy import AccessPolicy
 
 class UserAccountAccessPolicy(AccessPolicy):
     statements = [
-        {"principal": "group:admin", "action": "create", "effect": "allow"},
+        {"principal": "group:admin", "action": ["create", "update"], "effect": "allow"},
+        {
+            "principal": "group:dev",
+            "action": ["update", "partial_update"],
+            "effect": "allow",
+        },
         {"principal": "group:banned", "action": "retrieve", "effect": "deny"},
         {
             "principal": "group:regular_users",
@@ -11,6 +16,8 @@ class UserAccountAccessPolicy(AccessPolicy):
             "effect": "allow",
         },
     ]
+
+    field_permissions = {"read_only": [{"principal": "group:dev", "fields": "status"}]}
 
 
 class LogsAccessPolicy(AccessPolicy):

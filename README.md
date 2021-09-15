@@ -25,6 +25,32 @@ class ArticleAccessPolicy(AccessPolicy):
 
 This project has complete test coverage and the base `AccessPolicy` class is only ~150 lines of code: there's no magic here.
 
+Additionally, this project also provides `FieldAccessMixin` that can be added to a serializer to dynamically set fields to `read_only`, based on the access policy. Assign the appropriate access policy class inside the `Meta` declaration. See example below for how this works:
+
+```python
+class UserAccountAccessPolicy(AccessPolicy):
+    statements = [
+        {"principal": "group:admin", "action": ["create", "update"], "effect": "allow"},
+        {
+            "principal": "group:dev",
+            "action": ["update", "partial_update"],
+            "effect": "allow",
+        },
+    ]
+
+    field_permissions = {"read_only": [{"principal": "group:dev", "fields": "status"}]}
+
+class UserAccountSerializer(FieldAccessMixin, serializers.ModelSerializer):
+  class Meta:
+    model = UserAccount
+    fields = ["username", "first_name", "last_name", "status"]
+    access_policy = UserAccountAccessPolicy
+
+# Incoming POST/PUT/PATCH request from a user in group:dev...
+# serializer = UserAccountSerializer(account, context={'request': request})
+# print(serializer.fields["status"].read_only) -> True
+```
+
 :warning: **1.0 Breaking Change** :warning:
 
 See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_notes.html) if your policy statements combine multiple conditions into boolean expressions.
