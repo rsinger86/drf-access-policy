@@ -21,3 +21,16 @@ You can define a class method on your policy class that takes a `QuerySet` and t
             user_orgs = request.user.organizations.all()
             return qs.filter(org__id__in=user_orgs)
 ```
+
+You have to remember to call `scope_queryset` method from the view, so I'd suggest reviewing this as part of a security audit checklist.
+
+```python
+    class PhotoAlbumViewSet(ModelViewSet):
+    # ...
+
+        # Ensure that current user only access albums created by himself
+        def get_queryset(self):
+            return self.access_policy.scope_queryset(
+                self.request, PhotoAlbum.objects.all()
+            )
+```
