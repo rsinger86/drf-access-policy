@@ -1,6 +1,8 @@
 from typing import List
+
+from rest_framework.request import Request
+
 from .access_policy import AccessPolicy
-from rest_framework import request
 
 
 class FieldAccessMixin(object):
@@ -34,7 +36,7 @@ class FieldAccessMixin(object):
         return access_policy
 
     @property
-    def request(self) -> request:
+    def request(self) -> Request:
         request = self.serializer_context.get("request")
 
         if not request:
@@ -49,9 +51,7 @@ class FieldAccessMixin(object):
         field_permissions = getattr(access_policy, "field_permissions", {})
 
         if not isinstance(field_permissions, dict):
-            raise Exception(
-                "Field permissions must be set on access_policy for FieldAccessMixin"
-            )
+            raise Exception("Field permissions must be set on access_policy for FieldAccessMixin")
 
         return field_permissions
 
@@ -60,10 +60,8 @@ class FieldAccessMixin(object):
             self.field_permissions["read_only"]
         )
 
-        statements_matching_principal = (
-            self.access_policy._get_statements_matching_principal(
-                request=self.request, statements=read_only_statements
-            )
+        statements_matching_principal = self.access_policy._get_statements_matching_principal(
+            request=self.request, statements=read_only_statements
         )
 
         for statement in statements_matching_principal:
