@@ -1,6 +1,9 @@
 from rest_access_policy import AccessPolicy
 
 
+def is_account_mario(instance):
+    return instance.username == "mario"
+
 class UserAccountAccessPolicy(AccessPolicy):
     statements = [
         {"principal": "group:admin", "action": ["create", "update"], "effect": "allow"},
@@ -17,7 +20,9 @@ class UserAccountAccessPolicy(AccessPolicy):
         },
     ]
 
-    field_permissions = {"read_only": [{"principal": "group:dev", "fields": "status"}]}
+    field_permissions = {"read_only": [{"principal": "group:dev", "fields": "status"},
+                                       {"principal": "*", "fields": "last_name","condition":[is_account_mario]}]}
+
 
 
 class LogsAccessPolicy(AccessPolicy):

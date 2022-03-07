@@ -6,3 +6,7 @@ drf_access_policy.egg-info
 .vscode
 site/
 venv.sh
+venv/
+.idea/
+
+/db.sqlite3
