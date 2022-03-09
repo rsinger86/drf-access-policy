@@ -48,7 +48,7 @@ class FieldAccessMixin(object):
         return request
 
     @property
-    def action(self) -> Request:
+    def action(self) -> str:
         view = self.serializer_context.get("view")
         if not view:
             raise Exception("Must pass context with view to FieldAccessMixin")
