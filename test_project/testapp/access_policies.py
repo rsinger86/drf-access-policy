@@ -23,6 +23,7 @@ class UserAccountAccessPolicy(AccessPolicy):
             fields["status"].read_only = True 
         return fields
 
+
 class LogsAccessPolicy(AccessPolicy):
     statements = [
         {"principal": "group:admin", "action": "*", "effect": "allow"},
