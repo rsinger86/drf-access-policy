@@ -2,6 +2,7 @@ from typing import List
 
 from rest_framework.request import Request
 
+from rest_access_policy import AccessPolicyException
 from .access_policy import AccessPolicy
 
 
@@ -10,6 +11,7 @@ class FieldAccessMixin(object):
         self.serializer_context = kwargs.get("context", {})
         super().__init__(*args, **kwargs)
         self._set_read_only_fields()
+
 
     @property
     def access_policy(self) -> AccessPolicy:
@@ -23,7 +25,7 @@ class FieldAccessMixin(object):
         if not access_policy:
             raise Exception("Must set access_policy inside Meta for FieldAccessMixin")
 
-        if getattr(access_policy,"scope_fields",None) is None:
+        if getattr(access_policy, "scope_fields", None) is None:
             raise Exception("Must define scope_fields method on access_policy")
 
         return access_policy
@@ -41,7 +43,6 @@ class FieldAccessMixin(object):
         fields = self.access_policy.scope_fields(self.request, self.fields, instance=self.instance)
         if fields is None:
             raise Exception("scope_fields method must return fields variable")
-
         self.fields = self.access_policy.scope_fields(self.request, self.fields, instance=self.instance)
 
     

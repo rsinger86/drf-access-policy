@@ -83,3 +83,37 @@ class UserAccountTestCase(APITestCase):
         )
         self.assertEqual(response.data["last_name"], "Mercury")
         self.assertEqual(response.data["status"], "active")
+
+    def test_partial_update_should_not_update_status_for_account_mario(self):
+        account = UserAccount.objects.create(
+            username="mario", first_name="Mario", last_name="Rogers"
+        )
+
+        dev = Group.objects.create(name="dev")
+        user = User.objects.create()
+        user.groups.add(dev)
+        self.client.force_authenticate(user=user)
+
+        url = reverse("account-detail", args=[account.id])
+
+        response = self.client.patch(
+            url, data={"last_name": "Mercury"}, format="json"
+        )
+        self.assertEqual(response.data["last_name"], "Rogers")
+
+    def test_partial_update_should_not_update_status_for_account_pino(self):
+        account = UserAccount.objects.create(
+            username="pino", first_name="Mario", last_name="Rogers"
+        )
+
+        dev = Group.objects.create(name="dev")
+        user = User.objects.create()
+        user.groups.add(dev)
+        self.client.force_authenticate(user=user)
+
+        url = reverse("account-detail", args=[account.id])
+
+        response = self.client.patch(
+            url, data={"last_name": "Mercury"}, format="json"
+        )
+        self.assertEqual(response.data["last_name"], "Mercury")
