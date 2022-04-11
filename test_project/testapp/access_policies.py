@@ -17,8 +17,11 @@ class UserAccountAccessPolicy(AccessPolicy):
         },
     ]
 
-    field_permissions = {"read_only": [{"principal": "group:dev", "fields": "status"}]}
-
+    @classmethod
+    def scope_fields(cls, request, fields: dict, instance=None):
+        if request.user.groups.filter(name="dev"):
+            fields["status"].read_only = True 
+        return fields
 
 class LogsAccessPolicy(AccessPolicy):
     statements = [
