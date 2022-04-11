@@ -9,7 +9,7 @@ class FieldAccessMixin(object):
     def __init__(self, *args, **kwargs):
         self.serializer_context = kwargs.get("context", {})
         super().__init__(*args, **kwargs)
-        self._set_read_only_fields()
+        self._apply_access_policy()
 
     @property
     def access_policy(self) -> AccessPolicy:
@@ -37,7 +37,7 @@ class FieldAccessMixin(object):
 
         return request
 
-    def _set_read_only_fields(self):
+    def _apply_access_policy(self):
         fields = self.access_policy.scope_fields(self.request, self.fields, instance=self.instance)
         if fields is None:
             raise Exception("scope_fields method must return fields variable")
