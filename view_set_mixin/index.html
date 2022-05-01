@@ -9,19 +9,19 @@
       
       
       
-      <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.5">
     
     
       
-        <title>Multitenancy/Scoping QuerySets - Django REST - Access Policy</title>
+        <title>ViewSet Mixin - Django REST - Access Policy</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ca7ac06f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.be71726b.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.f1a3b89f.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
         
           
           
@@ -57,7 +57,7 @@
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="black" data-md-color-accent="red">
   
     
-    <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#multitenancy-data-restricting-querysets" class="md-skip">
+        <a href="#viewset-mixin" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Django REST - Access Policy" class="md-header__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
+    <a href=".." title="Django REST - Access Policy" class="md-header__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12h7c-.53 4.11-3.28 7.78-7 8.92V12H5V6.3l7-3.11M12 1 3 5v6c0 5.55 3.84 10.73 9 12 5.16-1.27 9-6.45 9-12V5l-9-4z"/></svg>
@@ -95,7 +95,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Multitenancy/Scoping QuerySets
+              ViewSet Mixin
             
           </span>
         </div>
@@ -112,14 +112,18 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-      </button>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -169,7 +173,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Django REST - Access Policy" class="md-nav__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
+    <a href=".." title="Django REST - Access Policy" class="md-nav__button md-logo" aria-label="Django REST - Access Policy" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12h7c-.53 4.11-3.28 7.78-7 8.92V12H5V6.3l7-3.11M12 1 3 5v6c0 5.55 3.84 10.73 9 12 5.16-1.27 9-6.45 9-12V5l-9-4z"/></svg>
@@ -201,7 +205,7 @@
   
   
     <li class="md-nav__item">
-      <a href="index.html" class="md-nav__link">
+      <a href=".." class="md-nav__link">
         Intro
       </a>
     </li>
@@ -216,7 +220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="usage/view_set_usage.html" class="md-nav__link">
+      <a href="../usage/view_set_usage/" class="md-nav__link">
         Usage - ViewSets
       </a>
     </li>
@@ -231,7 +235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="usage/function_based_view_usage.html" class="md-nav__link">
+      <a href="../usage/function_based_view_usage/" class="md-nav__link">
         Usage - Function-Based Views
       </a>
     </li>
@@ -246,7 +250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="statement_elements.html" class="md-nav__link">
+      <a href="../statement_elements/" class="md-nav__link">
         Statement Elements
       </a>
     </li>
@@ -261,7 +265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="policy_logic.html" class="md-nav__link">
+      <a href="../policy_logic/" class="md-nav__link">
         Policy Evaluation Logic
       </a>
     </li>
@@ -276,7 +280,7 @@
   
   
     <li class="md-nav__item">
-      <a href="object_level_permissions.html" class="md-nav__link">
+      <a href="../object_level_permissions/" class="md-nav__link">
         Custom/Object-Level Conditions
       </a>
     </li>
@@ -291,38 +295,8 @@
   
   
     <li class="md-nav__item">
-      <a href="view_set_mixin.html" class="md-nav__link">
-        ViewSet Mixin
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reusable_conditions.html" class="md-nav__link">
-        Reuse Conditions/Permissions
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="loading_external_source.html" class="md-nav__link">
-        Loading External Statements
+      <a href="../field_level_permissions/" class="md-nav__link">
+        Field-Level Permissions
       </a>
     </li>
   
@@ -345,8 +319,8 @@
         
       
       
-      <a href="multi_tenacy.html" class="md-nav__link md-nav__link--active">
-        Multitenancy/Scoping QuerySets
+      <a href="./" class="md-nav__link md-nav__link--active">
+        ViewSet Mixin
       </a>
       
     </li>
@@ -361,7 +335,52 @@
   
   
     <li class="md-nav__item">
-      <a href="customization.html" class="md-nav__link">
+      <a href="../reusable_conditions/" class="md-nav__link">
+        Reuse Conditions/Permissions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../loading_external_source/" class="md-nav__link">
+        Loading External Statements
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multi_tenacy/" class="md-nav__link">
+        Multitenancy/Scoping QuerySets
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../customization/" class="md-nav__link">
         Customizing
       </a>
     </li>
@@ -376,7 +395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="migration_notes.html" class="md-nav__link">
+      <a href="../migration_notes/" class="md-nav__link">
         Migrating
       </a>
     </li>
@@ -391,7 +410,7 @@
   
   
     <li class="md-nav__item">
-      <a href="license.html" class="md-nav__link">
+      <a href="../license/" class="md-nav__link">
         License
       </a>
     </li>
@@ -427,40 +446,24 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/multi_tenacy.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/rsinger86/drf-access-policy/edit/master/docs/view_set_mixin.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="multitenancy-data-restricting-querysets">Multitenancy Data / Restricting QuerySets<a class="headerlink" href="#multitenancy-data-restricting-querysets" title="Permanent link">&para;</a></h1>
-<p>You can define a class method on your policy class that takes a <code>QuerySet</code> and the current request and returns a securely scoped <code>QuerySet</code> representing only the database rows the current user should have access to. This is helpful for multitenant situations or more generally when users should not have full visibility to model instances. You could do this elsewhere in your code, but putting this method on the policy class keeps all access logic in a single place.</p>
-<div class="highlight"><pre><span></span><code>    <span class="k">class</span> <span class="nc">PhotoAlbumAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-        <span class="c1"># ... statements, etc ...</span>
-
-        <span class="c1"># Users can only access albums they have created</span>
-        <span class="nd">@classmethod</span>
-        <span class="k">def</span> <span class="nf">scope_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">qs</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+                <h1 id="viewset-mixin">ViewSet Mixin<a class="headerlink" href="#viewset-mixin" title="Permanent link">&para;</a></h1>
+<p>Most likely, you'll only have one access policy per <code>ViewSet</code>, to keep all the logic in one place for each resource. Django REST Framework allows setting multiple permission classes, which can make <code>ViewSet</code> code less clear. For clarity, a mixin is provided that allows you define to an <code>access_policy</code> class attribute. The mixin will add the policy class to the view's <code>permission_classes</code> to ensure DRF's request handler evaluates it.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">my_app_policies</span> <span class="kn">import</span> <span class="n">ArticleAccessPolicy</span>
+<span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">AccessViewSetMixin</span>
 
 
-    <span class="k">class</span> <span class="nc">TodoListAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-        <span class="c1"># ... statements, etc ...</span>
+<span class="k">class</span> <span class="nc">ArticleViewSet</span><span class="p">(</span><span class="n">AccessViewSetMixin</span><span class="p">,</span> <span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">access_policy</span> <span class="o">=</span> <span class="n">ArticleAccessPolicy</span>
 
-        <span class="c1"># Users can only access todo lists owned by their organization</span>
-        <span class="nd">@classmethod</span>
-        <span class="k">def</span> <span class="nf">scope_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">qs</span><span class="p">):</span>
-            <span class="n">user_orgs</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">organizations</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">org__id__in</span><span class="o">=</span><span class="n">user_orgs</span><span class="p">)</span>
-</code></pre></div>
-<p>You have to remember to call <code>scope_queryset</code> method from the view, so I'd suggest reviewing this as part of a security audit checklist.</p>
-<div class="highlight"><pre><span></span><code>    <span class="k">class</span> <span class="nc">PhotoAlbumViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
-    <span class="c1"># ...</span>
-
-        <span class="c1"># Ensure that current user only access albums created by himself</span>
-        <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">access_policy</span><span class="o">.</span><span class="n">scope_queryset</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">PhotoAlbum</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-            <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">access_policy</span><span class="o">.</span><span class="n">scope_queryset</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">Articles</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="p">)</span>
 </code></pre></div>
                 
               
@@ -481,7 +484,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="loading_external_source.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Loading External Statements" rel="prev">
+        <a href="../field_level_permissions/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Field-Level Permissions" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -490,20 +493,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Loading External Statements
+              Field-Level Permissions
             </div>
           </div>
         </a>
       
       
         
-        <a href="customization.html" class="md-footer__link md-footer__link--next" aria-label="Next: Customizing" rel="next">
+        <a href="../reusable_conditions/" class="md-footer__link md-footer__link--next" aria-label="Next: Reuse Conditions/Permissions" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Customizing
+              Reuse Conditions/Permissions
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -532,10 +535,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.409db549.min.js", "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.82b56eb2.min.js"></script>
+      <script src="../assets/javascripts/bundle.56a63758.min.js"></script>
       
     
   </body>
