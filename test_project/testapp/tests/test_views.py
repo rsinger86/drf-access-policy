@@ -51,5 +51,3 @@ class ViewsTestCase(APITestCase):
         url = reverse("get-landing-page")
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, 200)
-
-    

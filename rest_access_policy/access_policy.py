@@ -68,6 +68,10 @@ class AccessPolicy(permissions.BasePermission):
     def scope_queryset(cls, request, qs):
         return qs.none()
 
+    @classmethod
+    def scope_fields(cls, request, fields: dict, instance=None) -> dict:
+        return fields
+
     def _get_invoked_action(self, view) -> str:
         """
         If a CBV, the name of the method. If a regular function view,

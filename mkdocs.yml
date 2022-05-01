@@ -36,6 +36,7 @@ nav:
   - Statement Elements: statement_elements.md
   - Policy Evaluation Logic: policy_logic.md
   - Custom/Object-Level Conditions: object_level_permissions.md
+  - Field-Level Permissions: field_level_permissions.md
   - ViewSet Mixin: view_set_mixin.md
   - Reuse Conditions/Permissions: reusable_conditions.md
   - Loading External Statements: loading_external_source.md
