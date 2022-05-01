@@ -6,3 +6,6 @@ drf_access_policy.egg-info
 .vscode
 site/
 venv.sh
+.venv
+.coverage
+
