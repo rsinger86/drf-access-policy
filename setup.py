@@ -13,9 +13,6 @@ classifiers = [
     # Pick your license as you wish (should match "license" above)
     "License :: OSI Approved :: MIT License",
     "Framework :: Django",
-    "Framework :: Django :: 1.8",
-    "Framework :: Django :: 1.9",
-    "Framework :: Django :: 1.11",
     "Framework :: Django :: 2.0",
     "Framework :: Django :: 3.0",
     "Framework :: Django :: 3.1",
@@ -28,7 +25,7 @@ classifiers = [
 ]
 setup(
     name="drf-access-policy",
-    version="1.1.0",
+    version="1.1.1",
     description="Declarative access policies/permissions modeled after AWS' IAM policies.",
     author="Robert Singer",
     author_email="robertgsinger@gmail.com",
