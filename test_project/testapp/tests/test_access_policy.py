@@ -3,7 +3,7 @@ from typing import Optional
 
 from django.contrib.auth.models import AnonymousUser, Group, User
 from django.test import TestCase
-from rest_access_policy import AccessPolicy, AccessPolicyException
+from rest_access_policy import AccessPolicy, AccessPolicyException, Statement
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
 
@@ -64,46 +64,51 @@ class AccessPolicyTests(TestCase):
         result = sorted(policy.get_user_group_values(user))
         self.assertEqual(result, [])
 
-    def test_normalize_statements(self):
-        policy = AccessPolicy()
-
-        result = policy._normalize_statements(
-            [
-                {
-                    "principal": "group:admin",
-                    "action": "destroy",
-                    "condition": "is_nice_day",
-                }
-            ]
-        )
-
-        self.assertEqual(
-            result,
-            [
-                {
-                    "principal": ["group:admin"],
-                    "action": ["destroy"],
-                    "condition": ["is_nice_day"],
-                    "condition_expression": [],
-                }
-            ],
-        )
-
     def test_get_statements_matching_principal_if_user_is_authenticated(self):
         cooks = Group.objects.create(name="cooks")
         user = User.objects.create(id=5)
         user.groups.add(cooks)
 
         statements = [
-            {"principal": ["id:5"], "action": ["create"]},
-            {"principal": ["group:dev"], "action": ["destroy"]},
-            {"principal": ["group:cooks"], "action": ["do_something"]},
-            {"principal": ["*"], "action": ["*"]},
-            {"principal": ["id:79"], "action": ["vote"]},
-            {"principal": ["anonymous"], "action": ["anonymous_action"]},
-            {"principal": ["authenticated"], "action": ["authenticated_action"]},
-            {"principal": ["staff"], "action": ["staff_action"]},
-            {"principal": ["admin"], "action": ["admin_action"]},
+            Statement.from_dict(
+                {"principal": ["id:5"], "action": ["create"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["group:dev"], "action": ["destroy"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["group:cooks"],
+                    "action": ["do_something"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {"principal": ["*"], "action": ["*"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["id:79"], "action": ["vote"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["anonymous"],
+                    "action": ["anonymous_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["authenticated"],
+                    "action": ["authenticated_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {"principal": ["staff"], "action": ["staff_action"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["admin"], "action": ["admin_action"], "effect": "allow"}
+            ),
         ]
 
         policy = AccessPolicy()
@@ -113,10 +118,10 @@ class AccessPolicyTests(TestCase):
         )
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(result[0]["action"], ["create"])
-        self.assertEqual(result[1]["action"], ["do_something"])
-        self.assertEqual(result[2]["action"], ["*"])
-        self.assertEqual(result[3]["action"], ["authenticated_action"])
+        self.assertEqual(result[0].action, ["create"])
+        self.assertEqual(result[1].action, ["do_something"])
+        self.assertEqual(result[2].action, ["*"])
+        self.assertEqual(result[3].action, ["authenticated_action"])
 
     def test_get_statements_matching_principal_if_user_is_staff(self):
         cooks = Group.objects.create(name="cooks")
@@ -126,15 +131,45 @@ class AccessPolicyTests(TestCase):
         user.save()
 
         statements = [
-            {"principal": ["id:5"], "action": ["create"]},
-            {"principal": ["group:dev"], "action": ["destroy"]},
-            {"principal": ["group:cooks"], "action": ["do_something"]},
-            {"principal": ["*"], "action": ["*"]},
-            {"principal": ["id:79"], "action": ["vote"]},
-            {"principal": ["anonymous"], "action": ["anonymous_action"]},
-            {"principal": ["authenticated"], "action": ["authenticated_action"]},
-            {"principal": ["staff"], "action": ["staff_action"]},
-            {"principal": ["admin"], "action": ["admin_action"]},
+            Statement.from_dict(
+                {"principal": ["id:5"], "action": ["create"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["group:dev"], "action": ["destroy"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["group:cooks"],
+                    "action": ["do_something"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {"principal": ["*"], "action": ["*"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["id:79"], "action": ["vote"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["anonymous"],
+                    "action": ["anonymous_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["authenticated"],
+                    "action": ["authenticated_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {"principal": ["staff"], "action": ["staff_action"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["admin"], "action": ["admin_action"], "effect": "allow"}
+            ),
         ]
 
         policy = AccessPolicy()
@@ -144,11 +179,11 @@ class AccessPolicyTests(TestCase):
         )
 
         self.assertEqual(len(result), 5)
-        self.assertEqual(result[0]["action"], ["create"])
-        self.assertEqual(result[1]["action"], ["do_something"])
-        self.assertEqual(result[2]["action"], ["*"])
-        self.assertEqual(result[3]["action"], ["authenticated_action"])
-        self.assertEqual(result[4]["action"], ["staff_action"])
+        self.assertEqual(result[0].action, ["create"])
+        self.assertEqual(result[1].action, ["do_something"])
+        self.assertEqual(result[2].action, ["*"])
+        self.assertEqual(result[3].action, ["authenticated_action"])
+        self.assertEqual(result[4].action, ["staff_action"])
 
     def test_get_statements_matching_principal_if_user_is_admin(self):
         cooks = Group.objects.create(name="cooks")
@@ -188,12 +223,32 @@ class AccessPolicyTests(TestCase):
         user = AnonymousUser()
 
         statements = [
-            {"principal": ["id:5"], "action": ["create"]},
-            {"principal": ["*"], "action": ["list"]},
-            {"principal": ["anonymous"], "action": ["anonymous_action"]},
-            {"principal": ["authenticated"], "action": ["authenticated_action"]},
-            {"principal": ["staff"], "action": ["staff_action"]},
-            {"principal": ["admin"], "action": ["admin_action"]},
+            Statement.from_dict(
+                {"principal": ["id:5"], "action": ["create"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["*"], "action": ["list"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["anonymous"],
+                    "action": ["anonymous_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["authenticated"],
+                    "action": ["authenticated_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {"principal": ["staff"], "action": ["staff_action"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["admin"], "action": ["admin_action"], "effect": "allow"}
+            ),
         ]
 
         policy = AccessPolicy()
@@ -203,8 +258,8 @@ class AccessPolicyTests(TestCase):
         )
 
         self.assertEqual(len(result), 2)
-        self.assertEqual(result[0]["action"], ["list"])
-        self.assertEqual(result[1]["action"], ["anonymous_action"])
+        self.assertEqual(result[0].action, ["list"])
+        self.assertEqual(result[1].action, ["anonymous_action"])
 
     def test_get_statements_matching_action_when_method_unsafe(self):
         cooks = Group.objects.create(name="cooks")
@@ -623,15 +678,7 @@ class AccessPolicyTests(TestCase):
         ) as monkey:
             policy.has_permission(request, view)
             monkey.assert_called_with(
-                [
-                    {
-                        "principal": ["*"],
-                        "action": ["create"],
-                        "effect": "allow",
-                        "condition": [],
-                        "condition_expression": [],
-                    }
-                ],
+                [Statement(principal="*", action="create", effect="allow")],
                 request,
                 view,
                 "create",

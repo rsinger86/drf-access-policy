@@ -1,5 +1,5 @@
 import importlib
-from typing import List
+from typing import List, Optional, Union
 
 from django.conf import settings
 from django.db.models import prefetch_related_objects
@@ -35,12 +35,95 @@ class AccessEnforcement(object):
         return self._allowed
 
 
+class Statement(object):
+    principal: List[str]
+    action: List[str]
+    condition: List[str]
+    condition_expression: List[str]
+    effect: str
+
+    def __init__(
+        self,
+        *,
+        principal: Union[str, List[str]],
+        action: Union[str, List[str]],
+        effect: str,
+        condition: Optional[Union[str, List[str]]] = None,
+        condition_expression: Optional[Union[str, List[str]]] = None,
+    ) -> None:
+        condition = condition or []
+        condition_expression = condition_expression or []
+
+        if isinstance(principal, str):
+            principal = [principal]
+
+        if isinstance(action, str):
+            action = [action]
+
+        if isinstance(condition, str):
+            condition = [condition]
+
+        if isinstance(condition_expression, str):
+            condition_expression = [condition_expression]
+
+        if effect not in ("allow", "deny"):
+            raise AccessPolicyException(
+                f"Must set 'effect' to 'allow' or 'deny', not: {effect}."
+            )
+
+        self.principal = principal
+        self.action = action
+        self.condition = condition
+        self.effect = effect
+        self.condition_expression = condition_expression
+
+    def to_dict(self) -> dict:
+        return {
+            "action": self.action,
+            "effect": self.effect,
+            "principal": self.principal,
+            "condition": self.condition,
+            "condition_expression": self.condition_expression,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Statement":
+        return cls(
+            principal=data.get("principal"),
+            effect=data.get("effect"),
+            action=data.get("action"),
+            condition=data.get("condition"),
+            condition_expression=data.get("condition_expression"),
+        )
+
+    def __eq__(self, other: "Statement"):
+        return self.to_dict() == other.to_dict()
+
+
 class AccessPolicy(permissions.BasePermission):
+    compiled_statements: Optional[List[Statement]] = None
     statements: List[dict] = []
     field_permissions: dict = {}
     id = None
     group_prefix = "group:"
     id_prefix = "id:"
+
+    def __init_subclass__(cls) -> None:
+        compiled_statements = []
+
+        if cls.statements:
+            for raw_statement in cls.statements:
+                compiled_statements.append(
+                    Statement(
+                        principal=raw_statement.get("principal"),
+                        action=raw_statement.get("action"),
+                        effect=raw_statement.get("effect"),
+                        condition=raw_statement.get("condition"),
+                        condition_expression=raw_statement.get("condition_expression"),
+                    )
+                )
+
+        cls.compiled_statements = compiled_statements
 
     def has_permission(self, request, view) -> bool:
         action = self._get_invoked_action(view)
@@ -53,8 +136,13 @@ class AccessPolicy(permissions.BasePermission):
         request.access_enforcement = AccessEnforcement(action=action, allowed=allowed)
         return allowed
 
-    def get_policy_statements(self, request, view) -> List[dict]:
-        return self.statements
+    def get_policy_statements(self, request, view) -> List[Statement]:
+        if self.compiled_statements:
+            return self.compiled_statements
+
+        raise AccessPolicyException(
+            "get_policy_statements did not find any compiled statements to return"
+        )
 
     def get_user_group_values(self, user) -> List[str]:
         if user.is_anonymous:
@@ -87,9 +175,8 @@ class AccessPolicy(permissions.BasePermission):
         raise AccessPolicyException("Could not determine action of request")
 
     def _evaluate_statements(
-        self, statements: List[dict], request, view, action: str
+        self, statements: List[Statement], request, view, action: str
     ) -> bool:
-        statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
         matched = self._get_statements_matching_action(request, action, matched)
 
@@ -101,43 +188,23 @@ class AccessPolicy(permissions.BasePermission):
             request, view, action=action, statements=matched, is_expression=True
         )
 
-        denied = [_ for _ in matched if _["effect"] != "allow"]
+        denied = [_ for _ in matched if _.effect != "allow"]
 
         if len(matched) == 0 or len(denied) > 0:
             return False
 
         return True
 
-    def _normalize_statements(self, statements=[]) -> List[dict]:
-        for statement in statements:
-            if isinstance(statement["principal"], str):
-                statement["principal"] = [statement["principal"]]
-
-            if isinstance(statement["action"], str):
-                statement["action"] = [statement["action"]]
-
-            if "condition" not in statement:
-                statement["condition"] = []
-            elif isinstance(statement["condition"], str):
-                statement["condition"] = [statement["condition"]]
-
-            if "condition_expression" not in statement:
-                statement["condition_expression"] = []
-            elif isinstance(statement["condition_expression"], str):
-                statement["condition_expression"] = [statement["condition_expression"]]
-
-        return statements
-
     @classmethod
     def _get_statements_matching_principal(
-        cls, request, statements: List[dict]
-    ) -> List[dict]:
+        cls, request, statements: List[Statement]
+    ) -> List[Statement]:
         user = request.user or AnonymousUser()
         user_roles = None
         matched = []
 
         for statement in statements:
-            principals = statement["principal"]
+            principals = statement.principal
             found = False
 
             if "*" in principals:
@@ -167,7 +234,7 @@ class AccessPolicy(permissions.BasePermission):
         return matched
 
     def _get_statements_matching_action(
-        self, request, action: str, statements: List[dict]
+        self, request, action: str, statements: List[Statement]
     ):
         """
         Filter statements and return only those that match the specified
@@ -178,31 +245,37 @@ class AccessPolicy(permissions.BasePermission):
         http_method = "<method:%s>" % request.method.lower()
 
         for statement in statements:
-            if action in statement["action"] or "*" in statement["action"]:
+            if action in statement.action or "*" in statement.action:
                 matched.append(statement)
-            elif http_method in statement["action"]:
+            elif http_method in statement.action:
                 matched.append(statement)
             elif (
-                "<safe_methods>" in statement["action"]
-                and request.method in SAFE_METHODS
+                "<safe_methods>" in statement.action and request.method in SAFE_METHODS
             ):
                 matched.append(statement)
 
         return matched
 
     def _get_statements_matching_conditions(
-        self, request, view, *, action: str, statements: List[dict], is_expression: bool
-    ):
+        self,
+        request,
+        view,
+        *,
+        action: str,
+        statements: List[Statement],
+        is_expression: bool,
+    ) -> List[Statement]:
         """
         Filter statements and only return those that match all of their
         custom context conditions; if no conditions are provided then
         the statement should be returned.
         """
         matched = []
-        element_key = "condition_expression" if is_expression else "condition"
 
         for statement in statements:
-            conditions = statement[element_key]
+            conditions = (
+                statement.condition_expression if is_expression else statement.condition
+            )
 
             if len(conditions) == 0:
                 matched.append(statement)
