@@ -3,12 +3,11 @@ from typing import List
 
 from django.conf import settings
 from django.db.models import prefetch_related_objects
-from pyparsing import infixNotation, opAssoc
 from rest_framework import permissions
 
 from rest_access_policy import AccessPolicyException
 
-from .parsing import BoolAnd, BoolNot, BoolOr, ConditionOperand, boolOperand
+from .parsing import get_parser
 
 
 class AnonymousUser(object):
@@ -87,7 +86,9 @@ class AccessPolicy(permissions.BasePermission):
 
         raise AccessPolicyException("Could not determine action of request")
 
-    def _evaluate_statements(self, statements: List[dict], request, view, action: str) -> bool:
+    def _evaluate_statements(
+        self, statements: List[dict], request, view, action: str
+    ) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
         matched = self._get_statements_matching_action(request, action, matched)
@@ -128,7 +129,9 @@ class AccessPolicy(permissions.BasePermission):
         return statements
 
     @classmethod
-    def _get_statements_matching_principal(cls, request, statements: List[dict]) -> List[dict]:
+    def _get_statements_matching_principal(
+        cls, request, statements: List[dict]
+    ) -> List[dict]:
         user = request.user or AnonymousUser()
         user_roles = None
         matched = []
@@ -163,7 +166,9 @@ class AccessPolicy(permissions.BasePermission):
 
         return matched
 
-    def _get_statements_matching_action(self, request, action: str, statements: List[dict]):
+    def _get_statements_matching_action(
+        self, request, action: str, statements: List[dict]
+    ):
         """
         Filter statements and return only those that match the specified
         action.
@@ -177,7 +182,10 @@ class AccessPolicy(permissions.BasePermission):
                 matched.append(statement)
             elif http_method in statement["action"]:
                 matched.append(statement)
-            elif "<safe_methods>" in statement["action"] and request.method in SAFE_METHODS:
+            elif (
+                "<safe_methods>" in statement["action"]
+                and request.method in SAFE_METHODS
+            ):
                 matched.append(statement)
 
         return matched
@@ -204,23 +212,13 @@ class AccessPolicy(permissions.BasePermission):
 
             for condition in conditions:
                 if is_expression:
-                    check_cond_fn = lambda cond: self._check_condition(cond, request, view, action)
-
-                    boolOperand.setParseAction(lambda token: ConditionOperand(token, check_cond_fn))
-
-                    boolExpr = infixNotation(
-                        boolOperand,
-                        [
-                            ("not", 1, opAssoc.RIGHT, BoolNot),
-                            ("and", 2, opAssoc.LEFT, BoolAnd),
-                            ("or", 2, opAssoc.LEFT, BoolOr),
-                        ],
+                    check_cond_fn = lambda cond: self._check_condition(
+                        cond, request, view, action
                     )
-
-                    passed = bool(boolExpr.parseString(condition)[0])
+                    bool_parser = get_parser(check_cond_fn)
+                    passed = bool(bool_parser.parseString(condition)[0])
                 else:
                     passed = self._check_condition(condition, request, view, action)
-
                 if not passed:
                     fails += 1
                     break
@@ -249,7 +247,8 @@ class AccessPolicy(permissions.BasePermission):
 
         if type(result) is not bool:
             raise AccessPolicyException(
-                "condition '%s' must return true/false, not %s" % (condition, type(result))
+                "condition '%s' must return true/false, not %s"
+                % (condition, type(result))
             )
 
         return result
@@ -263,9 +262,13 @@ class AccessPolicy(permissions.BasePermission):
 
             if module_paths:
                 if not isinstance(module_paths, (str, list, tuple)):
-                    raise ValueError("Define 'resusable_conditions' as list, tuple or str")
+                    raise ValueError(
+                        "Define 'resusable_conditions' as list, tuple or str"
+                    )
 
-                module_paths = [module_paths] if isinstance(module_paths, str) else module_paths
+                module_paths = (
+                    [module_paths] if isinstance(module_paths, str) else module_paths
+                )
 
                 for module_path in module_paths:
                     module = importlib.import_module(module_path)

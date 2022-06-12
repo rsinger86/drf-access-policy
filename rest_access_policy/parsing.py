@@ -1,14 +1,19 @@
-from pyparsing import Keyword, Word, alphanums
+from typing import Callable
+
+from pyparsing import Keyword, Word, alphanums, infixNotation, opAssoc
 
 
 class ConditionOperand(object):
-
     def __init__(self, t, check_cond_fn):
         self.label = t[0]
         self.check_condition_fn = check_cond_fn
 
-        assert self.check_condition_fn is not None, 'The check_condition_fn should should be set'
-        assert callable(self.check_condition_fn), 'The check_condition_fn should should be callable'
+        assert (
+            self.check_condition_fn is not None
+        ), "The check_condition_fn should should be set"
+        assert callable(
+            self.check_condition_fn
+        ), "The check_condition_fn should should be callable"
 
     def __bool__(self):
         return self.check_condition_fn(self.label)
@@ -36,12 +41,12 @@ class BoolBinOp(object):
 
 
 class BoolAnd(BoolBinOp):
-    reprsymbol = '&'
+    reprsymbol = "&"
     evalop = all
 
 
 class BoolOr(BoolBinOp):
-    reprsymbol = '|'
+    reprsymbol = "|"
     evalop = any
 
 
@@ -62,4 +67,19 @@ class BoolNot(object):
 
 TRUE = Keyword("True")
 FALSE = Keyword("False")
-boolOperand = TRUE | FALSE | Word(alphanums + '_:.*', max=256)
+
+
+def get_parser(check_cond_fn: Callable):
+    boolOperand = TRUE | FALSE | Word(alphanums + "_:.*", max=256)
+    boolOperand.setParseAction(lambda token: ConditionOperand(token, check_cond_fn))
+
+    boolExpr = infixNotation(
+        boolOperand,
+        [
+            ("not", 1, opAssoc.RIGHT, BoolNot),
+            ("and", 2, opAssoc.LEFT, BoolAnd),
+            ("or", 2, opAssoc.LEFT, BoolOr),
+        ],
+    )
+
+    return boolExpr
