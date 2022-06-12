@@ -292,6 +292,7 @@ class AccessPolicy(permissions.BasePermission):
                     passed = bool(bool_parser.parseString(condition)[0])
                 else:
                     passed = self._check_condition(condition, request, view, action)
+
                 if not passed:
                     fails += 1
                     break

@@ -194,15 +194,45 @@ class AccessPolicyTests(TestCase):
         user.save()
 
         statements = [
-            {"principal": ["id:5"], "action": ["create"]},
-            {"principal": ["group:dev"], "action": ["destroy"]},
-            {"principal": ["group:cooks"], "action": ["do_something"]},
-            {"principal": ["*"], "action": ["*"]},
-            {"principal": ["id:79"], "action": ["vote"]},
-            {"principal": ["anonymous"], "action": ["anonymous_action"]},
-            {"principal": ["authenticated"], "action": ["authenticated_action"]},
-            {"principal": ["staff"], "action": ["staff_action"]},
-            {"principal": ["admin"], "action": ["admin_action"]},
+            Statement.from_dict(
+                {"principal": ["id:5"], "action": ["create"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["group:dev"], "action": ["destroy"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["group:cooks"],
+                    "action": ["do_something"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {"principal": ["*"], "action": ["*"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["id:79"], "action": ["vote"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["anonymous"],
+                    "action": ["anonymous_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {
+                    "principal": ["authenticated"],
+                    "action": ["authenticated_action"],
+                    "effect": "allow",
+                }
+            ),
+            Statement.from_dict(
+                {"principal": ["staff"], "action": ["staff_action"], "effect": "allow"}
+            ),
+            Statement.from_dict(
+                {"principal": ["admin"], "action": ["admin_action"], "effect": "allow"}
+            ),
         ]
 
         policy = AccessPolicy()
@@ -212,12 +242,12 @@ class AccessPolicyTests(TestCase):
         )
 
         self.assertEqual(len(result), 6)
-        self.assertEqual(result[0]["action"], ["create"])
-        self.assertEqual(result[1]["action"], ["do_something"])
-        self.assertEqual(result[2]["action"], ["*"])
-        self.assertEqual(result[3]["action"], ["authenticated_action"])
-        self.assertEqual(result[4]["action"], ["staff_action"])
-        self.assertEqual(result[5]["action"], ["admin_action"])
+        self.assertEqual(result[0].action, ["create"])
+        self.assertEqual(result[1].action, ["do_something"])
+        self.assertEqual(result[2].action, ["*"])
+        self.assertEqual(result[3].action, ["authenticated_action"])
+        self.assertEqual(result[4].action, ["staff_action"])
+        self.assertEqual(result[5].action, ["admin_action"])
 
     def test_get_statements_matching_principal_if_user_is_anonymous(self):
         user = AnonymousUser()

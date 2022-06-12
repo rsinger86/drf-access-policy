@@ -13,7 +13,9 @@ class AccessViewSetMixin(object):
 
         access_policy = getattr(self, "access_policy", None)
 
-        if not inspect.isclass(access_policy) or not issubclass(access_policy, AccessPolicy):
+        if not inspect.isclass(access_policy) or not issubclass(
+            access_policy, AccessPolicy
+        ):
             raise Exception(
                 """
                     When mixing AccessViewSetMixin into your view set, you must assign an AccessPolicy 
