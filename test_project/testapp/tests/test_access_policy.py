@@ -436,7 +436,7 @@ class AccessPolicyTests(TestCase):
             ],
         )
 
-    @mock.patch("rest_access_policy.access_policy.boolOperand")
+    @mock.patch("rest_access_policy.access_policy.BoolOperand")
     def test_complex_condition_parser_not_called_for_simple_condition(self, opMock):
         opMock.setParseAction = mock.MagicMock()
 
