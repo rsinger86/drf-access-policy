@@ -8,7 +8,7 @@ from rest_framework import permissions
 
 from rest_access_policy import AccessPolicyException
 
-from .parsing import BoolAnd, BoolNot, BoolOr, ConditionOperand, boolOperand
+from .parsing import BoolAnd, BoolNot, BoolOr, ConditionOperand, BoolOperand
 
 
 class AnonymousUser(object):
@@ -201,6 +201,8 @@ class AccessPolicy(permissions.BasePermission):
                 continue
 
             fails = 0
+
+            boolOperand = BoolOperand()
 
             for condition in conditions:
                 if is_expression:

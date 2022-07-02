@@ -62,4 +62,8 @@ class BoolNot(object):
 
 TRUE = Keyword("True")
 FALSE = Keyword("False")
-boolOperand = TRUE | FALSE | Word(alphanums + '_:.*', max=256)
+
+
+class BoolOperand(object):
+    def __new__(cls):
+        return TRUE | FALSE | Word(alphanums + '_:.*', max=256)
