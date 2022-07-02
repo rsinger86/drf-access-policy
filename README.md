@@ -65,6 +65,10 @@ See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_no
 
 # Changelog <a id="changelog"></a>
 
+## 1.1.2 (July 2022)
+
+- Fixes issue with boolean parser and shared request state. Thanks @mari8i!
+
 ## 1.1.1 (April 2022)
 
 - Adds support for field-level permissions via a `AccessPolicy.scope_fields(request, fields: dict, instance=None)` method and the `FieldAccessMixin`. Thanks @gianpieropa!

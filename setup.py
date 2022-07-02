@@ -25,7 +25,7 @@ classifiers = [
 ]
 setup(
     name="drf-access-policy",
-    version="1.1.1",
+    version="1.1.2",
     description="Declarative access policies/permissions modeled after AWS' IAM policies.",
     author="Robert Singer",
     author_email="robertgsinger@gmail.com",
