@@ -32,4 +32,4 @@ class ArticleViewSet(ModelViewSet):
         pass
 ```
 
-A user in the group `sales` is allowed to `list` and `retrieve` articles because of the first statement. They cannot `publish` because all access is implicitly denied, however uses in the group `editor` can `publish` due to the second statement.
+A user in the group `sales` is allowed to `list` and `retrieve` articles because of the first statement. They cannot `publish` because all access is implicitly denied, however users in the group `editor` can `publish` due to the second statement.
