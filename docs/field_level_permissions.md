@@ -51,7 +51,7 @@ class CustomerAccountAccessPolicy(AccessPolicy):
     @classmethod
     def scope_fields(cls, request, fields: dict, instance=None) -> dict:
         if instance and instance.author != request.user:
-            fields["author"].read_only = True
+            fields["content"].read_only = True
         return fields
 ```
 
