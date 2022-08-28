@@ -1,8 +1,14 @@
 # Field-Level Permissions
 
-Often, depending on the user, not all fields should be visible or only a subset should be writable. For example, in a SaaS app maybe only admin users can view the email field of customer accounts.
+Often, depending on the user, not all fields should be visible or only a subset should be writable.
 
-For these scenarios, you can define a `scope_fields` method on the access policy which is passed the `dict` of `name:Field` pairs from the serializer definition.
+For these scenarios, you can define a `scope_fields` method on the access policy which is passed the `dict` of `name:Field` pairs from a serializer used with the `FieldAccessMixin`.
+
+## Scenario: A field should only exist for admin users
+
+Requirement: When a customer account is serialized or deserialized, the `email` field should only be present if the user is an admin.
+
+You could define a `scope_fields` method on the access policy like this:
 
 ```python
 class CustomerAccountAccessPolicy(AccessPolicy):
@@ -17,7 +23,7 @@ class CustomerAccountAccessPolicy(AccessPolicy):
         return fields
 ```
 
-Then, add the `FieldAccessMixin` to your serializer and assign it the correct access policy in its `Meta` class:
+Make sure to add the `FieldAccessMixin` to your serializer and assign it the correct access policy in its `Meta` class:
 
 ```python
 from rest_access_policy import FieldAccessMixin
@@ -30,4 +36,23 @@ class CustomerAccountSerializer(FieldAccessMixin, serializers.ModelSerializer):
         access_policy = CustomerAccountAccessPolicy
 ```
 
-When a customer account is serialized or deserialized, the `email` field will only be present if the user is an admin.
+## Scenario: A field should be read-only, except for the author
+
+Requirement: When a request is made to update an article, the `content` field should be read-only, except for the author.
+
+You could define a `scope_fields` method on the access policy like this:
+
+```python
+class CustomerAccountAccessPolicy(AccessPolicy):
+    statements = [
+      # statements that define who is allowed to perform what action
+    ]
+
+    @classmethod
+    def scope_fields(cls, request, fields: dict, instance=None) -> dict:
+        if instance and instance.author != request.user:
+            fields["author"].read_only = True
+        return fields
+```
+
+As before, make sure to add the `FieldAccessMixin` to your serializer and assign it the correct access policy in its `Meta` class.
