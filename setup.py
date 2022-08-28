@@ -30,6 +30,7 @@ setup(
     author="Robert Singer",
     author_email="robertgsinger@gmail.com",
     packages=["rest_access_policy"],
+    package_data={"rest_access_policy": ["py.typed"]},
     url="https://github.com/rsinger86/drf-access-policy",
     license="MIT",
     keywords="django restframework drf access policy authorization declaritive",
