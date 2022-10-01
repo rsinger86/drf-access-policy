@@ -65,6 +65,10 @@ See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_no
 
 # Changelog <a id="changelog"></a>
 
+## 1.2 (October 2022)
+
+- Adds `PermittedPkRelatedField` to re-use `scope_queryset` methods on policies.
+
 ## 1.1.2 (July 2022)
 
 - Fixes issue with boolean parser and shared request state. Thanks @mari8i!

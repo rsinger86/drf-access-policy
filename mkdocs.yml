@@ -41,6 +41,7 @@ nav:
   - Reuse Conditions/Permissions: reusable_conditions.md
   - Loading External Statements: loading_external_source.md
   - Multitenancy/Scoping QuerySets: multi_tenacy.md
+  - Policy Re-Use: policy_reuse.md
   - Customizing: customization.md
   - Migrating: migration_notes.md
   - License: license.md
