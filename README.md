@@ -65,6 +65,10 @@ See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_no
 
 # Changelog <a id="changelog"></a>
 
+## 1.3 (October 2022)
+
+- Adds `PermittedSlugRelatedField` to re-use `scope_queryset` methods on policies.
+
 ## 1.2 (October 2022)
 
 - Adds `PermittedPkRelatedField` to re-use `scope_queryset` methods on policies.

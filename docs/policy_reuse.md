@@ -15,7 +15,19 @@ class AccountUpdateSerializer(serializers.ModelSerializesr):
     emergency_contact = PermittedPkRelatedField(
         access_policy=UserAccessPolicy, queryset=User.objects.all()
     )
+```
 
+```python
+from django.contrib.auth.models import User
+
+from rest_framework import serializers
+from rest_access_policy import PermittedSlugRelatedField
+from my_policies import UserAccessPolicy
+
+class AccountUpdateSerializer(serializers.ModelSerializesr):
+    emergency_contact = PermittedSlugRelatedField(
+        access_policy=UserAccessPolicy, queryset=User.objects.all(), slug_field="username"
+    )
 ```
 
 Ensure that when the serializer is instantiated, it gets passed the `request` object, which
