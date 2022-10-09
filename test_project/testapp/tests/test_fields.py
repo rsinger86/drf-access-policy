@@ -35,8 +35,7 @@ class FieldsTestCase(APITestCase):
             data={"user": user.pk}, context={"request": FakeRequest(user=request_user)}
         )
 
-        serializer.is_valid()
-
+        self.assertTrue(serializer.is_valid())
         self.assertEqual(serializer.validated_data["user"], user)
 
     def test_exclude_out_of_scope_object(self):
@@ -60,8 +59,7 @@ class FieldsTestCase(APITestCase):
             data={"user": user.pk}, context={"request": FakeRequest(user=request_user)}
         )
 
-        serializer.is_valid()
-
+        self.assertFalse(serializer.is_valid())
         self.assertTrue("object does not exist" in str(serializer.errors))
 
 
@@ -85,8 +83,7 @@ class SlugFieldsTestCase(APITestCase):
             data={"user": "Test user"}, context={"request": FakeRequest(user=request_user)}
         )
 
-        serializer.is_valid()
-
+        self.assertTrue(serializer.is_valid())
         self.assertEqual(serializer.validated_data["user"], user)
 
     def test_exclude_out_of_scope_object(self):
@@ -110,6 +107,5 @@ class SlugFieldsTestCase(APITestCase):
             data={"user": "Test user"}, context={"request": FakeRequest(user=request_user)}
         )
 
-        serializer.is_valid()
-
-        self.assertTrue("object does not exist" in str(serializer.errors))
+        self.assertFalse(serializer.is_valid())
+        self.assertTrue("Object with username=Test user does not exist" in str(serializer.errors))
