@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.5">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.80dcb947.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
@@ -476,7 +476,7 @@
 
 <h1 id="access-policy-re-use">Access Policy Re-Use<a class="headerlink" href="#access-policy-re-use" title="Permanent link">&para;</a></h1>
 <p>If you've defined a <code>scope_queryset</code> method, you'll likely want to use it in multiple places. If an object shouldn't be returned to a user from a view set, they probably shouldn't be able to reference that object's <code>id</code> when sending a <code>POST</code> or <code>PUT</code> request.</p>
-<p>A <code>PermittedPkRelatedField</code> can be passed an access policy class.</p>
+<p>A <code>PermittedPkRelatedField</code> or <code>PermittedSlugRelatedField</code> can be passed an access policy class.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
 
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
@@ -486,6 +486,17 @@
 <span class="k">class</span> <span class="nc">AccountUpdateSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializesr</span><span class="p">):</span>
     <span class="n">emergency_contact</span> <span class="o">=</span> <span class="n">PermittedPkRelatedField</span><span class="p">(</span>
         <span class="n">access_policy</span><span class="o">=</span><span class="n">UserAccessPolicy</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
+<span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">PermittedSlugRelatedField</span>
+<span class="kn">from</span> <span class="nn">my_policies</span> <span class="kn">import</span> <span class="n">UserAccessPolicy</span>
+
+<span class="k">class</span> <span class="nc">AccountUpdateSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializesr</span><span class="p">):</span>
+    <span class="n">emergency_contact</span> <span class="o">=</span> <span class="n">PermittedSlugRelatedField</span><span class="p">(</span>
+        <span class="n">access_policy</span><span class="o">=</span><span class="n">UserAccessPolicy</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">slug_field</span><span class="o">=</span><span class="s2">&quot;username&quot;</span>
     <span class="p">)</span>
 </code></pre></div>
 <p>Ensure that when the serializer is instantiated, it gets passed the <code>request</code> object, which
