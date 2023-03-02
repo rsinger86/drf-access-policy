@@ -34,6 +34,7 @@ nav:
   - Usage - ViewSets: usage/view_set_usage.md
   - Usage - Function-Based Views: usage/function_based_view_usage.md
   - Statement Elements: statement_elements.md
+  - Statement Dataclasses: statement_dataclasses.md
   - Policy Evaluation Logic: policy_logic.md
   - Custom/Object-Level Conditions: object_level_permissions.md
   - Field-Level Permissions: field_level_permissions.md
