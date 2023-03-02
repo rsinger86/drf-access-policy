@@ -39,7 +39,12 @@ class FieldAccessMixin(object):
         return request
 
     def _apply_fields_access(self):
-        fields = self.access_policy.scope_fields(self.request, self.fields, instance=self.instance)
+        if self.read_only is True:
+            return
+
+        fields = self.access_policy.scope_fields(
+            self.request, self.fields, instance=self.instance
+        )
 
         if fields is None:
             raise Exception("scope_fields method must return fields variable")
@@ -48,6 +53,9 @@ class FieldAccessMixin(object):
 
     # Old style field-level permissions
     def _apply_deprecated_field_permissions(self):
+        if self.read_only is True:
+            return
+
         if (
             self.request.method
             in [
@@ -65,7 +73,9 @@ class FieldAccessMixin(object):
         field_permissions = getattr(access_policy, "field_permissions", {})
 
         if not isinstance(field_permissions, dict):
-            raise Exception("Field permissions must be set on access_policy for FieldAccessMixin")
+            raise Exception(
+                "Field permissions must be set on access_policy for FieldAccessMixin"
+            )
 
         return field_permissions
 
@@ -74,8 +84,10 @@ class FieldAccessMixin(object):
             self.field_permissions["read_only"]
         )
 
-        statements_matching_principal = self.access_policy._get_statements_matching_principal(
-            request=self.request, statements=read_only_statements
+        statements_matching_principal = (
+            self.access_policy._get_statements_matching_principal(
+                request=self.request, statements=read_only_statements
+            )
         )
 
         for statement in statements_matching_principal:
