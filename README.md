@@ -67,7 +67,7 @@ See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_no
 
 ## 1.4 (October 2022)
 
-- Fixes read-only scenario for FieldAccessMixin. Thanks @hungryseven!f
+- Fixes read-only scenario for FieldAccessMixin. Thanks @hungryseven!
 
 ## 1.3 (October 2022)
 
