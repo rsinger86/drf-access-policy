@@ -2,5 +2,5 @@
 # then run pip install pip-tools
 # then run pip-compile && pip-sync
 djangorestframework==3.11.2
-Django==3.1.13
+Django==3.1.14
 pyparsing==2.4.7
