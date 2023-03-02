@@ -7,6 +7,8 @@ from rest_access_policy import AccessPolicy, AccessPolicyException
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
 
+from rest_access_policy.access_policy import Statement
+
 
 class FakeRequest(object):
     def __init__(self, user: Optional[User], method: str = "GET"):
@@ -73,7 +75,10 @@ class AccessPolicyTests(TestCase):
                     "principal": "group:admin",
                     "action": "destroy",
                     "condition": "is_nice_day",
-                }
+                },
+                Statement(
+                    principal="user:1", action="create", condition="is_competent"
+                ),
             ]
         )
 
@@ -85,7 +90,14 @@ class AccessPolicyTests(TestCase):
                     "action": ["destroy"],
                     "condition": ["is_nice_day"],
                     "condition_expression": [],
-                }
+                },
+                {
+                    "principal": ["user:1"],
+                    "action": ["create"],
+                    "effect": "deny",
+                    "condition": ["is_competent"],
+                    "condition_expression": [],
+                },
             ],
         )
 
@@ -108,7 +120,9 @@ class AccessPolicyTests(TestCase):
 
         policy = AccessPolicy()
 
-        result = policy._get_statements_matching_principal(FakeRequest(user), statements)
+        result = policy._get_statements_matching_principal(
+            FakeRequest(user), statements
+        )
 
         self.assertEqual(len(result), 4)
         self.assertEqual(result[0]["action"], ["create"])
@@ -137,7 +151,9 @@ class AccessPolicyTests(TestCase):
 
         policy = AccessPolicy()
 
-        result = policy._get_statements_matching_principal(FakeRequest(user), statements)
+        result = policy._get_statements_matching_principal(
+            FakeRequest(user), statements
+        )
 
         self.assertEqual(len(result), 5)
         self.assertEqual(result[0]["action"], ["create"])
@@ -168,7 +184,9 @@ class AccessPolicyTests(TestCase):
 
         policy = AccessPolicy()
 
-        result = policy._get_statements_matching_principal(FakeRequest(user), statements)
+        result = policy._get_statements_matching_principal(
+            FakeRequest(user), statements
+        )
 
         self.assertEqual(len(result), 6)
         self.assertEqual(result[0]["action"], ["create"])
@@ -192,7 +210,9 @@ class AccessPolicyTests(TestCase):
 
         policy = AccessPolicy()
 
-        result = policy._get_statements_matching_principal(FakeRequest(user), statements)
+        result = policy._get_statements_matching_principal(
+            FakeRequest(user), statements
+        )
 
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["action"], ["list"])
@@ -472,7 +492,8 @@ class AccessPolicyTests(TestCase):
             policy._check_condition("is_sunny", None, None, "action")
 
         self.assertTrue(
-            "condition 'is_sunny' must be a method on the access policy" in str(context.exception)
+            "condition 'is_sunny' must be a method on the access policy"
+            in str(context.exception)
         )
 
     def test_check_condition_throws_error_if_returns_non_boolean(self):
@@ -514,8 +535,12 @@ class AccessPolicyTests(TestCase):
 
         policy = TestPolicy()
 
-        self.assertTrue(policy._check_condition("is_a_cat:Garfield", None, None, "action"))
-        self.assertFalse(policy._check_condition("is_a_cat:Snoopy", None, None, "action"))
+        self.assertTrue(
+            policy._check_condition("is_a_cat:Garfield", None, None, "action")
+        )
+        self.assertFalse(
+            policy._check_condition("is_a_cat:Snoopy", None, None, "action")
+        )
 
     def test_get_condition_method_from_self(self):
         class TestPolicy(AccessPolicy):
@@ -589,7 +614,9 @@ class AccessPolicyTests(TestCase):
             {"principal": "*", "action": "take_out_the_trash", "effect": "allow"},
         ]
 
-        result = policy._evaluate_statements(statements, FakeRequest(user), None, "create")
+        result = policy._evaluate_statements(
+            statements, FakeRequest(user), None, "create"
+        )
         self.assertTrue(result)
 
     def test_has_permission(self):
@@ -668,7 +695,9 @@ class AccessPolicyTests(TestCase):
 
     def test_has_permission_is_false_when_user_is_none(self):
         class TestPolicy(AccessPolicy):
-            statements = [{"action": "*", "principal": "authenticated", "effect": "allow"}]
+            statements = [
+                {"action": "*", "principal": "authenticated", "effect": "allow"}
+            ]
 
         view = FakeViewSet(action="create")
         policy = TestPolicy()

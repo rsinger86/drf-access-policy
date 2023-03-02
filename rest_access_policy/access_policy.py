@@ -1,5 +1,6 @@
 import importlib
-from typing import List
+from dataclasses import asdict, dataclass, field
+from typing import List, Union
 
 from django.conf import settings
 from django.db.models import prefetch_related_objects
@@ -8,7 +9,7 @@ from rest_framework import permissions
 
 from rest_access_policy import AccessPolicyException
 
-from .parsing import BoolAnd, BoolNot, BoolOr, ConditionOperand, BoolOperand
+from .parsing import BoolAnd, BoolNot, BoolOperand, BoolOr, ConditionOperand
 
 
 class AnonymousUser(object):
@@ -36,8 +37,23 @@ class AccessEnforcement(object):
         return self._allowed
 
 
+@dataclass
+class Statement:
+    principal: Union[List[str], str]
+    action: Union[List[str], str]
+    effect: str = "deny"  # allow, deny
+    condition: Union[List[str], str] = field(default_factory=list)
+    condition_expression: Union[List[str], str] = field(default_factory=list)
+
+    def __post_init__(self):
+        permitted = ("allow", "deny")
+
+        if self.effect not in ("allow", "deny"):
+            raise Exception(f"effect must be one of {permitted}")
+
+
 class AccessPolicy(permissions.BasePermission):
-    statements: List[dict] = []
+    statements: List[Union[dict, Statement]] = []
     field_permissions: dict = {}
     id = None
     group_prefix = "group:"
@@ -54,7 +70,7 @@ class AccessPolicy(permissions.BasePermission):
         request.access_enforcement = AccessEnforcement(action=action, allowed=allowed)
         return allowed
 
-    def get_policy_statements(self, request, view) -> List[dict]:
+    def get_policy_statements(self, request, view) -> List[Union[dict, Statement]]:
         return self.statements
 
     def get_user_group_values(self, user) -> List[str]:
@@ -88,7 +104,7 @@ class AccessPolicy(permissions.BasePermission):
         raise AccessPolicyException("Could not determine action of request")
 
     def _evaluate_statements(
-        self, statements: List[dict], request, view, action: str
+        self, statements: List[Union[dict, Statement]], request, view, action: str
     ) -> bool:
         statements = self._normalize_statements(statements)
         matched = self._get_statements_matching_principal(request, statements)
@@ -109,8 +125,15 @@ class AccessPolicy(permissions.BasePermission):
 
         return True
 
-    def _normalize_statements(self, statements=[]) -> List[dict]:
+    def _normalize_statements(
+        self, statements: List[Union[dict, Statement]]
+    ) -> List[dict]:
+        normalized = []
+
         for statement in statements:
+            if isinstance(statement, Statement):
+                statement = asdict(statement)
+
             if isinstance(statement["principal"], str):
                 statement["principal"] = [statement["principal"]]
 
@@ -127,7 +150,9 @@ class AccessPolicy(permissions.BasePermission):
             elif isinstance(statement["condition_expression"], str):
                 statement["condition_expression"] = [statement["condition_expression"]]
 
-        return statements
+            normalized.append(statement)
+
+        return normalized
 
     @classmethod
     def _get_statements_matching_principal(
@@ -176,7 +201,7 @@ class AccessPolicy(permissions.BasePermission):
         """
         matched = []
         SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
-        http_method = "<method:%s>" % request.method.lower()
+        http_method = f"<method:{request.method.lower()}>"
 
         for statement in statements:
             if action in statement["action"] or "*" in statement["action"]:
@@ -264,8 +289,7 @@ class AccessPolicy(permissions.BasePermission):
 
         if type(result) is not bool:
             raise AccessPolicyException(
-                "condition '%s' must return true/false, not %s"
-                % (condition, type(result))
+                f"condition '{condition}' must return true/false, not {type(result)}"
             )
 
         return result
@@ -294,6 +318,6 @@ class AccessPolicy(permissions.BasePermission):
                         return getattr(module, method_name)
 
         raise AccessPolicyException(
-            "condition '%s' must be a method on the access policy or be defined in the 'reusable_conditions' module"
-            % method_name
+            f"condition '{method_name}' must be a method on the access policy "
+            f"or be defined in the 'reusable_conditions' module"
         )
