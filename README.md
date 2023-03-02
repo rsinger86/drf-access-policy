@@ -65,6 +65,10 @@ See [migration notes](https://rsinger86.github.io/drf-access-policy/migration_no
 
 # Changelog <a id="changelog"></a>
 
+## 1.4 (October 2022)
+
+- Fixes read-only scenario for FieldAccessMixin. Thanks @hungryseven!f
+
 ## 1.3 (October 2022)
 
 - Adds `PermittedSlugRelatedField` to re-use `scope_queryset` methods on policies. Thanks @bradydean!
