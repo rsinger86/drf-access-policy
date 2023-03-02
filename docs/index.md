@@ -36,7 +36,7 @@ See [migration notes](/migration_notes.html) if your policy statements combine m
 
 ## Requirements
 
-Python 3.5+
+Python 3.6+
 
 ## Installation
 
