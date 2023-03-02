@@ -9,17 +9,17 @@
       
       
       
-        <link rel="prev" href="../policy_reuse/">
+        <link rel="prev" href="../statement_elements/">
       
       
-        <link rel="next" href="../migration_notes/">
+        <link rel="next" href="../policy_logic/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.0">
     
     
       
-        <title>Customizing - Django REST - Access Policy</title>
+        <title>Statement Dataclasses - Django REST - Access Policy</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#customizing-user-grouprole-values" class="md-skip">
+        <a href="#statement-dataclass" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Customizing
+              Statement Dataclasses
             
           </span>
         </div>
@@ -270,11 +270,21 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../statement_dataclasses/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Statement Dataclasses
       </a>
+      
     </li>
   
 
@@ -405,21 +415,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../customization/" class="md-nav__link">
         Customizing
       </a>
-      
     </li>
   
 
@@ -490,21 +490,41 @@
   
 
 
-<h1 id="customizing-user-grouprole-values">Customizing User Group/Role Values<a class="headerlink" href="#customizing-user-grouprole-values" title="Permanent link">&para;</a></h1>
-<p>If you aren't using Django's built-in auth app, you may need to define a custom way to retrieve the role/group names to which the user belongs. Just define a method called <code>get_user_group_values</code> on your policy class. It is passed a single argument: the  user of the current request. In the example below, the user model has a to-many relationship with a "roles", which have their "name" value in a field called "title".</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UserAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
-    <span class="c1"># ... other properties and methods ...</span>
+<h1 id="statement-dataclass">Statement Dataclass<a class="headerlink" href="#statement-dataclass" title="Permanent link">&para;</a></h1>
+<p>A <code>Statement</code> dataclass can be used instead of dictionaries to define policy statements.</p>
+<p>For example, the following policies are equivalent:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rest_access_policy</span> <span class="kn">import</span> <span class="n">Statement</span>
 
-    <span class="k">def</span> <span class="nf">get_user_group_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-</code></pre></div>
-<h1 id="customizing-principal-prefixes">Customizing Principal Prefixes<a class="headerlink" href="#customizing-principal-prefixes" title="Permanent link">&para;</a></h1>
-<p>By default, the prefixes to identify the type of principle (user or group) are "id:" and "group:", respectively. You can customize this by setting these properties on your policy class:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">FriendRequestPolicy</span><span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">BasePermission</span><span class="p">):</span>
-    <span class="n">group_prefix</span> <span class="o">=</span> <span class="s2">&quot;role:&quot;</span>
-    <span class="n">id_prefix</span> <span class="o">=</span> <span class="s2">&quot;staff_id:&quot;</span>
 
-    <span class="c1"># .. the rest of you policy definition ..</span>
+<span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">Statement</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;destroy&quot;</span><span class="p">,</span> 
+            <span class="n">principal</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span> 
+            <span class="n">effect</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">,</span> 
+            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;is_author&quot;</span>
+        <span class="p">)</span>
+    <span class="p">]</span> 
+
+    <span class="k">def</span> <span class="nf">is_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">article</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">==</span> <span class="n">article</span><span class="o">.</span><span class="n">author</span>
+
+
+
+<span class="k">class</span> <span class="nc">ArticleAccessPolicy</span><span class="p">(</span><span class="n">AccessPolicy</span><span class="p">):</span>
+    <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;destroy&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;principal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="s2">&quot;is_author&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">is_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">article</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">==</span> <span class="n">article</span><span class="o">.</span><span class="n">author</span>
 </code></pre></div>
 
 
