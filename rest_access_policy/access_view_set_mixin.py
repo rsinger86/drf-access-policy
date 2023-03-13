@@ -26,3 +26,10 @@ class AccessViewSetMixin(object):
     def finalize_response(self, request, response, *args, **kwargs) -> Response:
         response = super().finalize_response(request, response, *args, **kwargs)
         return response
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        scope_queryset = self.access_policy.scope_queryset(self.request, queryset)
+        if scope_queryset.exists():
+            return scope_queryset
+        return queryset
