@@ -34,3 +34,5 @@ You have to remember to call `scope_queryset` method from the view, so I'd sugge
                 self.request, PhotoAlbum.objects.all()
             )
 ```
+
+Note that the if [ViewSet Mixin](view_set_mixin.md) is used, the `get_queryset` method is overrided automatically based in the current view's queryset.
