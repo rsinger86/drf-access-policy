@@ -59,13 +59,14 @@ The actions correspond to the names of methods on the ViewSet and the following 
 - in order to destroy an article, the user must be the author of the article. Notice how the condition method `is_author` calls `get_object()` on the view to get the current article.
 - if the condition `is_happy_hour`, evaluates to `True`, then no one is allowed to do anything.
 
-Additionally, we have some logic in the `scope_queryset` method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they can see articles with any status. You have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.
+Additionally, we have some logic in the `scope_queryset` method for filtering which models are visible to the current user. Here, we want users to only see published articles, unless they are an editor, in which case they can see articles with any status. If you don't use the [ViewSet Mixin](view_set_mixin.md), you have to remember to call this method from the view, so I'd suggest reviewing this as part of a security audit checklist.
 
 Below is a `ViewSet` with the policy attached. Notice how the `publish` and `unpublish` methods correspond to the `action` declarations in the policy.
 
 ```python hl_lines="21 25"
 class ArticleViewSet(AccessViewSetMixin, ModelViewSet):
     access_policy = ArticleAccessPolicy
+    queryset = Articles.objects.all()
 
     # If you prefer not to use the mixin, the policy class can be added to permission_classes
     # permission_classes = (ArticleAccessPolicy,)
@@ -76,11 +77,12 @@ class ArticleViewSet(AccessViewSetMixin, ModelViewSet):
     def access_policy(self):
         return self.permission_classes[0]
 
-    # Ensure that current user can only see the models
+    # If you prefer not to use the mixin, explicity declare this
+    # method to ensure that current user can only see the models
     # they are allowed to see
     def get_queryset(self):
         return self.access_policy.scope_queryset(
-            self.request, Articles.objects.all()
+            self.request, self.queryset
         )
 
     @action(methods=['POST'], detail=False)
