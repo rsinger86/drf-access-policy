@@ -16,5 +16,5 @@ pyparsing==2.4.7
     # via -r requirements.in
 pytz==2019.1
     # via django
-sqlparse==0.3.0
+sqlparse==0.4.4
     # via django
