@@ -8,7 +8,7 @@ from test_project.testapp.access_policies import (
     LandingPageAccessPolicy,
 )
 from test_project.testapp.models import UserAccount
-from test_project.testapp.serializers import UserAccountSerializer
+from test_project.testapp.serializers import UserAccountSerializer, UserAccountHyperlinkedSerializer
 from rest_access_policy import AccessViewSetMixin
 
 
@@ -30,6 +30,11 @@ class UserAccountViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def set_password(self, request, pk=None):
         return Response({}, status=200)
+
+
+class UserAccountHyperlinkedViewSet(viewsets.ModelViewSet):
+    serializer_class = UserAccountHyperlinkedSerializer
+    queryset = UserAccount.objects.all()
 
 
 @api_view(["GET"])
