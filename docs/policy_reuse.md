@@ -1,8 +1,8 @@
 # Access Policy Re-Use
 
-If you've defined a `scope_queryset` method, you'll likely want to use it in multiple places. If an object shouldn't be returned to a user from a view set, they probably shouldn't be able to reference that object's `id` when sending a `POST` or `PUT` request.
+If you've defined a `scope_queryset` method, you'll likely want to use it in multiple places. If an object shouldn't be returned to a user from a view set, they probably shouldn't be able to reference that object when sending a `POST` or `PUT` request.
 
-A `PermittedPkRelatedField` or `PermittedSlugRelatedField` can be passed an access policy class.
+A `PermittedPkRelatedField`, `PermittedSlugRelatedField` or `PermittedHyperlinkedRelatedField` can be passed an access policy class.
 
 ```python
 from django.contrib.auth.models import User
@@ -27,6 +27,19 @@ from my_policies import UserAccessPolicy
 class AccountUpdateSerializer(serializers.ModelSerializesr):
     emergency_contact = PermittedSlugRelatedField(
         access_policy=UserAccessPolicy, queryset=User.objects.all(), slug_field="username"
+    )
+```
+
+```python
+from django.contrib.auth.models import User
+
+from rest_framework import serializers
+from rest_access_policy import PermittedHyperlinkedRelatedField
+from my_policies import UserAccessPolicy
+
+class AccountUpdateSerializer(serializers.HyperlinkedModelSerializer):
+    emergency_contact = PermittedHyperlinkedRelatedField(
+        access_policy=UserAccessPolicy, queryset=User.objects.all(), view_name="user-detail"
     )
 ```
 

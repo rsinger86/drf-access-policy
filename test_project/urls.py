@@ -1,17 +1,19 @@
 from django.conf.urls import include, url
 from rest_framework import routers
+
 from test_project.testapp.views import (
     UserAccountViewSet,
     UserAccountViewSetWithMixin,
     delete_logs,
     get_logs,
-    get_landing_page,
+    get_landing_page, UserAccountHyperlinkedViewSet,
 )
 
 # Standard viewsets
 router = routers.DefaultRouter()
 router.register(r"accounts", UserAccountViewSet, basename="account")
 router.register(r"accounts-mixin-test", UserAccountViewSetWithMixin, basename="account-mixin-test")
+router.register(r"accounts-hyperlinked-test", UserAccountHyperlinkedViewSet, basename="account-hyperlinked-test")
 
 
 urlpatterns = [

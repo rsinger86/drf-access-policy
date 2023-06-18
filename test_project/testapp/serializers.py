@@ -10,3 +10,11 @@ class UserAccountSerializer(FieldAccessMixin, serializers.ModelSerializer):
         model = UserAccount
         fields = ["username", "first_name", "last_name", "status"]
         access_policy = UserAccountAccessPolicy
+
+
+class UserAccountHyperlinkedSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name="account-hyperlinked-test-detail")
+
+    class Meta:
+        model = UserAccount
+        fields = ["url", "username", "first_name", "last_name", "status"]
