@@ -15,7 +15,7 @@ def is_the_weather_nice(request, view, action: str) -> bool:
     data = weather_api.load_today()
     return data["temperature"] > 68
 
-def user_must_be(self, request, view, action, field: str) -> bool:
+def user_must_be(request, view, action, field: str) -> bool:
     account = view.get_object()
     return getattr(account, field) == request.user
 ```
