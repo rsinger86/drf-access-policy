@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.urls import include, re_path
 from rest_framework import routers
 from test_project.testapp.views import (
     UserAccountViewSet,
@@ -15,8 +15,8 @@ router.register(r"accounts-mixin-test", UserAccountViewSetWithMixin, basename="a
 
 
 urlpatterns = [
-    url(r"^", include(router.urls)),
-    url(r"^delete-logs/", delete_logs, name="delete-logs"),
-    url(r"^get-logs/", get_logs, name="get-logs"),
-    url(r"^get-landing-page/", get_landing_page, name="get-landing-page"),
+    re_path(r"^", include(router.urls)),
+    re_path(r"^delete-logs/", delete_logs, name="delete-logs"),
+    re_path(r"^get-logs/", get_logs, name="get-logs"),
+    re_path(r"^get-landing-page/", get_landing_page, name="get-landing-page"),
 ]

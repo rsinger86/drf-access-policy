@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from distutils.version import StrictVersion
+from packaging.version import Version
 
 import django
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 ]
 
 # Django 1.8 requires that abstract model app is in INSTALLED_APPS
-if StrictVersion("1.8") <= StrictVersion(django.__version__) < StrictVersion("1.9"):
+if Version("1.8") <= Version(django.__version__) < Version("1.9"):
     INSTALLED_APPS.append("django_lifecycle")
 
 
@@ -88,6 +88,8 @@ DATABASES = {
     }
 }
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -109,7 +111,8 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_L10N = True
+if Version(django.__version__) < Version("4.0"):
+    USE_L10N = True
 
 USE_TZ = True
 
