@@ -105,7 +105,7 @@ JSON policies are made up of elements that together determine _who_ can do _what
         <td>
             <ul>
                 <li>
-                    <code>["list", "destroy", "create]</code>
+                    <code>["list", "destroy", "create"]</code>
                 </li>
                 <li>
                     <code>["*"]</code> 
