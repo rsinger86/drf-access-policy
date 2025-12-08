@@ -14,4 +14,10 @@ class ArticleViewSet(AccessViewSetMixin, ModelViewSet):
         return self.access_policy.scope_queryset(
             self.request, Articles.objects.all()
         )
+
+# Optional: control where the access policy is inserted
+# Default is "first". Use "last" to run other permissions first.
+class ArticleViewSet(AccessViewSetMixin, ModelViewSet):
+    access_policy = ArticleAccessPolicy
+    access_policy_priority = "last"
 ```

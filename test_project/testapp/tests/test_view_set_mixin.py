@@ -28,3 +28,22 @@ class AccessViewSetTestCase(APITestCase):
         v = MyViewSet()
         self.assertEqual(v.permission_classes, [AccessPolicy, AllowAny])
         self.assertEqual(MyViewSet.permission_classes, [AllowAny])
+
+    def test_append_policy_when_priority_last(self):
+        class MyViewSet(AccessViewSetMixin, ViewSet):
+            access_policy = AccessPolicy
+            access_policy_priority = "last"
+
+        v = MyViewSet()
+        self.assertEqual(v.permission_classes, [AllowAny, AccessPolicy])
+        self.assertEqual(MyViewSet.permission_classes, [AllowAny])
+
+    def test_invalid_priority_should_raise_error(self):
+        class MyViewSet(AccessViewSetMixin, ViewSet):
+            access_policy = AccessPolicy
+            access_policy_priority = "invalid"
+
+        with self.assertRaises(Exception) as context:
+            MyViewSet()
+
+        self.assertIn("access_policy_priority", str(context.exception))

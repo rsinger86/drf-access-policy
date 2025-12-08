@@ -70,6 +70,10 @@ class ArticleViewSet(AccessViewSetMixin, ModelViewSet):
     # If you prefer not to use the mixin, the policy class can be added to permission_classes
     # permission_classes = (ArticleAccessPolicy,)
 
+    # If you need other DRF permissions to run before the access policy,
+    # set access_policy_priority = "last" so the policy is added at the end.
+    # access_policy_priority = "last"
+
     # Helper property here to make get_queryset logic
     # more explicit
     @property
