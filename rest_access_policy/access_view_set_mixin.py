@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 class AccessViewSetMixin(object):
     access_policy: Type[AccessPolicy]
+    access_policy_priority: str = "first"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -21,7 +22,16 @@ class AccessViewSetMixin(object):
                 """
             )
 
-        self.permission_classes = [self.access_policy] + self.permission_classes
+        priority = getattr(self, "access_policy_priority", "first")
+        if priority not in ("first", "last"):
+            raise Exception("access_policy_priority must be 'first' or 'last'")
+
+        if priority == "first":
+            permission_classes = [self.access_policy] + list(self.permission_classes)
+        else:
+            permission_classes = list(self.permission_classes) + [self.access_policy]
+
+        self.permission_classes = permission_classes
 
     def finalize_response(self, request, response, *args, **kwargs) -> Response:
         response = super().finalize_response(request, response, *args, **kwargs)
